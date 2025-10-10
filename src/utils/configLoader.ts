@@ -236,11 +236,74 @@ async function refreshBingImages(): Promise<void> {
       body.style.setProperty('background-position', 'center', 'important')
       body.style.setProperty('background-repeat', 'no-repeat', 'important')
       body.style.setProperty('background-attachment', 'fixed', 'important')
+      
+      // 根据新背景设置文字颜色
+      if (firstImageUrl) {
+        setTextColorBasedOnBackground(firstImageUrl)
+      }
     }
   } catch (error) {
     console.error('刷新 Bing 图片时出错:', error)
   } finally {
     isRefreshingImages = false
+  }
+}
+
+// 计算图片亮度并设置文字颜色
+async function setTextColorBasedOnBackground(imageUrl: string): Promise<void> {
+  try {
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+    
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      
+      if (!ctx) return
+      
+      canvas.width = img.width
+      canvas.height = img.height
+      ctx.drawImage(img, 0, 0)
+      
+      // 获取图片数据
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+      const data = imageData.data
+      
+      let totalBrightness = 0
+      let pixelCount = 0
+      
+      // 采样计算平均亮度（每10个像素采样一次以提高性能）
+      for (let i = 0; i < data.length; i += 40) { // 每10个像素采样一次
+        const r = data[i] || 0
+        const g = data[i + 1] || 0
+        const b = data[i + 2] || 0
+        
+        // 计算亮度 (0-255)
+        const brightness = (r * 0.299 + g * 0.587 + b * 0.114)
+        totalBrightness += brightness
+        pixelCount++
+      }
+      
+      const averageBrightness = totalBrightness / pixelCount
+      
+      // 根据亮度设置文字颜色
+      const textColor = averageBrightness > 128 ? '#000000' : '#ffffff'
+      
+      // 应用文字颜色到CSS变量
+      document.documentElement.style.setProperty('--header-color', textColor)
+      document.documentElement.style.setProperty('--card-title-color', textColor)
+      document.documentElement.style.setProperty('--footer-color', textColor)
+      
+      console.log(`背景亮度: ${averageBrightness.toFixed(2)}, 文字颜色: ${textColor}`)
+    }
+    
+    img.src = imageUrl
+  } catch (error) {
+    console.error('计算背景亮度失败:', error)
+    // 失败时使用默认颜色
+    document.documentElement.style.setProperty('--header-color', '#000000')
+    document.documentElement.style.setProperty('--card-title-color', '#000000')
+    document.documentElement.style.setProperty('--footer-color', '#000000')
   }
 }
 
@@ -274,6 +337,11 @@ function startBingCarousel(): void {
       body.style.setProperty('background-position', 'center', 'important')
       body.style.setProperty('background-repeat', 'no-repeat', 'important')
       body.style.setProperty('background-attachment', 'fixed', 'important')
+      
+      // 根据新背景设置文字颜色
+      if (imageUrl) {
+        setTextColorBasedOnBackground(imageUrl)
+      }
     }
   }, 30000) // 30秒切换一次
 }
@@ -367,6 +435,9 @@ function setCustomBackground(mediaUrl: string): void {
     body.style.setProperty('background-position', 'center', 'important')
     body.style.setProperty('background-repeat', 'no-repeat', 'important')
     body.style.setProperty('background-attachment', 'fixed', 'important')
+    
+    // 根据自定义背景设置文字颜色
+    setTextColorBasedOnBackground(mediaUrl)
     
   }
 }
