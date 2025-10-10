@@ -112,8 +112,8 @@ export async function loadConfig(): Promise<void> {
 // 简单的 YAML 解析器
 function parseYaml(yamlText: string): Partial<AppConfig> {
   const lines = yamlText.split('\n')
-  const result: any = {}
-  let currentSection: any = null
+  const result: Record<string, any> = {}
+  let currentSection: Record<string, any> | null = null
   
   for (const line of lines) {
     const trimmedLine = line.trim()
@@ -134,7 +134,7 @@ function parseYaml(yamlText: string): Partial<AppConfig> {
       const value = trimmedLine.substring(colonIndex + 1).trim()
 
       // 移除引号并处理布尔值
-      let cleanValue: any = value.replace(/^["']|["']$/g, '')
+      let cleanValue: string | boolean = value.replace(/^["']|["']$/g, '')
 
       // 处理布尔值
       if (cleanValue === 'true') {
@@ -143,8 +143,8 @@ function parseYaml(yamlText: string): Partial<AppConfig> {
         cleanValue = false
       }
       
-            // 处理嵌套对象
-            if (key === 'footer' || key === 'background' || key === 'favicon' || key === 'copyright' || key === 'colors') {
+      // 处理嵌套对象
+      if (key === 'footer' || key === 'background' || key === 'favicon' || key === 'copyright' || key === 'colors') {
         if (!result[key]) {
           result[key] = {}
         }
@@ -167,7 +167,6 @@ let bingImages: string[] = []
 let currentImageIndex = 0
 let carouselInterval: number | null = null
 let bingErrorCount = 0
-let maxBingErrors = 3 // 最大错误次数
 let bingRetryInterval: number | null = null
 let isBingAvailable = true
 let currentConfig: BackgroundConfig | null = null
@@ -185,7 +184,7 @@ async function getBingWallpapers(): Promise<string[]> {
     if (response.ok) {
       const data = await response.json()
       if (data.images && data.images.length > 0) {
-        const imageUrls = data.images.map((img: any) => `https://www.bing.com${img.url}`)
+        const imageUrls = data.images.map((img: { url: string }) => `https://www.bing.com${img.url}`)
         
         // 重置错误计数
         bingErrorCount = 0
@@ -199,7 +198,7 @@ async function getBingWallpapers(): Promise<string[]> {
     bingErrorCount++
     
     // 检查是否达到最大错误次数
-    if (bingErrorCount >= maxBingErrors) {
+    if (bingErrorCount >= MAX_BING_ERRORS) {
       isBingAvailable = false
       fallbackToCustomBackground()
     }
@@ -210,7 +209,7 @@ async function getBingWallpapers(): Promise<string[]> {
     bingErrorCount++
     
     // 检查是否达到最大错误次数
-    if (bingErrorCount >= maxBingErrors) {
+    if (bingErrorCount >= MAX_BING_ERRORS) {
       isBingAvailable = false
       fallbackToCustomBackground()
     }
@@ -258,8 +257,10 @@ async function refreshBingImages(): Promise<void> {
 
 // 常量定义
 const BRIGHTNESS_THRESHOLD = 128 // 亮度阈值，超过此值使用黑色文字
-const PIXEL_SAMPLE_INTERVAL = 40 // 像素采样间隔（每10个像素采样一次）
+const PIXEL_SAMPLE_INTERVAL = 40 // 像素采样间隔（每40个像素采样一次）
 const CAROUSEL_INTERVAL = 30000 // 轮播间隔（30秒）
+const MAX_BING_ERRORS = 3 // 最大错误次数
+const BING_RETRY_INTERVAL = 5 * 60 * 1000 // Bing重试间隔（5分钟）
 
 // 计算图片亮度并设置文字颜色
 async function setTextColorBasedOnBackground(imageUrl: string): Promise<void> {
@@ -284,7 +285,7 @@ async function setTextColorBasedOnBackground(imageUrl: string): Promise<void> {
       let totalBrightness = 0
       let pixelCount = 0
       
-      // 采样计算平均亮度（每10个像素采样一次以提高性能）
+      // 采样计算平均亮度（每40个像素采样一次以提高性能）
       for (let i = 0; i < data.length; i += PIXEL_SAMPLE_INTERVAL) {
         const r = data[i] || 0
         const g = data[i + 1] || 0
@@ -509,7 +510,7 @@ function startBingRetry(): void {
         // Bing 服务仍不可用，继续使用备用背景
       }
     }
-  }, 5 * 60 * 1000) // 5分钟
+  }, BING_RETRY_INTERVAL) // 5分钟
 }
 
 // 应用背景配置
@@ -625,7 +626,6 @@ export function formatCopyrightYear(copyrightConfig: CopyrightConfig): string {
   }
 }
 
-// 应用 favicon 配置
 // 应用颜色配置
 export function applyColorsConfig(colorsConfig: ColorsConfig): void {
   if (colorsConfig.autoColor) {

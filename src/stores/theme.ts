@@ -1,13 +1,10 @@
 import { defineStore } from 'pinia'
 
 export const useThemeStore = defineStore('theme', () => {
-  // 简化主题管理，移除所有主题切换功能
+  // 初始化主题，清理可能存在的主题相关设置
   const initTheme = () => {
-    // 移除所有主题相关的类名和样式
     const root = document.documentElement
     root.classList.remove('dark-mode')
-    
-    // 清理localStorage中的主题设置
     localStorage.removeItem('theme')
   }
 

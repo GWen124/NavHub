@@ -73,11 +73,11 @@ export function getIconName(icon: string): string {
 }
 
 // 添加新图标的方法
-export function addIcon(name: string, component: any) {
+export function addIcon(name: string, component: any): void {
   iconMap[name] = component
 }
 
 // 批量添加图标的方法
-export function addIcons(icons: Record<string, any>) {
+export function addIcons(icons: Record<string, any>): void {
   Object.assign(iconMap, icons)
 }

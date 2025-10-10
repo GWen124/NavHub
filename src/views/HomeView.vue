@@ -53,13 +53,11 @@
 import { ref, onMounted, computed, onUnmounted } from 'vue'
 import { config, type Category } from '@/config'
 import { useThemeStore } from '@/stores/theme'
-import { useSearchStore } from '@/stores/search'
 import { loadConfig, applyBackgroundConfig, applyPageTitle, applyFaviconConfig, applyColorsConfig, appConfig, formatCopyrightYear } from '@/utils/configLoader'
 import CategorySection from '@/components/CategorySection.vue'
 import { getIconComponent } from '@/utils/icons'
 
 const themeStore = useThemeStore()
-const searchStore = useSearchStore()
 
 const searchQuery = ref('')
 const timeInterval = ref<number | null>(null)
@@ -101,8 +99,20 @@ const updateTime = () => {
 
 // 处理搜索
 const handleSearch = () => {
-  searchStore.search(searchQuery.value, config)
-  filteredCategories.value = searchStore.filteredCategories
+  if (!searchQuery.value.trim()) {
+    filteredCategories.value = config
+    return
+  }
+
+  const filtered = config.map(category => ({
+    ...category,
+    sites: category.sites.filter(site =>
+      site.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      site.url.toLowerCase().includes(searchQuery.value.toLowerCase())
+    )
+  })).filter(category => category.sites.length > 0)
+
+  filteredCategories.value = filtered
 }
 
 
@@ -168,7 +178,7 @@ onUnmounted(() => {
 .main-quote {
   font-size: 4rem;
   font-weight: 700;
-  color: var(--footer-color, #000000);
+  color: var(--header-color, #000000);
   margin: 0;
   text-align: center;
   text-shadow: none;
@@ -185,7 +195,7 @@ onUnmounted(() => {
 .current-time {
   font-size: 1.8rem;
   font-weight: 600;
-  color: var(--footer-color, #000000);
+  color: var(--header-color, #000000);
   margin: 0;
   text-shadow: none;
 }
@@ -193,7 +203,7 @@ onUnmounted(() => {
 .current-date {
   font-size: 1rem;
   font-weight: 400;
-  color: var(--footer-color, #000000);
+  color: var(--header-color, #000000);
   margin: 0;
   opacity: 0.8;
   text-shadow: none;
@@ -250,9 +260,9 @@ onUnmounted(() => {
 }
 
 .search-button :deep(svg) {
-  color: var(--text-color);
-  width: 16px;
-  height: 16px;
+  color: var(--header-color, #000000);
+  width: 18px;
+  height: 18px;
 }
 
 .main-content {

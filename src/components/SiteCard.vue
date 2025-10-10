@@ -70,7 +70,7 @@ const isFontAwesomeIcon = computed(() => {
 const isEmojiIcon = computed(() => {
   // 简单的 emoji 检测：检查是否包含 emoji 字符
   const emojiRegex = /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u
-  return emojiRegex.test(props.site.icon) && props.site.icon.length <= 4
+  return emojiRegex.test(props.site.icon) && props.site.icon.length <= 4 && !props.site.icon.startsWith('http')
 })
 
 // 获取 Xicon 组件
@@ -115,15 +115,15 @@ const xiconComponent = computed(() => {
   align-items: center;
   justify-content: center;
   font-size: 24px;
-  color: var(--icon-color);
-  background: var(--transparent-bg);
+  color: #000000;
+  background: transparent;
   flex-shrink: 0;
   transition: all 0.3s ease;
 }
 
 .site-card:hover .site-icon {
-  background: var(--transparent-bg);
-  color: var(--icon-color);
+  background: transparent;
+  color: #000000;
   transform: scale(1.05);
 }
 
@@ -156,11 +156,11 @@ const xiconComponent = computed(() => {
 .text-icon {
   font-size: 32px;
   font-weight: 600;
-  color: var(--icon-color);
+  color: #000000;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--transparent-bg);
+  background: transparent;
   border-radius: 0;
   width: 56px;
   height: 56px;
@@ -211,7 +211,7 @@ const xiconComponent = computed(() => {
     font-size: 24px;
     width: 48px;
     height: 48px;
-    color: var(--icon-color);
+    color: #000000;
   }
   
   .site-name {
