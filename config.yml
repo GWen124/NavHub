@@ -1,0 +1,54 @@
+# Website Panel 配置文件
+# 修改此文件来自定义网站设置
+
+# 网页标题
+pageTitle: "Website Panel"
+
+# 标签页图标配置
+favicon:
+  # 图标路径或URL，留空表示使用默认图标
+  # 本地图标示例: favicon.ico 或 images/icon.png
+  # 网络图标示例: https://example.com/favicon.ico
+  icon: "https://image.gw124.top/Avatar/imgbin_a1bee513649d120523b69c8584c25695.png"
+
+# 页面主标题文字
+pageQuote: "人生寂寞，知己难求。"
+
+# 颜色配置
+colors:
+  # 头部信息颜色
+  headerColor: "#000000"
+  # 网站卡片标题和网站名称颜色
+  cardTitleColor: "#000000"
+  # Footer 文字信息颜色
+  footerColor: "#000000"
+
+# Footer 信息配置
+footer:
+  websiteText: "WEBSITE.GW124.TOP"
+  websiteUrl: "https://gw124.top"
+  # 注意：作者信息不可配置，始终保持默认值
+
+# 版权信息配置
+copyright:
+  # 版权开始日期，格式：YYYY-MM-DD
+  # 示例：2025-01-01 或 2025-12-31
+  startDate: "2025-10-01"
+  # 是否自动计算年份范围
+  # true: 根据当前日期自动计算显示格式
+  # false: 始终显示开始年份
+  autoRange: true
+
+# 背景图片配置
+background:
+  # Bing 轮播背景开关
+  # true: 启用 Bing 每日图片轮播背景（优先级高于自定义背景）
+  # false: 使用自定义背景图片
+  bingWallpaper: false
+  # 图片或视频路径/URL，留空表示无背景
+  # 本地图片示例: bg.jpg 或 images/background.png
+  # 网络图片示例: https://example.com/image.jpg
+  # 本地视频示例: video.mp4 或 videos/background.mp4
+  # 网络视频示例: https://example.com/video.mp4
+  # 支持的视频格式: mp4, webm, ogg, avi, mov, wmv, flv, mkv
+  image: "https://image.gw124.top/Video/Network%20-%2045961.mp4"

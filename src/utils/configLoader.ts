@@ -1,0 +1,563 @@
+import { ref, reactive } from 'vue'
+
+// 配置接口定义
+export interface BackgroundConfig {
+  bingWallpaper: boolean
+  image: string
+}
+
+export interface FooterConfig {
+  websiteText: string
+  websiteUrl: string
+  authorText: string
+  authorUrl: string
+}
+
+export interface FaviconConfig {
+  icon: string
+}
+
+export interface CopyrightConfig {
+  startDate: string
+  autoRange: boolean
+}
+
+export interface ColorsConfig {
+  headerColor: string
+  cardTitleColor: string
+  footerColor: string
+}
+
+export interface AppConfig {
+  pageTitle: string
+  pageQuote: string
+  footer: FooterConfig
+  background: BackgroundConfig
+  favicon: FaviconConfig
+  copyright: CopyrightConfig
+  colors: ColorsConfig
+}
+
+// 默认配置
+const defaultConfig: AppConfig = {
+  pageTitle: "Website Panel",
+  pageQuote: "人生寂寞，知己难求。",
+  footer: {
+    websiteText: "WEBSITE.GW124.TOP",
+    websiteUrl: "https://website.gw124.top",
+    authorText: "Wen",
+    authorUrl: "https://github.com/GWen124"
+  },
+  background: {
+    bingWallpaper: false,
+    image: ""
+  },
+  favicon: {
+    icon: ""
+  },
+  copyright: {
+    startDate: "2025-01-01",
+    autoRange: true
+  },
+  colors: {
+    headerColor: "#333333",
+    cardTitleColor: "#333333",
+    footerColor: "#000000"
+  }
+}
+
+// 配置状态
+export const appConfig = reactive<AppConfig>({ ...defaultConfig })
+
+// 加载配置
+export async function loadConfig(): Promise<void> {
+  try {
+    const response = await fetch('/config.yml')
+    
+    if (response.ok) {
+      const yamlText = await response.text()
+      const parsedConfig = parseYaml(yamlText)
+      
+      // 合并配置
+      Object.assign(appConfig, {
+        ...defaultConfig,
+        ...parsedConfig,
+        footer: { 
+          ...defaultConfig.footer, 
+          ...parsedConfig.footer,
+          // 强制保持作者信息为默认值
+          authorText: defaultConfig.footer.authorText,
+          authorUrl: defaultConfig.footer.authorUrl
+        },
+        background: { ...defaultConfig.background, ...parsedConfig.background },
+        favicon: { ...defaultConfig.favicon, ...parsedConfig.favicon },
+        copyright: { ...defaultConfig.copyright, ...parsedConfig.copyright },
+        colors: { ...defaultConfig.colors, ...parsedConfig.colors }
+      })
+      
+    }
+  } catch (error) {
+    console.error('配置加载失败:', error)
+  }
+}
+
+// 简单的 YAML 解析器
+function parseYaml(yamlText: string): Partial<AppConfig> {
+  const lines = yamlText.split('\n')
+  const result: any = {}
+  let currentSection: any = null
+  
+  for (const line of lines) {
+    const trimmedLine = line.trim()
+    
+    // 跳过注释和空行
+    if (!trimmedLine || trimmedLine.startsWith('#')) {
+      continue
+    }
+    
+    // 解析键值对
+    const colonIndex = trimmedLine.indexOf(':')
+    if (colonIndex > 0) {
+      const key = trimmedLine.substring(0, colonIndex).trim()
+      const value = trimmedLine.substring(colonIndex + 1).trim()
+      
+      // 移除引号并处理布尔值
+      let cleanValue = value.replace(/^["']|["']$/g, '')
+      
+      // 处理布尔值
+      if (cleanValue === 'true') {
+        cleanValue = true
+      } else if (cleanValue === 'false') {
+        cleanValue = false
+      }
+      
+           // 处理嵌套对象
+           if (key === 'footer' || key === 'background' || key === 'favicon' || key === 'copyright' || key === 'colors') {
+             if (!result[key]) {
+               result[key] = {}
+             }
+             currentSection = result[key]
+           } else if (currentSection) {
+        // 处理嵌套属性
+        currentSection[key] = cleanValue
+      } else {
+        // 处理顶级属性
+        result[key] = cleanValue
+      }
+    }
+  }
+  
+  return result
+}
+
+// Bing 轮播状态
+let bingImages: string[] = []
+let currentImageIndex = 0
+let carouselInterval: number | null = null
+let bingErrorCount = 0
+let maxBingErrors = 3 // 最大错误次数
+let bingRetryInterval: number | null = null
+let isBingAvailable = true
+let currentConfig: BackgroundConfig | null = null
+let cycleCount = 0 // 轮播循环计数
+let isRefreshingImages = false // 是否正在刷新图片
+
+// 获取多张 Bing 图片
+async function getBingWallpapers(): Promise<string[]> {
+  try {
+    // 使用 CORS 代理访问 Bing API，获取 8 张图片
+    const proxyUrl = 'https://api.allorigins.win/raw?url='
+    const bingApiUrl = encodeURIComponent('https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=8&mkt=zh-CN')
+    const response = await fetch(proxyUrl + bingApiUrl)
+    
+    if (response.ok) {
+      const data = await response.json()
+      if (data.images && data.images.length > 0) {
+        const imageUrls = data.images.map((img: any) => `https://www.bing.com${img.url}`)
+        
+        // 重置错误计数
+        bingErrorCount = 0
+        isBingAvailable = true
+        
+        return imageUrls
+      }
+    }
+    
+    // 增加错误计数
+    bingErrorCount++
+    
+    // 检查是否达到最大错误次数
+    if (bingErrorCount >= maxBingErrors) {
+      isBingAvailable = false
+      fallbackToCustomBackground()
+    }
+    
+    return []
+  } catch (error) {
+    // 增加错误计数
+    bingErrorCount++
+    
+    // 检查是否达到最大错误次数
+    if (bingErrorCount >= maxBingErrors) {
+      isBingAvailable = false
+      fallbackToCustomBackground()
+    }
+    
+    return []
+  }
+}
+
+// 刷新 Bing 图片
+async function refreshBingImages(): Promise<void> {
+  if (isRefreshingImages) {
+    return
+  }
+  
+  isRefreshingImages = true
+  
+  try {
+    const newImages = await getBingWallpapers()
+    if (newImages.length > 0) {
+      bingImages = newImages
+      currentImageIndex = 0
+      cycleCount = 0
+      
+      // 立即应用第一张新图片
+      const firstImageUrl = bingImages[0]
+      const backgroundImageUrl = `url(${firstImageUrl})`
+      const body = document.body
+      body.style.setProperty('background-image', backgroundImageUrl, 'important')
+      body.style.setProperty('background-size', 'cover', 'important')
+      body.style.setProperty('background-position', 'center', 'important')
+      body.style.setProperty('background-repeat', 'no-repeat', 'important')
+      body.style.setProperty('background-attachment', 'fixed', 'important')
+    }
+  } catch (error) {
+    console.error('刷新 Bing 图片时出错:', error)
+  } finally {
+    isRefreshingImages = false
+  }
+}
+
+// 启动 Bing 轮播
+function startBingCarousel(): void {
+  if (carouselInterval) {
+    clearInterval(carouselInterval)
+  }
+  
+  // 每 30 秒切换一次背景
+  carouselInterval = setInterval(() => {
+    if (bingImages.length > 0) {
+      currentImageIndex = (currentImageIndex + 1) % bingImages.length
+      const imageUrl = bingImages[currentImageIndex]
+      
+      // 检查是否完成一轮循环
+      if (currentImageIndex === 0) {
+        cycleCount++
+        
+        // 异步刷新图片，不阻塞当前轮播
+        refreshBingImages().catch(error => {
+          console.error('异步刷新图片失败:', error)
+        })
+      }
+      
+      // 应用背景
+      const body = document.body
+      const backgroundImageUrl = `url(${imageUrl})`
+      body.style.setProperty('background-image', backgroundImageUrl, 'important')
+      body.style.setProperty('background-size', 'cover', 'important')
+      body.style.setProperty('background-position', 'center', 'important')
+      body.style.setProperty('background-repeat', 'no-repeat', 'important')
+      body.style.setProperty('background-attachment', 'fixed', 'important')
+    }
+  }, 30000) // 30秒切换一次
+}
+
+// 停止 Bing 轮播
+function stopBingCarousel(): void {
+  if (carouselInterval) {
+    clearInterval(carouselInterval)
+    carouselInterval = null
+  }
+  if (bingRetryInterval) {
+    clearInterval(bingRetryInterval)
+    bingRetryInterval = null
+  }
+}
+
+// 回退到自定义背景
+function fallbackToCustomBackground(): void {
+  // 停止 Bing 轮播
+  stopBingCarousel()
+  
+  if (!currentConfig) {
+    setWhiteBackground()
+    return
+  }
+  
+  // 检查是否有自定义背景
+  const customImage = currentConfig.image && currentConfig.image.trim() !== ''
+  
+  if (customImage) {
+    setCustomBackground(currentConfig.image)
+  } else {
+    setWhiteBackground()
+  }
+  
+  // 启动重试机制
+  startBingRetry()
+}
+
+// 检查是否为视频文件
+function isVideoFile(url: string): boolean {
+  const videoExtensions = ['.mp4', '.webm', '.ogg', '.avi', '.mov', '.wmv', '.flv', '.mkv']
+  const lowerUrl = url.toLowerCase()
+  return videoExtensions.some(ext => lowerUrl.includes(ext))
+}
+
+// 设置自定义背景（支持图片和视频）
+function setCustomBackground(mediaUrl: string): void {
+  const body = document.body
+  
+  // 清理之前的视频元素
+  const existingVideo = document.getElementById('background-video')
+  if (existingVideo) {
+    existingVideo.remove()
+  }
+  
+  if (isVideoFile(mediaUrl)) {
+    // 创建视频背景
+    const video = document.createElement('video')
+    video.id = 'background-video'
+    video.src = mediaUrl
+    video.autoplay = true
+    video.loop = true
+    video.muted = true
+    video.playsInline = true
+    
+    // 视频样式
+    video.style.position = 'fixed'
+    video.style.top = '0'
+    video.style.left = '0'
+    video.style.width = '100%'
+    video.style.height = '100%'
+    video.style.objectFit = 'cover'
+    video.style.zIndex = '-1'
+    video.style.pointerEvents = 'none'
+    
+    // 添加到页面
+    document.body.appendChild(video)
+    
+    // 设置body背景
+    body.style.setProperty('background-color', 'transparent', 'important')
+    body.style.setProperty('background-image', 'none', 'important')
+    
+  } else {
+    // 设置图片背景
+    const backgroundImageUrl = `url(${mediaUrl})`
+    
+    body.style.setProperty('background-image', backgroundImageUrl, 'important')
+    body.style.setProperty('background-color', 'transparent', 'important')
+    body.style.setProperty('background-size', 'cover', 'important')
+    body.style.setProperty('background-position', 'center', 'important')
+    body.style.setProperty('background-repeat', 'no-repeat', 'important')
+    body.style.setProperty('background-attachment', 'fixed', 'important')
+    
+  }
+}
+
+// 设置白色背景
+function setWhiteBackground(): void {
+  const body = document.body
+  
+  body.style.setProperty('background-image', 'none', 'important')
+  body.style.setProperty('background-color', '#ffffff', 'important')
+}
+
+// 启动 Bing 重试机制
+function startBingRetry(): void {
+  if (bingRetryInterval) {
+    clearInterval(bingRetryInterval)
+  }
+  
+  // 每 5 分钟重试一次
+  bingRetryInterval = setInterval(async () => {
+    if (!isBingAvailable && currentConfig && currentConfig.bingWallpaper) {
+      try {
+        const testImages = await getBingWallpapers()
+        if (testImages.length > 0) {
+          isBingAvailable = true
+          bingImages = testImages
+          currentImageIndex = 0
+          
+          // 设置第一张图片
+          currentImageIndex = 0
+          cycleCount = 0
+          const firstImageUrl = bingImages[0]
+          const backgroundImageUrl = `url(${firstImageUrl})`
+          
+          const body = document.body
+          body.style.setProperty('background-image', backgroundImageUrl, 'important')
+          body.style.setProperty('background-color', 'transparent', 'important')
+          body.style.setProperty('background-size', 'cover', 'important')
+          body.style.setProperty('background-position', 'center', 'important')
+          body.style.setProperty('background-repeat', 'no-repeat', 'important')
+          body.style.setProperty('background-attachment', 'fixed', 'important')
+          
+          // 重新启动轮播
+          startBingCarousel()
+          
+          // 停止重试
+          if (bingRetryInterval) {
+            clearInterval(bingRetryInterval)
+            bingRetryInterval = null
+          }
+        }
+      } catch (error) {
+        // Bing 服务仍不可用，继续使用备用背景
+      }
+    }
+  }, 5 * 60 * 1000) // 5分钟
+}
+
+// 应用背景配置
+export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise<void> {
+  const body = document.body
+  
+  // 保存当前配置
+  currentConfig = bgConfig
+  
+  // 停止之前的轮播和重试
+  stopBingCarousel()
+  
+  // 重置状态
+  bingErrorCount = 0
+  isBingAvailable = true
+  
+  // 检查是否启用 Bing 轮播背景
+  if (bgConfig.bingWallpaper) {
+    // 获取多张 Bing 图片
+    bingImages = await getBingWallpapers()
+    
+    if (bingImages.length > 0) {
+      // 设置第一张图片
+      currentImageIndex = 0
+      cycleCount = 0
+      const firstImageUrl = bingImages[0]
+      const backgroundImageUrl = `url(${firstImageUrl})`
+      
+      body.style.setProperty('background-image', backgroundImageUrl, 'important')
+      body.style.setProperty('background-color', 'transparent', 'important')
+      body.style.setProperty('background-size', 'cover', 'important')
+      body.style.setProperty('background-position', 'center', 'important')
+      body.style.setProperty('background-repeat', 'no-repeat', 'important')
+      body.style.setProperty('background-attachment', 'fixed', 'important')
+      
+      // 启动轮播
+      startBingCarousel()
+      
+    } else {
+      // 回退到自定义背景
+      const imageUrl = bgConfig.image && bgConfig.image.trim() !== '' ? bgConfig.image : null
+      if (imageUrl) {
+        setCustomBackground(imageUrl)
+      } else {
+        setWhiteBackground()
+      }
+      
+      // 启动重试机制
+      startBingRetry()
+    }
+  } else {
+    const imageUrl = bgConfig.image && bgConfig.image.trim() !== '' ? bgConfig.image : null
+    
+    if (imageUrl) {
+      setCustomBackground(imageUrl)
+    } else {
+      setWhiteBackground()
+    }
+  }
+  
+  // 清理可能存在的CSS变量
+  document.documentElement.style.removeProperty('--bg-image')
+  document.documentElement.style.removeProperty('--bg-color')
+}
+
+// 应用页面标题
+export function applyPageTitle(title: string): void {
+  document.title = title
+}
+
+// 格式化版权年份
+export function formatCopyrightYear(copyrightConfig: CopyrightConfig): string {
+  if (!copyrightConfig.autoRange) {
+    // 如果禁用自动范围，只显示开始年份
+    return copyrightConfig.startDate.split('-')[0]
+  }
+
+  try {
+    const startDate = new Date(copyrightConfig.startDate)
+    const currentDate = new Date()
+    
+    const startYear = startDate.getFullYear()
+    const currentYear = currentDate.getFullYear()
+    
+    // 计算年份差
+    const yearDiff = currentYear - startYear
+    
+    if (yearDiff <= 0) {
+      // 当前年份小于等于开始年份，只显示开始年份
+      return startYear.toString()
+    } else if (yearDiff >= 1) {
+      // 超过一年，显示年份范围
+      return `${startYear}-${currentYear}`
+    } else {
+      // 不到一年，只显示开始年份
+      return startYear.toString()
+    }
+  } catch (error) {
+    console.error('版权年份格式化错误:', error)
+    // 出错时返回开始年份
+    return copyrightConfig.startDate.split('-')[0]
+  }
+}
+
+// 应用颜色配置
+export function applyColorsConfig(colorsConfig: ColorsConfig): void {
+  // 应用 CSS 变量
+  const root = document.documentElement
+  
+  // 设置颜色变量
+  root.style.setProperty('--header-color', colorsConfig.headerColor)
+  root.style.setProperty('--card-title-color', colorsConfig.cardTitleColor)
+  root.style.setProperty('--footer-color', colorsConfig.footerColor)
+}
+
+// 应用 favicon 配置
+export function applyFaviconConfig(faviconConfig: FaviconConfig): void {
+  // 移除现有的 favicon 链接
+  const existingFavicons = document.querySelectorAll('link[rel*="icon"]')
+  existingFavicons.forEach(link => link.remove())
+  
+  if (!faviconConfig.icon || faviconConfig.icon.trim() === '') {
+    // 使用默认 favicon
+    const defaultFavicon = document.createElement('link')
+    defaultFavicon.rel = 'icon'
+    defaultFavicon.type = 'image/x-icon'
+    defaultFavicon.href = '/favicon.ico'
+    document.head.appendChild(defaultFavicon)
+  } else {
+    // 创建新的 favicon 链接
+    const favicon = document.createElement('link')
+    favicon.rel = 'icon'
+    favicon.type = 'image/x-icon'
+    favicon.href = faviconConfig.icon
+    document.head.appendChild(favicon)
+    
+    // 同时添加 apple-touch-icon 支持
+    const appleIcon = document.createElement('link')
+    appleIcon.rel = 'apple-touch-icon'
+    appleIcon.href = faviconConfig.icon
+    document.head.appendChild(appleIcon)
+  }
+}
