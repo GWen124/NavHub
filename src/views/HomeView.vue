@@ -272,7 +272,7 @@ onMounted(async () => {
   transform: translateX(-50%);
   width: 85%;
   height: 1px;
-  background: linear-gradient(to right, transparent 0%, #e5e5e5 20%, #e5e5e5 80%, transparent 100%);
+  background: linear-gradient(to right, transparent 0%, var(--footer-color, #e5e5e5) 20%, var(--footer-color, #e5e5e5) 80%, transparent 100%);
 }
 
 .footer-content {
