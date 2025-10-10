@@ -122,7 +122,7 @@ function parseYaml(yamlText: string): Partial<AppConfig> {
       const value = trimmedLine.substring(colonIndex + 1).trim()
       
       // 移除引号并处理布尔值
-      let cleanValue = value.replace(/^["']|["']$/g, '')
+      let cleanValue: any = value.replace(/^["']|["']$/g, '')
       
       // 处理布尔值
       if (cleanValue === 'true') {
@@ -492,7 +492,7 @@ export function applyPageTitle(title: string): void {
 export function formatCopyrightYear(copyrightConfig: CopyrightConfig): string {
   if (!copyrightConfig.autoRange) {
     // 如果禁用自动范围，只显示开始年份
-    return copyrightConfig.startDate.split('-')[0]
+    return copyrightConfig.startDate.split('-')[0] || ''
   }
 
   try {
@@ -518,7 +518,7 @@ export function formatCopyrightYear(copyrightConfig: CopyrightConfig): string {
   } catch (error) {
     console.error('版权年份格式化错误:', error)
     // 出错时返回开始年份
-    return copyrightConfig.startDate.split('-')[0]
+    return copyrightConfig.startDate.split('-')[0] || ''
   }
 }
 
