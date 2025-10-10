@@ -240,7 +240,7 @@ onMounted(async () => {
 }
 
 .search-button :deep(svg) {
-  color: #000000;
+  color: var(--header-color);
   width: 16px;
   height: 16px;
 }
