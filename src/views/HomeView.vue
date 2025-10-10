@@ -167,7 +167,7 @@ onUnmounted(() => {
 .main-quote {
   font-size: 4rem;
   font-weight: 700;
-  color: var(--text-color, #333333);
+  color: var(--text-color, #000000);
   margin: 0;
   text-align: center;
   text-shadow: none;
@@ -178,13 +178,13 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: flex-start;
   padding-left: 20px;
-  border-left: 2px solid var(--text-color, #333333);
+  border-left: 2px solid var(--text-color, #000000);
 }
 
 .current-time {
   font-size: 1.8rem;
   font-weight: 600;
-  color: var(--text-color, #333333);
+  color: var(--text-color, #000000);
   margin: 0;
   text-shadow: none;
 }
@@ -192,7 +192,7 @@ onUnmounted(() => {
 .current-date {
   font-size: 1rem;
   font-weight: 400;
-  color: var(--text-color, #333333);
+  color: var(--text-color, #000000);
   margin: 0;
   opacity: 0.8;
   text-shadow: none;
@@ -280,7 +280,7 @@ onUnmounted(() => {
   transform: translateX(-50%);
   width: 85%;
   height: 1px;
-  background: linear-gradient(to right, transparent 0%, var(--text-color, #e5e5e5) 20%, var(--text-color, #e5e5e5) 80%, transparent 100%);
+  background: linear-gradient(to right, transparent 0%, var(--text-color, #000000) 20%, var(--text-color, #000000) 80%, transparent 100%);
 }
 
 .footer-content {
