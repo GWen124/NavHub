@@ -90,7 +90,7 @@ const xiconComponent = computed(() => {
   background: rgba(0, 0, 0, 0.3);
   border-radius: 12px;
   text-decoration: none;
-  color: #ffffff;
+  color: var(--text-color, #000000);
   transition: all 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.3);
   cursor: pointer;
