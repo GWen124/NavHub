@@ -238,6 +238,11 @@ async function refreshBingImages(): Promise<void> {
   }
 }
 
+// 常量定义
+const BRIGHTNESS_THRESHOLD = 128 // 亮度阈值，超过此值使用黑色文字
+const PIXEL_SAMPLE_INTERVAL = 40 // 像素采样间隔（每10个像素采样一次）
+const CAROUSEL_INTERVAL = 30000 // 轮播间隔（30秒）
+
 // 计算图片亮度并设置文字颜色
 async function setTextColorBasedOnBackground(imageUrl: string): Promise<void> {
   try {
@@ -262,7 +267,7 @@ async function setTextColorBasedOnBackground(imageUrl: string): Promise<void> {
       let pixelCount = 0
       
       // 采样计算平均亮度（每10个像素采样一次以提高性能）
-      for (let i = 0; i < data.length; i += 40) { // 每10个像素采样一次
+      for (let i = 0; i < data.length; i += PIXEL_SAMPLE_INTERVAL) {
         const r = data[i] || 0
         const g = data[i + 1] || 0
         const b = data[i + 2] || 0
@@ -276,14 +281,13 @@ async function setTextColorBasedOnBackground(imageUrl: string): Promise<void> {
       const averageBrightness = totalBrightness / pixelCount
       
       // 根据亮度设置文字颜色
-      const textColor = averageBrightness > 128 ? '#000000' : '#ffffff'
+      const textColor = averageBrightness > BRIGHTNESS_THRESHOLD ? '#000000' : '#ffffff'
       
       // 应用文字颜色到CSS变量
       document.documentElement.style.setProperty('--header-color', textColor)
       document.documentElement.style.setProperty('--card-title-color', textColor)
       document.documentElement.style.setProperty('--footer-color', textColor)
       
-      console.log(`背景亮度: ${averageBrightness.toFixed(2)}, 文字颜色: ${textColor}`)
     }
     
     img.src = imageUrl
@@ -332,7 +336,7 @@ function startBingCarousel(): void {
         setTextColorBasedOnBackground(imageUrl)
       }
     }
-  }, 30000) // 30秒切换一次
+  }, CAROUSEL_INTERVAL) // 30秒切换一次
 }
 
 // 停止 Bing 轮播

@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, onUnmounted } from 'vue'
 import { config, type Category } from '@/config'
 import { useThemeStore } from '@/stores/theme'
 import { useSearchStore } from '@/stores/search'
@@ -62,6 +62,8 @@ const themeStore = useThemeStore()
 const searchStore = useSearchStore()
 
 const searchQuery = ref('')
+const timeInterval = ref<number | null>(null)
+
 // 应用配置
 const appConfigRef = computed(() => appConfig)
 
@@ -118,7 +120,14 @@ onMounted(async () => {
   
   filteredCategories.value = config
   updateTime()
-  setInterval(updateTime, 1000)
+  timeInterval.value = setInterval(updateTime, 1000)
+})
+
+// 清理定时器
+onUnmounted(() => {
+  if (timeInterval.value) {
+    clearInterval(timeInterval.value)
+  }
 })
 </script>
 
