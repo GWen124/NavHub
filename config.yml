@@ -12,7 +12,7 @@ favicon:
   icon: "https://image.gw124.top/Avatar/imgbin_a1bee513649d120523b69c8584c25695.png"
 
 # 页面主标题文字
-pageQuote: "人生寂寞，知己难求。"
+pageQuote: "Website Panel"
 
 # Footer 信息配置
 footer:
@@ -52,7 +52,7 @@ colors:
   autoColor: true
   # 手动颜色设置（仅在 autoColor: false 时生效）
   manual:
-    # 1. 头部区域颜色（主标题、时间、日期、竖线分割线、搜索图标）
+    # 1. 头部区域颜色（主标题、时间、日期、竖线分割线、搜索栏图标）
     header: "#000000"
     # 2. 中部区域颜色（网站分类标题、网站卡片标题）
     cardTitle: "#000000"
