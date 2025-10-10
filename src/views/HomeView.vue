@@ -249,7 +249,7 @@ onUnmounted(() => {
 }
 
 .search-button :deep(svg) {
-  color: var(--header-color);
+  color: var(--text-color);
   width: 16px;
   height: 16px;
 }

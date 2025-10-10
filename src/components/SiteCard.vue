@@ -115,7 +115,7 @@ const xiconComponent = computed(() => {
   align-items: center;
   justify-content: center;
   font-size: 24px;
-  color: var(--icon-color);
+  color: #000000;
   background: var(--transparent-bg);
   flex-shrink: 0;
   transition: all 0.3s ease;
@@ -123,7 +123,7 @@ const xiconComponent = computed(() => {
 
 .site-card:hover .site-icon {
   background: var(--transparent-bg);
-  color: var(--icon-color);
+  color: #000000;
   transform: scale(1.05);
 }
 
@@ -156,7 +156,7 @@ const xiconComponent = computed(() => {
 .text-icon {
   font-size: 32px;
   font-weight: 600;
-  color: var(--icon-color);
+  color: #000000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -211,7 +211,7 @@ const xiconComponent = computed(() => {
     font-size: 24px;
     width: 48px;
     height: 48px;
-    color: var(--icon-color);
+    color: #000000;
   }
   
   .site-name {
