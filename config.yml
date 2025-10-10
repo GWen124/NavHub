@@ -14,15 +14,6 @@ favicon:
 # 页面主标题文字
 pageQuote: "人生寂寞，知己难求。"
 
-# 颜色配置
-colors:
-  # 头部信息颜色
-  headerColor: "#000000"
-  # 网站卡片标题和网站名称颜色
-  cardTitleColor: "#000000"
-  # Footer 文字信息颜色
-  footerColor: "#000000"
-
 # Footer 信息配置
 footer:
   websiteText: "WEBSITE.GW124.TOP"

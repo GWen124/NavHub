@@ -54,7 +54,7 @@ import { ref, onMounted, computed } from 'vue'
 import { config, type Category } from '@/config'
 import { useThemeStore } from '@/stores/theme'
 import { useSearchStore } from '@/stores/search'
-import { loadConfig, applyBackgroundConfig, applyPageTitle, applyFaviconConfig, applyColorsConfig, appConfig, formatCopyrightYear } from '@/utils/configLoader'
+import { loadConfig, applyBackgroundConfig, applyPageTitle, applyFaviconConfig, appConfig, formatCopyrightYear } from '@/utils/configLoader'
 import CategorySection from '@/components/CategorySection.vue'
 import { getIconComponent } from '@/utils/icons'
 
@@ -110,7 +110,6 @@ onMounted(async () => {
   await loadConfig()
   applyPageTitle(appConfig.pageTitle)
   applyFaviconConfig(appConfig.favicon)
-  applyColorsConfig(appConfig.colors)
   
   // 延迟应用背景，确保DOM完全加载
   setTimeout(async () => {

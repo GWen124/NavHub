@@ -149,37 +149,6 @@
           </div>
         </div>
         
-        <!-- 颜色配置 -->
-        <div class="config-section">
-          <h4 class="config-subtitle">颜色设置</h4>
-          
-          <div class="config-row">
-            <label class="config-label">头部信息颜色</label>
-            <input 
-              v-model="localConfig.colors.headerColor" 
-              type="color" 
-              class="config-input"
-            >
-          </div>
-          
-          <div class="config-row">
-            <label class="config-label">网站卡片标题颜色</label>
-            <input 
-              v-model="localConfig.colors.cardTitleColor" 
-              type="color" 
-              class="config-input"
-            >
-          </div>
-          
-          <div class="config-row">
-            <label class="config-label">Footer 文字颜色</label>
-            <input 
-              v-model="localConfig.colors.footerColor" 
-              type="color" 
-              class="config-input"
-            >
-          </div>
-        </div>
       </div>
       
       <div class="config-footer">
@@ -192,7 +161,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, watch } from 'vue'
-import { appConfig, applyBackgroundConfig, applyPageTitle, applyFaviconConfig, applyColorsConfig, type AppConfig } from '@/utils/configLoader'
+import { appConfig, applyBackgroundConfig, applyPageTitle, applyFaviconConfig, type AppConfig } from '@/utils/configLoader'
 
 // 面板显示状态
 const isVisible = ref(false)
@@ -217,11 +186,6 @@ const localConfig = reactive<AppConfig>({
   copyright: {
     startDate: '',
     autoRange: true
-  },
-  colors: {
-    headerColor: "#333333",
-    cardTitleColor: "#333333",
-    footerColor: "#000000"
   }
 })
 
@@ -259,11 +223,6 @@ const resetConfig = () => {
       copyright: {
         startDate: "2025-01-01",
         autoRange: true
-      },
-      colors: {
-        headerColor: "#333333",
-        cardTitleColor: "#333333",
-        footerColor: "#000000"
       }
     })
   }
@@ -278,7 +237,6 @@ const saveConfig = () => {
   applyPageTitle(appConfig.pageTitle)
   applyBackgroundConfig(appConfig.background)
   applyFaviconConfig(appConfig.favicon)
-  applyColorsConfig(appConfig.colors)
   
   // 生成 YAML 配置
   const yamlConfig = generateYamlConfig(appConfig)
@@ -323,15 +281,6 @@ copyright:
   # true: 根据当前日期自动计算显示格式
   # false: 始终显示开始年份
   autoRange: ${config.copyright.autoRange}
-
-# 颜色配置
-colors:
-  # 头部信息颜色
-  headerColor: "${config.colors.headerColor}"
-  # 网站卡片标题和网站名称颜色
-  cardTitleColor: "${config.colors.cardTitleColor}"
-  # Footer 文字信息颜色
-  footerColor: "${config.colors.footerColor}"
 
 # 背景图片配置
 background:

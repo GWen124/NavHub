@@ -22,11 +22,7 @@ export interface CopyrightConfig {
   autoRange: boolean
 }
 
-export interface ColorsConfig {
-  headerColor: string
-  cardTitleColor: string
-  footerColor: string
-}
+// 颜色配置已移除，现在使用基于背景亮度的自动颜色调整
 
 export interface AppConfig {
   pageTitle: string
@@ -35,7 +31,6 @@ export interface AppConfig {
   background: BackgroundConfig
   favicon: FaviconConfig
   copyright: CopyrightConfig
-  colors: ColorsConfig
 }
 
 // 默认配置（与config.yml保持一致）
@@ -58,11 +53,6 @@ const defaultConfig: AppConfig = {
   copyright: {
     startDate: "2025-10-01",
     autoRange: true
-  },
-  colors: {
-    headerColor: "#000000",
-    cardTitleColor: "#000000",
-    footerColor: "#000000"
   }
 }
 
@@ -91,8 +81,7 @@ export async function loadConfig(): Promise<void> {
         },
         background: { ...defaultConfig.background, ...parsedConfig.background },
         favicon: { ...defaultConfig.favicon, ...parsedConfig.favicon },
-        copyright: { ...defaultConfig.copyright, ...parsedConfig.copyright },
-        colors: { ...defaultConfig.colors, ...parsedConfig.colors }
+        copyright: { ...defaultConfig.copyright, ...parsedConfig.copyright }
       })
     } else {
       console.warn('config.yml not found, using default config')
@@ -136,8 +125,8 @@ function parseYaml(yamlText: string): Partial<AppConfig> {
         cleanValue = false
       }
       
-      // 处理嵌套对象
-      if (key === 'footer' || key === 'background' || key === 'favicon' || key === 'copyright' || key === 'colors') {
+            // 处理嵌套对象
+            if (key === 'footer' || key === 'background' || key === 'favicon' || key === 'copyright') {
         if (!result[key]) {
           result[key] = {}
         }
@@ -598,17 +587,6 @@ export function formatCopyrightYear(copyrightConfig: CopyrightConfig): string {
     // 出错时返回开始年份
     return copyrightConfig.startDate.split('-')[0] || ''
   }
-}
-
-// 应用颜色配置
-export function applyColorsConfig(colorsConfig: ColorsConfig): void {
-  // 应用 CSS 变量
-  const root = document.documentElement
-  
-  // 设置颜色变量
-  root.style.setProperty('--header-color', colorsConfig.headerColor)
-  root.style.setProperty('--card-title-color', colorsConfig.cardTitleColor)
-  root.style.setProperty('--footer-color', colorsConfig.footerColor)
 }
 
 // 应用 favicon 配置
