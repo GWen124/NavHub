@@ -630,10 +630,8 @@ export function applyColorsConfig(colorsConfig: ColorsConfig): void {
   } else {
     // 手动颜色模式：使用配置的颜色
     const manual = colorsConfig.manual
+    // 统一使用 --text-color 变量，所有文字元素共享
     document.documentElement.style.setProperty('--text-color', manual.header)
-    document.documentElement.style.setProperty('--header-color', manual.header)
-    document.documentElement.style.setProperty('--card-title-color', manual.cardTitle)
-    document.documentElement.style.setProperty('--footer-color', manual.footer)
   }
 }
 
