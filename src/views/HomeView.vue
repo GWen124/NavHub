@@ -168,7 +168,7 @@ onUnmounted(() => {
 .main-quote {
   font-size: 4rem;
   font-weight: 700;
-  color: var(--header-color, #000000);
+  color: var(--footer-color, #000000);
   margin: 0;
   text-align: center;
   text-shadow: none;
@@ -179,13 +179,13 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: flex-start;
   padding-left: 20px;
-  border-left: 2px solid var(--text-color, #000000);
+  border-left: 2px solid var(--header-color, #000000);
 }
 
 .current-time {
   font-size: 1.8rem;
   font-weight: 600;
-  color: var(--header-color, #000000);
+  color: var(--footer-color, #000000);
   margin: 0;
   text-shadow: none;
 }
@@ -193,7 +193,7 @@ onUnmounted(() => {
 .current-date {
   font-size: 1rem;
   font-weight: 400;
-  color: var(--header-color, #000000);
+  color: var(--footer-color, #000000);
   margin: 0;
   opacity: 0.8;
   text-shadow: none;
@@ -250,7 +250,7 @@ onUnmounted(() => {
 }
 
 .search-button :deep(svg) {
-  color: var(--header-color);
+  color: var(--text-color);
   width: 16px;
   height: 16px;
 }
@@ -289,12 +289,12 @@ onUnmounted(() => {
   margin: 0 auto;
   padding: 0 24px;
   text-align: center;
-  color: var(--header-color, #000000);
+  color: var(--footer-color, #000000);
   font-size: 1rem;
 }
 
 .footer-link {
-  color: var(--header-color, #000000);
+  color: var(--footer-color, #000000);
   text-decoration: none;
   position: relative;
   transition: color 0.2s ease;

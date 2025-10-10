@@ -36,10 +36,9 @@
   --section-gap: 160px;
   
   /* 动态文字颜色变量 */
-  --text-color: #000000;
-  --header-color: #000000;      /* 头部区域颜色 */
-  --card-title-color: #000000;  /* 中部区域颜色 */
-  --footer-color: #000000;      /* Footer区域颜色 */
+  --header-color: #000000;
+  --card-title-color: #000000;
+  --footer-color: #000000;
   
   /* 固定颜色变量 */
   --icon-color: #000000;
