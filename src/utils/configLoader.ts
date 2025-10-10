@@ -38,30 +38,30 @@ export interface AppConfig {
   colors: ColorsConfig
 }
 
-// 默认配置
+// 默认配置（与config.yml保持一致）
 const defaultConfig: AppConfig = {
   pageTitle: "Website Panel",
   pageQuote: "人生寂寞，知己难求。",
   footer: {
     websiteText: "WEBSITE.GW124.TOP",
-    websiteUrl: "https://website.gw124.top",
+    websiteUrl: "https://gw124.top",
     authorText: "Wen",
     authorUrl: "https://github.com/GWen124"
   },
   background: {
     bingWallpaper: false,
-    image: ""
+    image: "https://image.gw124.top/Video/Network%20-%2045961.mp4"
   },
   favicon: {
-    icon: ""
+    icon: "https://image.gw124.top/Avatar/imgbin_a1bee513649d120523b69c8584c25695.png"
   },
   copyright: {
-    startDate: "2025-01-01",
+    startDate: "2025-10-01",
     autoRange: true
   },
   colors: {
-    headerColor: "#333333",
-    cardTitleColor: "#333333",
+    headerColor: "#000000",
+    cardTitleColor: "#000000",
     footerColor: "#000000"
   }
 }
@@ -69,7 +69,7 @@ const defaultConfig: AppConfig = {
 // 配置状态
 export const appConfig = reactive<AppConfig>({ ...defaultConfig })
 
-// 加载配置
+// 加载配置（从config.yml文件）
 export async function loadConfig(): Promise<void> {
   try {
     const response = await fetch('/config.yml')
@@ -94,9 +94,11 @@ export async function loadConfig(): Promise<void> {
         copyright: { ...defaultConfig.copyright, ...parsedConfig.copyright },
         colors: { ...defaultConfig.colors, ...parsedConfig.colors }
       })
+    } else {
+      console.warn('config.yml not found, using default config')
     }
   } catch (error) {
-    console.error('配置加载失败:', error)
+    console.warn('配置加载失败，使用默认配置:', error)
   }
 }
 
