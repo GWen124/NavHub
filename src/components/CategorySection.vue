@@ -44,7 +44,7 @@ const props = defineProps<Props>()
 .category-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--text-color, #000000);
+  color: var(--card-title-color, #000000);
   margin: 0;
 }
 

@@ -168,7 +168,7 @@ onUnmounted(() => {
 .main-quote {
   font-size: 4rem;
   font-weight: 700;
-  color: var(--text-color, #000000);
+  color: var(--header-color, #000000);
   margin: 0;
   text-align: center;
   text-shadow: none;
@@ -185,7 +185,7 @@ onUnmounted(() => {
 .current-time {
   font-size: 1.8rem;
   font-weight: 600;
-  color: var(--text-color, #000000);
+  color: var(--header-color, #000000);
   margin: 0;
   text-shadow: none;
 }
@@ -193,7 +193,7 @@ onUnmounted(() => {
 .current-date {
   font-size: 1rem;
   font-weight: 400;
-  color: var(--text-color, #000000);
+  color: var(--header-color, #000000);
   margin: 0;
   opacity: 0.8;
   text-shadow: none;
@@ -250,7 +250,7 @@ onUnmounted(() => {
 }
 
 .search-button :deep(svg) {
-  color: var(--text-color);
+  color: var(--header-color);
   width: 16px;
   height: 16px;
 }
@@ -281,7 +281,7 @@ onUnmounted(() => {
   transform: translateX(-50%);
   width: 85%;
   height: 1px;
-  background: linear-gradient(to right, transparent 0%, var(--text-color, #000000) 20%, var(--text-color, #000000) 80%, transparent 100%);
+  background: linear-gradient(to right, transparent 0%, var(--footer-color, #000000) 20%, var(--footer-color, #000000) 80%, transparent 100%);
 }
 
 .footer-content {
@@ -289,12 +289,12 @@ onUnmounted(() => {
   margin: 0 auto;
   padding: 0 24px;
   text-align: center;
-  color: var(--text-color, #000000);
+  color: var(--header-color, #000000);
   font-size: 1rem;
 }
 
 .footer-link {
-  color: var(--text-color, #000000);
+  color: var(--header-color, #000000);
   text-decoration: none;
   position: relative;
   transition: color 0.2s ease;

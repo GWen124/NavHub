@@ -90,7 +90,7 @@ const xiconComponent = computed(() => {
   background: rgba(0, 0, 0, 0.3);
   border-radius: 12px;
   text-decoration: none;
-  color: var(--text-color, #000000);
+  color: var(--card-title-color, #000000);
   transition: all 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.3);
   cursor: pointer;
@@ -169,7 +169,7 @@ const xiconComponent = computed(() => {
 .site-name {
   font-size: 0.9rem;
   font-weight: 700;
-  color: var(--text-color, #000000);
+  color: var(--card-title-color, #000000);
   text-align: left;
   line-height: 1.3;
   flex: 1;

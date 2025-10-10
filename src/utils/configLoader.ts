@@ -23,9 +23,9 @@ export interface CopyrightConfig {
 }
 
 export interface ManualColorsConfig {
-  header: string
-  cardTitle: string
-  footer: string
+  header: string    // 头部区域：主标题、时间、日期、竖线分割线、搜索图标
+  cardTitle: string // 中部区域：网站分类标题、网站卡片标题
+  footer: string    // Footer区域：版权信息、链接文字、分割线
 }
 
 export interface ColorsConfig {
@@ -303,7 +303,10 @@ async function setTextColorBasedOnBackground(imageUrl: string): Promise<void> {
       
       // 只有在自动变色模式下才应用颜色
       if (appConfig.colors && appConfig.colors.autoColor) {
-        document.documentElement.style.setProperty('--text-color', textColor)
+        // 设置三个区域的颜色变量
+        document.documentElement.style.setProperty('--header-color', textColor)
+        document.documentElement.style.setProperty('--card-title-color', textColor)
+        document.documentElement.style.setProperty('--footer-color', textColor)
       }
       
     }
@@ -313,7 +316,9 @@ async function setTextColorBasedOnBackground(imageUrl: string): Promise<void> {
     console.error('计算背景亮度失败:', error)
     // 失败时只有在自动变色模式下才使用默认颜色
     if (appConfig.colors && appConfig.colors.autoColor) {
-      document.documentElement.style.setProperty('--text-color', '#000000')
+      document.documentElement.style.setProperty('--header-color', '#000000')
+      document.documentElement.style.setProperty('--card-title-color', '#000000')
+      document.documentElement.style.setProperty('--footer-color', '#000000')
     }
   }
 }
@@ -630,8 +635,10 @@ export function applyColorsConfig(colorsConfig: ColorsConfig): void {
   } else {
     // 手动颜色模式：使用配置的颜色
     const manual = colorsConfig.manual
-    // 统一使用 --text-color 变量，所有文字元素共享
-    document.documentElement.style.setProperty('--text-color', manual.header)
+    // 设置三个区域的颜色变量
+    document.documentElement.style.setProperty('--header-color', manual.header)
+    document.documentElement.style.setProperty('--card-title-color', manual.cardTitle)
+    document.documentElement.style.setProperty('--footer-color', manual.footer)
   }
 }
 
