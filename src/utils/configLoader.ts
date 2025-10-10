@@ -49,7 +49,7 @@ const defaultConfig: AppConfig = {
     authorUrl: "https://github.com/GWen124"
   },
   background: {
-    bingWallpaper: false,
+    bingWallpaper: true,
     image: "https://image.gw124.top/Video/Network%20-%2045961.mp4"
   },
   favicon: {
