@@ -186,6 +186,14 @@ const localConfig = reactive<AppConfig>({
   copyright: {
     startDate: '',
     autoRange: true
+  },
+  colors: {
+    autoColor: true,
+    manual: {
+      header: '#000000',
+      cardTitle: '#000000',
+      footer: '#000000'
+    }
   }
 })
 

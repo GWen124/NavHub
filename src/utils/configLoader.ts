@@ -22,7 +22,16 @@ export interface CopyrightConfig {
   autoRange: boolean
 }
 
-// 颜色配置已移除，现在使用基于背景亮度的自动颜色调整
+export interface ManualColorsConfig {
+  header: string
+  cardTitle: string
+  footer: string
+}
+
+export interface ColorsConfig {
+  autoColor: boolean
+  manual: ManualColorsConfig
+}
 
 export interface AppConfig {
   pageTitle: string
@@ -31,6 +40,7 @@ export interface AppConfig {
   background: BackgroundConfig
   favicon: FaviconConfig
   copyright: CopyrightConfig
+  colors: ColorsConfig
 }
 
 // 默认配置（与config.yml保持一致）
@@ -53,6 +63,14 @@ const defaultConfig: AppConfig = {
   copyright: {
     startDate: "2025-10-01",
     autoRange: true
+  },
+  colors: {
+    autoColor: true,
+    manual: {
+      header: "#000000",
+      cardTitle: "#000000",
+      footer: "#000000"
+    }
   }
 }
 
@@ -126,7 +144,7 @@ function parseYaml(yamlText: string): Partial<AppConfig> {
       }
       
             // 处理嵌套对象
-            if (key === 'footer' || key === 'background' || key === 'favicon' || key === 'copyright') {
+            if (key === 'footer' || key === 'background' || key === 'favicon' || key === 'copyright' || key === 'colors') {
         if (!result[key]) {
           result[key] = {}
         }
@@ -283,16 +301,20 @@ async function setTextColorBasedOnBackground(imageUrl: string): Promise<void> {
       // 根据亮度设置文字颜色
       const textColor = averageBrightness > BRIGHTNESS_THRESHOLD ? '#000000' : '#ffffff'
       
-      // 应用文字颜色到CSS变量
-      document.documentElement.style.setProperty('--text-color', textColor)
+      // 只有在自动变色模式下才应用颜色
+      if (appConfig.colors && appConfig.colors.autoColor) {
+        document.documentElement.style.setProperty('--text-color', textColor)
+      }
       
     }
     
     img.src = imageUrl
   } catch (error) {
     console.error('计算背景亮度失败:', error)
-    // 失败时使用默认颜色
-    document.documentElement.style.setProperty('--text-color', '#000000')
+    // 失败时只有在自动变色模式下才使用默认颜色
+    if (appConfig.colors && appConfig.colors.autoColor) {
+      document.documentElement.style.setProperty('--text-color', '#000000')
+    }
   }
 }
 
@@ -599,6 +621,22 @@ export function formatCopyrightYear(copyrightConfig: CopyrightConfig): string {
 }
 
 // 应用 favicon 配置
+// 应用颜色配置
+export function applyColorsConfig(colorsConfig: ColorsConfig): void {
+  if (colorsConfig.autoColor) {
+    // 自动变色模式：使用基于背景亮度的颜色
+    // 这里不设置颜色，让背景亮度计算函数来处理
+    return
+  } else {
+    // 手动颜色模式：使用配置的颜色
+    const manual = colorsConfig.manual
+    document.documentElement.style.setProperty('--text-color', manual.header)
+    document.documentElement.style.setProperty('--header-color', manual.header)
+    document.documentElement.style.setProperty('--card-title-color', manual.cardTitle)
+    document.documentElement.style.setProperty('--footer-color', manual.footer)
+  }
+}
+
 export function applyFaviconConfig(faviconConfig: FaviconConfig): void {
   // 移除现有的 favicon 链接
   const existingFavicons = document.querySelectorAll('link[rel*="icon"]')

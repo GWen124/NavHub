@@ -43,3 +43,18 @@ background:
   # 网络视频示例: https://example.com/video.mp4
   # 支持的视频格式: mp4, webm, ogg, avi, mov, wmv, flv, mkv
   image: "https://image.gw124.top/Video/Network%20-%2045961.mp4"
+
+# 字体颜色配置
+colors:
+  # 自动变色开关
+  # true: 根据背景亮度自动切换黑白文字（优先级最高）
+  # false: 使用手动设置的颜色
+  autoColor: true
+  # 手动颜色设置（仅在 autoColor: false 时生效）
+  manual:
+    # 头部文字颜色（主标题、时间、日期、搜索图标）
+    header: "#000000"
+    # 网站卡片标题颜色（分类标题、网站名称）
+    cardTitle: "#000000"
+    # Footer文字颜色（版权信息、链接文字、分割线）
+    footer: "#000000"
