@@ -282,7 +282,6 @@ async function setTextColorBasedOnBackground(imageUrl: string): Promise<void> {
       document.documentElement.style.setProperty('--header-color', textColor)
       document.documentElement.style.setProperty('--card-title-color', textColor)
       document.documentElement.style.setProperty('--footer-color', textColor)
-      document.documentElement.style.setProperty('--icon-color', textColor)
       
       console.log(`背景亮度: ${averageBrightness.toFixed(2)}, 文字颜色: ${textColor}`)
     }
@@ -294,7 +293,6 @@ async function setTextColorBasedOnBackground(imageUrl: string): Promise<void> {
     document.documentElement.style.setProperty('--header-color', '#000000')
     document.documentElement.style.setProperty('--card-title-color', '#000000')
     document.documentElement.style.setProperty('--footer-color', '#000000')
-    document.documentElement.style.setProperty('--icon-color', '#000000')
   }
 }
 
