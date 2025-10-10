@@ -505,24 +505,35 @@ export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise
     bingImages = await getBingWallpapers()
     
     if (bingImages.length > 0) {
-      // 设置第一张图片
-      currentImageIndex = 0
-      cycleCount = 0
-      const firstImageUrl = bingImages[0]
-      const backgroundImageUrl = `url(${firstImageUrl})`
-      
-      body.style.setProperty('background-image', backgroundImageUrl, 'important')
-      body.style.setProperty('background-color', 'transparent', 'important')
-      body.style.setProperty('background-size', 'cover', 'important')
-      body.style.setProperty('background-position', 'center', 'important')
-      body.style.setProperty('background-repeat', 'no-repeat', 'important')
-      body.style.setProperty('background-attachment', 'fixed', 'important')
+      // 先显示自定义背景作为初始背景
+      const imageUrl = bgConfig.image && bgConfig.image.trim() !== '' ? bgConfig.image : null
+      if (imageUrl) {
+        setCustomBackground(imageUrl)
+      } else {
+        // 设置第一张 Bing 图片
+        currentImageIndex = 0
+        cycleCount = 0
+        const firstImageUrl = bingImages[0]
+        const backgroundImageUrl = `url(${firstImageUrl})`
+        
+        body.style.setProperty('background-image', backgroundImageUrl, 'important')
+        body.style.setProperty('background-color', 'transparent', 'important')
+        body.style.setProperty('background-size', 'cover', 'important')
+        body.style.setProperty('background-position', 'center', 'important')
+        body.style.setProperty('background-repeat', 'no-repeat', 'important')
+        body.style.setProperty('background-attachment', 'fixed', 'important')
+        
+        // 根据背景设置文字颜色
+        if (firstImageUrl) {
+          setTextColorBasedOnBackground(firstImageUrl)
+        }
+      }
       
       // 启动轮播
       startBingCarousel()
       
     } else {
-      // 回退到自定义背景
+      // 先显示自定义背景作为初始背景
       const imageUrl = bgConfig.image && bgConfig.image.trim() !== '' ? bgConfig.image : null
       if (imageUrl) {
         setCustomBackground(imageUrl)
