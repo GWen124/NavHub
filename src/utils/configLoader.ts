@@ -284,9 +284,7 @@ async function setTextColorBasedOnBackground(imageUrl: string): Promise<void> {
       const textColor = averageBrightness > BRIGHTNESS_THRESHOLD ? '#000000' : '#ffffff'
       
       // 应用文字颜色到CSS变量
-      document.documentElement.style.setProperty('--header-color', textColor)
-      document.documentElement.style.setProperty('--card-title-color', textColor)
-      document.documentElement.style.setProperty('--footer-color', textColor)
+      document.documentElement.style.setProperty('--text-color', textColor)
       
     }
     
@@ -294,9 +292,7 @@ async function setTextColorBasedOnBackground(imageUrl: string): Promise<void> {
   } catch (error) {
     console.error('计算背景亮度失败:', error)
     // 失败时使用默认颜色
-    document.documentElement.style.setProperty('--header-color', '#000000')
-    document.documentElement.style.setProperty('--card-title-color', '#000000')
-    document.documentElement.style.setProperty('--footer-color', '#000000')
+    document.documentElement.style.setProperty('--text-color', '#000000')
   }
 }
 

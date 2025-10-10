@@ -167,7 +167,7 @@ onUnmounted(() => {
 .main-quote {
   font-size: 4rem;
   font-weight: 700;
-  color: var(--header-color, #333333);
+  color: var(--text-color, #333333);
   margin: 0;
   text-align: center;
   text-shadow: none;
@@ -178,13 +178,13 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: flex-start;
   padding-left: 20px;
-  border-left: 2px solid var(--header-color, #333333);
+  border-left: 2px solid var(--text-color, #333333);
 }
 
 .current-time {
   font-size: 1.8rem;
   font-weight: 600;
-  color: var(--header-color, #333333);
+  color: var(--text-color, #333333);
   margin: 0;
   text-shadow: none;
 }
@@ -192,7 +192,7 @@ onUnmounted(() => {
 .current-date {
   font-size: 1rem;
   font-weight: 400;
-  color: var(--header-color, #333333);
+  color: var(--text-color, #333333);
   margin: 0;
   opacity: 0.8;
   text-shadow: none;
@@ -280,7 +280,7 @@ onUnmounted(() => {
   transform: translateX(-50%);
   width: 85%;
   height: 1px;
-  background: linear-gradient(to right, transparent 0%, var(--footer-color, #e5e5e5) 20%, var(--footer-color, #e5e5e5) 80%, transparent 100%);
+  background: linear-gradient(to right, transparent 0%, var(--text-color, #e5e5e5) 20%, var(--text-color, #e5e5e5) 80%, transparent 100%);
 }
 
 .footer-content {
@@ -288,12 +288,12 @@ onUnmounted(() => {
   margin: 0 auto;
   padding: 0 24px;
   text-align: center;
-  color: var(--footer-color, #000000);
+  color: var(--text-color, #000000);
   font-size: 1rem;
 }
 
 .footer-link {
-  color: var(--footer-color, #000000);
+  color: var(--text-color, #000000);
   text-decoration: none;
   position: relative;
   transition: color 0.2s ease;

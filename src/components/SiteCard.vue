@@ -169,7 +169,7 @@ const xiconComponent = computed(() => {
 .site-name {
   font-size: 0.9rem;
   font-weight: 700;
-  color: var(--card-title-color, #ffffff);
+  color: var(--text-color, #ffffff);
   text-align: left;
   line-height: 1.3;
   flex: 1;
