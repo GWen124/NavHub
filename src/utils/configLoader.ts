@@ -94,7 +94,6 @@ export async function loadConfig(): Promise<void> {
         copyright: { ...defaultConfig.copyright, ...parsedConfig.copyright },
         colors: { ...defaultConfig.colors, ...parsedConfig.colors }
       })
-      
     }
   } catch (error) {
     console.error('配置加载失败:', error)
@@ -114,16 +113,20 @@ function parseYaml(yamlText: string): Partial<AppConfig> {
     if (!trimmedLine || trimmedLine.startsWith('#')) {
       continue
     }
-    
-    // 解析键值对
+
+    const indent = line.search(/\S/) // Find first non-whitespace character
+    if (indent === 0) {
+      currentSection = null // Reset for top-level properties
+    }
+
     const colonIndex = trimmedLine.indexOf(':')
     if (colonIndex > 0) {
       const key = trimmedLine.substring(0, colonIndex).trim()
       const value = trimmedLine.substring(colonIndex + 1).trim()
-      
+
       // 移除引号并处理布尔值
       let cleanValue: any = value.replace(/^["']|["']$/g, '')
-      
+
       // 处理布尔值
       if (cleanValue === 'true') {
         cleanValue = true
@@ -131,13 +134,13 @@ function parseYaml(yamlText: string): Partial<AppConfig> {
         cleanValue = false
       }
       
-           // 处理嵌套对象
-           if (key === 'footer' || key === 'background' || key === 'favicon' || key === 'copyright' || key === 'colors') {
-             if (!result[key]) {
-               result[key] = {}
-             }
-             currentSection = result[key]
-           } else if (currentSection) {
+      // 处理嵌套对象
+      if (key === 'footer' || key === 'background' || key === 'favicon' || key === 'copyright' || key === 'colors') {
+        if (!result[key]) {
+          result[key] = {}
+        }
+        currentSection = result[key]
+      } else if (currentSection) {
         // 处理嵌套属性
         currentSection[key] = cleanValue
       } else {
