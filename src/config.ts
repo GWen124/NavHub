@@ -3,6 +3,7 @@ export interface Site {
   name: string
   url: string
   icon: string
+  autoIcon?: boolean // 是否启用自动图标
 }
 
 export interface Category {
@@ -22,7 +23,8 @@ export const config: Category[] = [
       {
         name: "Google",
         url: "https://www.google.com/",
-        icon: "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Google/Google.png"
+        icon: "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Google/Google.png",
+        autoIcon: true
       },
       {
         name: "GitHub",
@@ -47,12 +49,12 @@ export const config: Category[] = [
       {
         name: "知乎",
         url: "https://www.zhihu.com/",
-        icon: "xicon:Zhihu"
+        icon: ""
       },
       {
         name: "Trello",
         url: "https://trello.com",
-        icon: "T"
+        icon: ""
       }
     ]
   },
@@ -62,62 +64,62 @@ export const config: Category[] = [
       {
         name: "ChatGPT",
         url: "https://chat.openai.com",
-        icon: "xicon:Microchip"
+        icon: ""
       },
       {
         name: "Claude",
         url: "https://claude.ai",
-        icon: "xicon:Microchip"
+        icon: ""
       },
       {
         name: "Gemini",
         url: "https://gemini.google.com",
-        icon: "xicon:Microchip"
+        icon: ""
       },
       {
         name: "Copilot",
         url: "https://github.com/features/copilot",
-        icon: "xicon:Microchip"
+        icon: ""
       },
       {
         name: "Midjourney",
         url: "https://midjourney.com",
-        icon: "xicon:Microchip"
+        icon: ""
       },
       {
         name: "DALL-E",
         url: "https://openai.com/dall-e-2",
-        icon: "xicon:Microchip"
+        icon: ""
       },
       {
         name: "Stable Diffusion",
         url: "https://stablediffusionweb.com",
-        icon: "xicon:Microchip"
+        icon: ""
       },
       {
         name: "Runway",
         url: "https://runwayml.com",
-        icon: "xicon:Microchip"
+        icon: ""
       },
       {
         name: "Notion AI",
         url: "https://notion.so/product/ai",
-        icon: "xicon:Microchip"
+        icon: ""
       },
       {
         name: "Grammarly",
         url: "https://grammarly.com",
-        icon: "xicon:Microchip"
+        icon: ""
       },
       {
         name: "Jasper",
         url: "https://jasper.ai",
-        icon: "xicon:Microchip"
+        icon: ""
       },
       {
         name: "Copy.ai",
         url: "https://copy.ai",
-        icon: "xicon:Microchip"
+        icon: ""
       }
     ]
   },
@@ -127,62 +129,62 @@ export const config: Category[] = [
       {
         name: "WhatsApp",
         url: "https://web.whatsapp.com",
-        icon: "xicon:Users"
+        icon: ""
       },
       {
         name: "Telegram",
         url: "https://web.telegram.org",
-        icon: "xicon:Users"
+        icon: ""
       },
       {
         name: "Discord",
         url: "https://discord.com/app",
-        icon: "xicon:Discord"
+        icon: ""
       },
       {
         name: "Slack",
         url: "https://slack.com",
-        icon: "xicon:Users"
+        icon: ""
       },
       {
         name: "微信",
         url: "https://wx.qq.com",
-        icon: "xicon:Users"
+        icon: ""
       },
       {
         name: "QQ",
         url: "https://im.qq.com",
-        icon: "xicon:Users"
+        icon: ""
       },
       {
         name: "Skype",
         url: "https://web.skype.com",
-        icon: "xicon:Users"
+        icon: ""
       },
       {
         name: "Teams",
         url: "https://teams.microsoft.com",
-        icon: "xicon:Users"
+        icon: ""
       },
       {
         name: "钉钉",
         url: "https://dingtalk.com",
-        icon: "xicon:Users"
+        icon: ""
       },
       {
         name: "企业微信",
         url: "https://work.weixin.qq.com",
-        icon: "xicon:Users"
+        icon: ""
       },
       {
         name: "飞书",
         url: "https://feishu.cn",
-        icon: "xicon:Users"
+        icon: ""
       },
       {
         name: "Zoom",
         url: "https://zoom.us",
-        icon: "xicon:Tv"
+        icon: ""
       }
     ]
   },
@@ -192,17 +194,17 @@ export const config: Category[] = [
       {
         name: "YouTube",
         url: "https://youtube.com",
-        icon: "xicon:Youtube"
+        icon: ""
       },
       {
         name: "Netflix",
         url: "https://netflix.com",
-        icon: "xicon:Film"
+        icon: ""
       },
       {
         name: "Spotify",
         url: "https://spotify.com",
-        icon: "xicon:Spotify"
+        icon: ""
       },
       {
         name: "Bilibili",
@@ -212,42 +214,42 @@ export const config: Category[] = [
       {
         name: "Twitch",
         url: "https://twitch.tv",
-        icon: "xicon:PlayCircle"
+        icon: ""
       },
       {
         name: "Apple Music",
         url: "https://music.apple.com",
-        icon: "xicon:Spotify"
+        icon: ""
       },
       {
         name: "Amazon Prime",
         url: "https://primevideo.com",
-        icon: "xicon:Film"
+        icon: ""
       },
       {
         name: "Disney+",
         url: "https://disneyplus.com",
-        icon: "xicon:Film"
+        icon: ""
       },
       {
         name: "HBO Max",
         url: "https://hbomax.com",
-        icon: "xicon:Film"
+        icon: ""
       },
       {
         name: "SoundCloud",
         url: "https://soundcloud.com",
-        icon: "xicon:Spotify"
+        icon: ""
       },
       {
         name: "Pandora",
         url: "https://pandora.com",
-        icon: "xicon:Spotify"
+        icon: ""
       },
       {
         name: "Tidal",
         url: "https://tidal.com",
-        icon: "xicon:Spotify"
+        icon: ""
       }
     ]
   },
@@ -257,62 +259,62 @@ export const config: Category[] = [
       {
         name: "AWS",
         url: "https://aws.amazon.com",
-        icon: "xicon:Microchip"
+        icon: ""
       },
       {
         name: "Google Cloud",
         url: "https://cloud.google.com",
-        icon: "xicon:Globe"
+        icon: ""
       },
       {
         name: "Azure",
         url: "https://azure.microsoft.com",
-        icon: "xicon:Code"
+        icon: ""
       },
       {
         name: "阿里云",
         url: "https://aliyun.com",
-        icon: "xicon:Users"
+        icon: ""
       },
       {
         name: "腾讯云",
         url: "https://cloud.tencent.com",
-        icon: "xicon:Users"
+        icon: ""
       },
       {
         name: "华为云",
         url: "https://huaweicloud.com",
-        icon: "xicon:Microchip"
+        icon: ""
       },
       {
         name: "百度云",
         url: "https://cloud.baidu.com",
-        icon: "xicon:Globe"
+        icon: ""
       },
       {
         name: "Vercel",
         url: "https://vercel.com",
-        icon: "xicon:Code"
+        icon: ""
       },
       {
         name: "Netlify",
         url: "https://netlify.com",
-        icon: "xicon:Code"
+        icon: ""
       },
       {
         name: "Heroku",
         url: "https://heroku.com",
-        icon: "xicon:Code"
+        icon: ""
       },
       {
         name: "DigitalOcean",
         url: "https://digitalocean.com",
-        icon: "xicon:Microchip"
+        icon: ""
       },
       {
         name: "Linode",
         url: "https://linode.com",
-        icon: "xicon:Microchip"
+        icon: ""
       }
     ]
   },
@@ -322,62 +324,62 @@ export const config: Category[] = [
       {
         name: "PT站导航",
         url: "https://pt.sjtu.edu.cn",
-        icon: "xicon:Globe"
+        icon: ""
       },
       {
         name: "HDChina",
         url: "https://hdchina.org",
-        icon: "xicon:Globe"
+        icon: ""
       },
       {
         name: "CHDBits",
         url: "https://chdbits.co",
-        icon: "xicon:Globe"
+        icon: ""
       },
       {
         name: "TTG",
         url: "https://totheglory.im",
-        icon: "xicon:Globe"
+        icon: ""
       },
       {
         name: "HDHome",
         url: "https://hdhome.org",
-        icon: "xicon:Globe"
+        icon: ""
       },
       {
         name: "HDTime",
         url: "https://hdtime.org",
-        icon: "xicon:Globe"
+        icon: ""
       },
       {
         name: "HDArea",
         url: "https://hdarea.co",
-        icon: "xicon:Globe"
+        icon: ""
       },
       {
         name: "HDStreet",
         url: "https://hdstreet.club",
-        icon: "xicon:Globe"
+        icon: ""
       },
       {
         name: "HDTorrents",
         url: "https://hd-torrents.org",
-        icon: "xicon:Globe"
+        icon: ""
       },
       {
         name: "IPTorrents",
         url: "https://iptorrents.com",
-        icon: "xicon:Globe"
+        icon: ""
       },
       {
         name: "TorrentLeech",
         url: "https://torrentleech.org",
-        icon: "xicon:Globe"
+        icon: ""
       },
       {
         name: "PrivateHD",
         url: "https://privatehd.to",
-        icon: "xicon:Globe"
+        icon: ""
       }
     ]
   },
@@ -387,62 +389,62 @@ export const config: Category[] = [
       {
         name: "VS Code",
         url: "https://code.visualstudio.com",
-        icon: "xicon:Code"
+        icon: ""
       },
       {
         name: "GitHub",
         url: "https://github.com",
-        icon: "xicon:Github"
+        icon: ""
       },
       {
         name: "GitLab",
         url: "https://gitlab.com",
-        icon: "xicon:Github"
+        icon: ""
       },
       {
         name: "Stack Overflow",
         url: "https://stackoverflow.com",
-        icon: "xicon:StackOverflow"
+        icon: ""
       },
       {
         name: "MDN",
         url: "https://developer.mozilla.org",
-        icon: "xicon:Code"
+        icon: ""
       },
       {
         name: "W3Schools",
         url: "https://w3schools.com",
-        icon: "xicon:Code"
+        icon: ""
       },
       {
         name: "Codepen",
         url: "https://codepen.io",
-        icon: "xicon:Code"
+        icon: ""
       },
       {
         name: "JSFiddle",
         url: "https://jsfiddle.net",
-        icon: "xicon:Code"
+        icon: ""
       },
       {
         name: "Replit",
         url: "https://replit.com",
-        icon: "xicon:Code"
+        icon: ""
       },
       {
         name: "Postman",
         url: "https://postman.com",
-        icon: "xicon:Code"
+        icon: ""
       },
       {
         name: "Docker",
         url: "https://docker.com",
-        icon: "xicon:Microchip"
+        icon: ""
       },
       {
         name: "Figma",
         url: "https://figma.com",
-        icon: "xicon:Figma"
+        icon: ""
       }
     ]
   },
@@ -457,57 +459,237 @@ export const config: Category[] = [
       {
         name: "Notion",
         url: "https://notion.so",
-        icon: "xicon:StickyNote"
+        icon: ""
       },
       {
         name: "Canva",
         url: "https://canva.com",
-        icon: "xicon:StickyNote"
+        icon: ""
       },
       {
         name: "Trello",
         url: "https://trello.com",
-        icon: "T"
+        icon: ""
       },
       {
         name: "Asana",
         url: "https://asana.com",
-        icon: "xicon:Briefcase"
+        icon: ""
       },
       {
         name: "Monday.com",
         url: "https://monday.com",
-        icon: "xicon:Briefcase"
+        icon: ""
       },
       {
         name: "Airtable",
         url: "https://airtable.com",
-        icon: "xicon:StickyNote"
+        icon: ""
       },
       {
         name: "Evernote",
         url: "https://evernote.com",
-        icon: "xicon:StickyNote"
+        icon: ""
       },
       {
         name: "OneNote",
         url: "https://onenote.com",
-        icon: "xicon:StickyNote"
+        icon: ""
       },
       {
         name: "Obsidian",
         url: "https://obsidian.md",
-        icon: "xicon:StickyNote"
+        icon: ""
       },
       {
         name: "Roam Research",
         url: "https://roamresearch.com",
-        icon: "xicon:StickyNote"
+        icon: ""
       },
       {
         name: "Logseq",
         url: "https://logseq.com",
-        icon: "xicon:StickyNote"
+        icon: ""
+      }
+    ]
+  },
+  {
+    name: "测试分组1 - 大公司网站",
+    sites: [
+      {
+        name: "Apple",
+        url: "https://www.apple.com",
+        icon: ""
+      },
+      {
+        name: "Microsoft",
+        url: "https://www.microsoft.com",
+        icon: ""
+      },
+      {
+        name: "Google",
+        url: "https://www.google.com",
+        icon: ""
+      },
+      {
+        name: "Amazon",
+        url: "https://www.amazon.com",
+        icon: ""
+      },
+      {
+        name: "Facebook",
+        url: "https://www.facebook.com",
+        icon: ""
+      },
+      {
+        name: "Twitter",
+        url: "https://twitter.com",
+        icon: ""
+      },
+      {
+        name: "Instagram",
+        url: "https://www.instagram.com",
+        icon: ""
+      },
+      {
+        name: "LinkedIn",
+        url: "https://www.linkedin.com",
+        icon: ""
+      }
+    ]
+  },
+  {
+    name: "测试分组2 - 技术网站",
+    sites: [
+      {
+        name: "GitHub",
+        url: "https://github.com",
+        icon: ""
+      },
+      {
+        name: "GitLab",
+        url: "https://gitlab.com",
+        icon: ""
+      },
+      {
+        name: "Stack Overflow",
+        url: "https://stackoverflow.com",
+        icon: ""
+      },
+      {
+        name: "Docker",
+        url: "https://www.docker.com",
+        icon: ""
+      },
+      {
+        name: "Kubernetes",
+        url: "https://kubernetes.io",
+        icon: ""
+      },
+      {
+        name: "AWS",
+        url: "https://aws.amazon.com",
+        icon: ""
+      },
+      {
+        name: "Azure",
+        url: "https://azure.microsoft.com",
+        icon: ""
+      },
+      {
+        name: "Vercel",
+        url: "https://vercel.com",
+        icon: ""
+      }
+    ]
+  },
+  {
+    name: "测试分组3 - 中文网站",
+    sites: [
+      {
+        name: "百度",
+        url: "https://www.baidu.com",
+        icon: ""
+      },
+      {
+        name: "腾讯",
+        url: "https://www.tencent.com",
+        icon: ""
+      },
+      {
+        name: "阿里巴巴",
+        url: "https://www.alibaba.com",
+        icon: ""
+      },
+      {
+        name: "字节跳动",
+        url: "https://www.bytedance.com",
+        icon: ""
+      },
+      {
+        name: "美团",
+        url: "https://www.meituan.com",
+        icon: ""
+      },
+      {
+        name: "滴滴",
+        url: "https://www.didi.com",
+        icon: ""
+      },
+      {
+        name: "京东",
+        url: "https://www.jd.com",
+        icon: ""
+      },
+      {
+        name: "拼多多",
+        url: "https://www.pinduoduo.com",
+        icon: ""
+      }
+    ]
+  },
+  {
+    name: "测试分组4 - 小众网站",
+    sites: [
+      {
+        name: "Hacker News",
+        url: "https://news.ycombinator.com",
+        icon: ""
+      },
+      {
+        name: "Reddit",
+        url: "https://www.reddit.com",
+        icon: ""
+      },
+      {
+        name: "Product Hunt",
+        url: "https://www.producthunt.com",
+        icon: ""
+      },
+      {
+        name: "Dribbble",
+        url: "https://dribbble.com",
+        icon: ""
+      },
+      {
+        name: "Behance",
+        url: "https://www.behance.net",
+        icon: ""
+      },
+      {
+        name: "Figma",
+        url: "https://www.figma.com",
+        icon: ""
+      },
+      {
+        name: "Notion",
+        url: "https://www.notion.so",
+        icon: ""
+      },
+      {
+        name: "Airtable",
+        url: "https://airtable.com",
+        icon: ""
       }
     ]
   }

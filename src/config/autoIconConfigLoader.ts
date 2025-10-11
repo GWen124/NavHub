@@ -1,0 +1,305 @@
+// 自动图标配置加载器
+import { ref, computed } from 'vue'
+
+// 配置接口定义
+export interface AutoIconConfig {
+  mode: 1 | 2 | 3 | 4
+  services: string[]
+  customSources: string[] // 自定义图标源
+  icon: {
+    size: number
+    shapePriority: string[]
+    qualityPriority: string[]
+    cache: boolean
+    cacheExpiry: number
+  }
+  fallback: {
+    showInitials: boolean
+    backgroundColor: string
+    textColor: string
+  }
+  debug: {
+    enableLogging: boolean
+    showLoadingState: boolean
+  }
+}
+
+// 默认配置
+const defaultConfig: AutoIconConfig = {
+  mode: 2,
+  services: ['direct', 'clearbit', 'google', 'duckduckgo', 'iconhorse', 'simple', 'iconify', 'iconfont'],
+  customSources: [
+    'https://raw.githubusercontent.com/GWen124/HD-Icons/main/border-radius/',
+    'https://cdn.jsdelivr.net/gh/GWen124/HD-Icons@main/border-radius/'
+  ],
+  icon: {
+    size: 64,
+    shapePriority: ['square', 'round', 'any'],
+    qualityPriority: ['hd', 'normal', 'any'],
+    cache: true,
+    cacheExpiry: 24
+  },
+  fallback: {
+    showInitials: true,
+    backgroundColor: '',
+    textColor: '#ffffff'
+  },
+  debug: {
+    enableLogging: false,
+    showLoadingState: true
+  }
+}
+
+// 配置状态
+const config = ref<AutoIconConfig>(defaultConfig)
+const isLoading = ref<boolean>(false)
+
+/**
+ * 加载配置文件
+ */
+export const loadAutoIconConfig = async (): Promise<AutoIconConfig> => {
+  try {
+    isLoading.value = true
+    
+    // 这里应该从 config.yml 文件加载配置
+    // 由于是本地测试，我们直接返回默认配置
+    // 实际项目中需要解析 YAML 文件
+    const loadedConfig = await loadConfigFromYaml()
+    config.value = { ...defaultConfig, ...loadedConfig }
+    
+    return config.value
+  } catch (error) {
+    return defaultConfig
+  } finally {
+    isLoading.value = false
+  }
+}
+
+/**
+ * 从 YAML 文件加载配置（模拟实现）
+ */
+const loadConfigFromYaml = async (): Promise<Partial<AutoIconConfig>> => {
+  // 从 config.yml 文件加载配置
+  try {
+    const response = await fetch('/config.yml')
+    const yamlText = await response.text()
+    
+    // 简单的 YAML 解析（仅解析 mode 配置）
+    const lines = yamlText.split('\n')
+    let inAutoIconSection = false
+    let mode = 4
+    
+    for (const line of lines) {
+      const trimmedLine = line.trim()
+      
+      if (trimmedLine === 'autoIcon:') {
+        inAutoIconSection = true
+        continue
+      }
+      
+      if (inAutoIconSection && trimmedLine.startsWith('mode:')) {
+        mode = parseInt(trimmedLine.split(':')[1].trim())
+        continue
+      }
+      
+      // 如果遇到其他顶级配置，退出 autoIcon 部分
+      if (inAutoIconSection && trimmedLine && !trimmedLine.startsWith(' ') && !trimmedLine.startsWith('#') && !trimmedLine.includes(':')) {
+        break
+      }
+    }
+    
+    return {
+      mode,
+      services: ['clearbit', 'google', 'duckduckgo', 'iconhorse', 'simple', 'iconify', 'iconfont', 'direct'],
+      customSources: defaultConfig.customSources,
+      icon: {
+        size: 64,
+        shapePriority: ['square', 'round', 'any'],
+        qualityPriority: ['hd', 'normal', 'any'],
+        cache: true,
+        cacheExpiry: 24
+      },
+      fallback: {
+        showInitials: true,
+        backgroundColor: '',
+        textColor: '#ffffff'
+      },
+      debug: {
+        enableLogging: false,
+        showLoadingState: true
+      }
+    }
+  } catch (error) {
+    // 返回默认配置
+    return {
+      mode: 4,
+      services: ['clearbit', 'google', 'duckduckgo', 'simple', 'iconify', 'iconfont', 'direct'],
+      icon: {
+        size: 64,
+        shapePriority: ['square', 'round', 'any'],
+        qualityPriority: ['hd', 'normal', 'any'],
+        cache: true,
+        cacheExpiry: 24
+      },
+      fallback: {
+        showInitials: true,
+        backgroundColor: '',
+        textColor: '#ffffff'
+      },
+      debug: {
+        enableLogging: false,
+        showLoadingState: true
+      }
+    }
+  }
+}
+
+/**
+ * 获取当前配置
+ */
+export const getAutoIconConfig = (): AutoIconConfig => {
+  return config.value
+}
+
+/**
+ * 更新配置
+ */
+export const updateAutoIconConfig = (newConfig: Partial<AutoIconConfig>): void => {
+  config.value = { ...config.value, ...newConfig }
+}
+
+/**
+ * 判断是否应该使用自动图标
+ */
+export const shouldUseAutoIcon = (site: { icon: string; autoIcon?: boolean }): boolean => {
+  const currentConfig = config.value
+  
+  switch (currentConfig.mode) {
+    case 1: // 强制所有网站自动获取
+      return true
+      
+    case 2: // 网站图标为空时自动获取
+      const isEmpty = !site.icon || site.icon.trim() === ''
+      return isEmpty
+      
+    case 3: // 非链接或本地图标自动获取
+      const shouldReplace = !isValidIconUrl(site.icon)
+      return shouldReplace
+      
+    case 4: // 非本地或链接图标一律自动获取（智能回退）
+      const isNotLocalOrLink = !isValidIconUrl(site.icon)
+      return isNotLocalOrLink
+      
+    default:
+      return site.autoIcon || false
+  }
+}
+
+/**
+ * 判断是否为有效的图标URL
+ */
+const isValidIconUrl = (icon: string): boolean => {
+  if (!icon || icon.trim() === '') return false
+  
+  // 检查是否为 HTTP/HTTPS 链接
+  if (icon.startsWith('http://') || icon.startsWith('https://')) {
+    return true
+  }
+  
+  // 检查是否为本地文件路径
+  if (icon.startsWith('/') || icon.startsWith('./') || icon.startsWith('../')) {
+    return true
+  }
+  
+  // 检查是否为 data URL
+  if (icon.startsWith('data:')) {
+    return true
+  }
+  
+  // 其他情况（如 xicon: 等）返回 false
+  return false
+}
+
+/**
+ * 获取图标服务列表
+ */
+export const getIconServices = (): string[] => {
+  return config.value.services
+}
+
+/**
+ * 获取图标大小
+ */
+export const getIconSize = (): number => {
+  return config.value.icon.size
+}
+
+/**
+ * 是否启用缓存
+ */
+export const isCacheEnabled = (): boolean => {
+  return config.value.icon.cache
+}
+
+/**
+ * 获取缓存过期时间
+ */
+export const getCacheExpiry = (): number => {
+  return config.value.icon.cacheExpiry
+}
+
+/**
+ * 是否显示备用图标
+ */
+export const shouldShowFallback = (): boolean => {
+  return config.value.fallback.showInitials
+}
+
+/**
+ * 获取备用图标背景颜色
+ */
+export const getFallbackBackgroundColor = (): string => {
+  return config.value.fallback.backgroundColor
+}
+
+/**
+ * 获取备用图标文字颜色
+ */
+export const getFallbackTextColor = (): string => {
+  return config.value.fallback.textColor
+}
+
+/**
+ * 是否启用调试日志
+ */
+export const isDebugLoggingEnabled = (): boolean => {
+  return config.value.debug.enableLogging
+}
+
+/**
+ * 是否显示加载状态
+ */
+export const shouldShowLoadingState = (): boolean => {
+  return config.value.debug.showLoadingState
+}
+
+/**
+ * 计算属性：配置是否已加载
+ */
+export const isConfigLoaded = computed(() => !isLoading.value)
+
+/**
+ * 计算属性：当前模式描述
+ */
+export const getModeDescription = computed(() => {
+  switch (config.value.mode) {
+    case 1:
+      return '强制所有网站自动获取图标'
+    case 2:
+      return '网站图标为空时自动获取'
+    case 3:
+      return '非链接或本地图标自动获取'
+    default:
+      return '未知模式'
+  }
+})

@@ -6,32 +6,43 @@
     class="site-card"
   >
     <div class="site-icon">
-      <img
-        v-if="isExternalIcon"
-        :src="site.icon"
-        :alt="site.name"
-      >
-      <component
-        v-else-if="isXiconIcon && xiconComponent"
-        :is="xiconComponent"
-        :size="18"
+      <!-- 自动图标组件 -->
+      <AutoIcon
+        v-if="shouldUseAuto"
+        :url="site.url"
+        :name="site.name"
+        :fallback-icon="site.icon"
+        :size="48"
       />
-      <i
-        v-else-if="isFontAwesomeIcon"
-        :class="site.icon"
-      ></i>
-      <div
-        v-else-if="isEmojiIcon"
-        class="emoji-icon"
-      >
-        {{ site.icon }}
-      </div>
-      <div
-        v-else
-        class="text-icon"
-      >
-        {{ site.name.charAt(0).toUpperCase() }}
-      </div>
+      <!-- 原有的图标显示逻辑 -->
+      <template v-else>
+        <img
+          v-if="isExternalIcon"
+          :src="site.icon"
+          :alt="site.name"
+        >
+        <component
+          v-else-if="isXiconIcon && xiconComponent"
+          :is="xiconComponent"
+          :size="18"
+        />
+        <i
+          v-else-if="isFontAwesomeIcon"
+          :class="site.icon"
+        ></i>
+        <div
+          v-else-if="isEmojiIcon"
+          class="emoji-icon"
+        >
+          {{ site.icon }}
+        </div>
+        <div
+          v-else
+          class="text-icon"
+        >
+          {{ site.name.charAt(0).toUpperCase() }}
+        </div>
+      </template>
     </div>
     <div class="site-name">
       {{ site.name }}
@@ -40,16 +51,37 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import type { Site } from '@/config'
 import { isXicon, getIconName, getIconComponent } from '@/utils/icons'
+import AutoIcon from './AutoIcon.vue'
+import { shouldUseAutoIcon, loadAutoIconConfig } from '@/config/autoIconConfigLoader'
 
 interface Props {
   site: Site
   searchQuery: string
+  useAutoIcon?: boolean // 是否使用自动图标（手动覆盖）
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  useAutoIcon: undefined // undefined 表示使用配置决定
+})
+
+// 是否应该使用自动图标
+const shouldUseAuto = computed(() => {
+  // 如果手动指定了 useAutoIcon，则使用手动设置
+  if (props.useAutoIcon !== undefined) {
+    return props.useAutoIcon
+  }
+  
+  // 否则使用配置决定
+  return shouldUseAutoIcon(props.site)
+})
+
+// 加载配置
+onMounted(async () => {
+  await loadAutoIconConfig()
+})
 
 // 判断是否为外链图标
 const isExternalIcon = computed(() => {

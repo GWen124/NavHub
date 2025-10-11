@@ -19,7 +19,7 @@ export default defineConfig({
           console.warn('⚠️ 配置生成失败:', error)
         }
       }
-    }
+    },
   ],
   resolve: {
     alias: {

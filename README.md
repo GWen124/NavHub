@@ -13,7 +13,8 @@
 ### 🔧 功能特性
 - **实时搜索**：快速查找网站和分类
 - **分类管理**：支持多级分类和自定义图标
-- **图标系统**：支持 Xicons、Font Awesome、Emoji、外部图片等多种图标类型
+- **智能图标系统**：支持自动获取网站图标、Xicons、Font Awesome、Emoji、外部图片等多种图标类型
+- **自动图标获取**：智能匹配网站图标，支持多种服务商和回退机制
 - **颜色配置**：支持自动变色和手动颜色设置
 - **版权信息**：自动计算版权年份范围
 
@@ -105,6 +106,24 @@ colors:
     footer: "#000000"      # Footer文字颜色
 ```
 
+#### 自动图标配置
+```yaml
+autoIcon:
+  # 自动图标模式
+  mode: 4  # 1: 强制所有网站自动获取, 2: 图标为空时自动获取, 3: 非链接或本地图标自动获取, 4: 智能回退模式
+  # 图标服务商优先级
+  services: ['clearbit', 'google', 'duckduckgo', 'iconhorse', 'simple', 'iconify', 'iconfont', 'direct']
+  # 图标配置
+  icon:
+    size: 64                    # 图标大小
+    shapePriority: ['square', 'round', 'any']  # 形状优先级
+    qualityPriority: ['hd', 'normal', 'any']   # 质量优先级
+  # 调试配置
+  debug:
+    enableLogging: false        # 启用日志
+    showLoadingState: true      # 显示加载状态
+```
+
 ### 网站配置
 
 网站数据在 `src/config.ts` 中配置：
@@ -114,6 +133,7 @@ export interface Site {
   name: string
   url: string
   icon: string
+  autoIcon?: boolean  // 可选：是否使用自动图标
 }
 
 export interface Category {
@@ -128,7 +148,13 @@ export const config: Category[] = [
       {
         name: "GitHub",
         url: "https://github.com",
-        icon: "xicon:github"
+        icon: "xicon:github"  // 手动指定图标
+      },
+      {
+        name: "Google",
+        url: "https://google.com",
+        icon: "",  // 空图标，将自动获取
+        autoIcon: true  // 明确启用自动图标
       }
     ]
   }
@@ -137,7 +163,34 @@ export const config: Category[] = [
 
 ## 🎨 图标系统
 
-### 支持的图标类型
+### 自动图标获取
+
+项目支持智能自动获取网站图标，通过多种服务商和回退机制确保图标显示：
+
+#### 自动图标模式
+- **模式 1**：强制所有网站自动获取图标
+- **模式 2**：仅当网站图标为空时自动获取
+- **模式 3**：非链接或本地图标自动获取（替换第三方图标）
+- **模式 4**：智能回退模式（推荐）
+
+#### 图标服务商优先级
+1. **Clearbit** - 高质量品牌图标
+2. **Icon Horse** - 通用网站图标
+3. **DuckDuckGo** - 搜索引擎图标
+4. **Favicon.io** - 标准网站图标
+5. **Simple Icons** - 开源项目图标
+6. **Iconify** - 图标库
+7. **Iconfont** - 阿里巴巴图标库
+8. **Google** - Google 图标服务
+9. **网站直接获取** - 从网站获取 favicon
+
+#### 回退机制
+当所有服务商都无法获取图标时，系统会按以下顺序回退：
+1. **Xicons** - 开源图标库
+2. **Font Awesome** - 字体图标
+3. **文字图标** - 使用网站名称首字母
+
+### 手动图标类型
 
 #### 1. Xicons (推荐)
 ```typescript
@@ -167,11 +220,19 @@ icon: "https://example.com/icon.png"
 icon: "T"                   // 显示字母 T
 ```
 
+### 图标缓存
+
+系统会自动缓存获取的图标，提高加载速度：
+- **缓存时间**：24小时
+- **缓存位置**：浏览器 localStorage
+- **缓存管理**：支持手动清除缓存
+
 ### 添加新图标
 
 1. **Xicons 图标**：在 `src/utils/icons.ts` 中添加映射
 2. **Font Awesome 图标**：直接使用类名
 3. **自定义图标**：使用外部图片链接
+4. **自动图标**：设置 `icon: ""` 和 `autoIcon: true`
 
 ## 🔧 开发指南
 
@@ -180,14 +241,23 @@ icon: "T"                   // 显示字母 T
 src/
 ├── components/          # Vue 组件
 │   ├── SiteCard.vue     # 网站卡片组件
-│   └── CategorySection.vue # 分类区域组件
+│   ├── CategorySection.vue # 分类区域组件
+│   ├── AutoIcon.vue    # 自动图标组件
+│   └── AutoIconConfigPanel.vue # 自动图标配置面板
 ├── views/               # 页面视图
 │   └── HomeView.vue    # 主页视图
 ├── stores/              # Pinia 状态管理
-│   └── theme.ts        # 主题状态
+│   ├── theme.ts        # 主题状态
+│   └── search.ts       # 搜索状态
 ├── utils/               # 工具函数
 │   ├── configLoader.ts # 配置加载器
-│   └── icons.ts        # 图标管理
+│   ├── icons.ts        # 图标管理
+│   ├── iconUtils.ts    # 自动图标工具
+│   └── xicons.ts       # Xicons 图标库
+├── config/              # 配置文件
+│   ├── autoIconConfig.ts # 自动图标配置
+│   ├── autoIconConfigLoader.ts # 自动图标配置加载器
+│   └── generated.ts    # 生成的配置
 └── config.ts           # 网站配置数据
 ```
 
@@ -204,7 +274,13 @@ src/
 - 支持动态添加新图标
 - 提供图标组件获取函数
 
-#### 3. 搜索功能
+#### 3. 自动图标系统 (`iconUtils.ts`)
+- 智能图标获取和匹配
+- 多服务商支持和回退机制
+- 图标缓存和性能优化
+- 并发控制和错误处理
+
+#### 4. 搜索功能
 - 实时搜索网站和分类
 - 支持模糊匹配
 - 集成在 HomeView.vue 中
@@ -221,6 +297,11 @@ src/
 1. 在 `icons.ts` 中添加识别逻辑
 2. 实现渲染函数
 3. 更新 `getIconComponent` 函数
+
+#### 添加新的图标服务商
+1. 在 `iconUtils.ts` 中添加服务商函数
+2. 在 `getSmartFavicon` 中添加服务商逻辑
+3. 更新 `config.yml` 中的服务商列表
 
 ## 🚀 部署指南
 
@@ -281,6 +362,14 @@ npm run build
 - 检查构建错误
 
 ## 📝 更新日志
+
+### v2.0.0 (2025-01-XX)
+- 🎯 智能自动图标获取系统
+- 🔄 多服务商图标匹配和回退机制
+- ⚡ 图标缓存和性能优化
+- 🛠️ 自动图标配置面板
+- 🎨 增强的图标系统支持
+- 🚀 并发控制和错误处理优化
 
 ### v1.0.0 (2025-10-11)
 - ✨ 初始版本发布
