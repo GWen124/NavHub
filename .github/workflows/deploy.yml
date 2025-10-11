@@ -5,6 +5,7 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch: # 允许手动触发
 
 permissions:
   contents: write
@@ -41,3 +42,35 @@ jobs:
         publish_dir: ./dist
         destination_dir: .
         publish_branch: Web
+        
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      with:
+        static_site_generator: vite
+        
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./dist
+        
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+      
+    - name: Notify Pages deployment
+      run: |
+        echo "✅ Pages deployment completed successfully!"
+        echo "🌐 Site URL: https://website.gw124.top"
+        echo "📅 Deployment time: $(date)"
+        echo "🔄 Build ID: ${{ github.run_id }}"
+        
+    - name: Trigger Pages rebuild
+      if: always()
+      run: |
+        echo "🔄 Triggering Pages rebuild..."
+        curl -X POST \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Content-Type: application/json" \
+          -d '{"source":{"branch":"Web","path":"/"}}' \
+          "${{ github.api_url }}/repos/${{ github.repository }}/pages/builds" || echo "⚠️ Pages rebuild trigger failed, but deployment may still work"
