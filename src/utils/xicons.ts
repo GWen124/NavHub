@@ -58,7 +58,7 @@ export const xiconMap: Record<string, any> = {
   'search': Search,
   
   // 知乎相关图标
-  'Zhihu': QuestionCircle
+  'zhihu': QuestionCircle
 }
 
 // 判断是否为 Xicon 图标
