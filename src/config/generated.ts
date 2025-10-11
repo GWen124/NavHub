@@ -22,7 +22,7 @@ export const appConfig = reactive<AppConfig>({
   },
   "background": {
     "bingWallpaper": false,
-    "image": "https://image.gw124.top/Video/Network%20-%2045961.mp4"
+    "image": "https://image.gw124.top/Video/1.mp4"
   },
   "colors": {
     "autoColor": true,
