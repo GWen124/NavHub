@@ -14,7 +14,7 @@ export interface Category {
 export const config: Category[] = [
   {
     name: "常用网站",
-    icon: "xicon:briefcase",
+    icon: "xicon:Briefcase",
     sites: [
       {
         name: "Google",
@@ -34,7 +34,7 @@ export const config: Category[] = [
       {
         name: "Notion",
         url: "https://notion.so",
-        icon: "xicon:sticky-note"
+        icon: "xicon:StickyNote"
       },
       {
         name: "Bilibili",
@@ -44,7 +44,7 @@ export const config: Category[] = [
       {
         name: "知乎",
         url: "https://www.zhihu.com/",
-        icon: "xicon:zhihu"
+        icon: "xicon:Zhihu"
       },
       {
         name: "Google Drive",
@@ -60,79 +60,79 @@ export const config: Category[] = [
   },
   {
     name: "社交媒体",
-    icon: "xicon:users",
+    icon: "xicon:Users",
     sites: [
       {
         name: "Twitter",
         url: "https://twitter.com",
-        icon: "xicon:twitter"
+        icon: "xicon:Twitter"
       },
       {
         name: "LinkedIn",
         url: "https://linkedin.com",
-        icon: "xicon:linkedin"
+        icon: "xicon:Linkedin"
       },
       {
         name: "Discord",
         url: "https://discord.com",
-        icon: "xicon:discord"
+        icon: "xicon:Discord"
       },
       {
         name: "Reddit",
         url: "https://reddit.com",
-        icon: "xicon:reddit"
+        icon: "xicon:Reddit"
       }
     ]
   },
   {
     name: "娱乐休闲",
-    icon: "xicon:play-circle",
+    icon: "xicon:PlayCircle",
     sites: [
       {
         name: "YouTube",
         url: "https://youtube.com",
-        icon: "xicon:youtube"
+        icon: "xicon:Youtube"
       },
       {
         name: "Netflix",
         url: "https://netflix.com",
-        icon: "xicon:film"
+        icon: "xicon:Film"
       },
       {
         name: "Spotify",
         url: "https://spotify.com",
-        icon: "xicon:spotify"
+        icon: "xicon:Spotify"
       },
       {
         name: "Steam",
         url: "https://steam.com",
-        icon: "xicon:steam"
+        icon: "xicon:Steam"
       }
     ]
   },
   {
     name: "新闻资讯",
-    icon: "xicon:newspaper",
+    icon: "xicon:Newspaper",
     sites: [
       {
         name: "CNN",
         url: "https://cnn.com",
-        icon: "xicon:globe"
+        icon: "xicon:Globe"
       },
       {
         name: "BBC",
         url: "https://bbc.com",
-        icon: "xicon:tv"
+        icon: "xicon:Tv"
       },
       {
         name: "TechCrunch",
         url: "https://techcrunch.com",
-        icon: "xicon:microchip"
+        icon: "xicon:Microchip"
       },
       {
         name: "Hacker News",
         url: "https://news.ycombinator.com",
-        icon: "xicon:code"
+        icon: "xicon:Code"
       }
     ]
   }

@@ -27,38 +27,38 @@ import {
 // Xicons 图标映射表
 export const xiconMap: Record<string, any> = {
   // 工作工具类
-  'github': Github,
-  'stack-overflow': StackOverflow,
-  'figma': Figma,
-  'sticky-note': StickyNote,
-  'briefcase': Briefcase,
+  'Github': Github,
+  'StackOverflow': StackOverflow,
+  'Figma': Figma,
+  'StickyNote': StickyNote,
+  'Briefcase': Briefcase,
   
   // 社交媒体类
-  'users': Users,
-  'twitter': Twitter,
-  'linkedin': Linkedin,
-  'discord': Discord,
-  'reddit': Reddit,
+  'Users': Users,
+  'Twitter': Twitter,
+  'Linkedin': Linkedin,
+  'Discord': Discord,
+  'Reddit': Reddit,
   
   // 娱乐休闲类
-  'play-circle': PlayCircle,
-  'youtube': Youtube,
-  'film': Film,
-  'spotify': Spotify,
-  'steam': Steam,
+  'PlayCircle': PlayCircle,
+  'Youtube': Youtube,
+  'Film': Film,
+  'Spotify': Spotify,
+  'Steam': Steam,
   
   // 新闻资讯类
-  'newspaper': Newspaper,
-  'globe': Globe,
-  'tv': Tv,
-  'microchip': Microchip,
-  'code': Code,
+  'Newspaper': Newspaper,
+  'Globe': Globe,
+  'Tv': Tv,
+  'Microchip': Microchip,
+  'Code': Code,
   
   // 功能图标
-  'search': Search,
+  'Search': Search,
   
   // 知乎相关图标
-  'zhihu': QuestionCircle
+  'Zhihu': QuestionCircle
 }
 
 // 判断是否为 Xicon 图标
