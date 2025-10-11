@@ -44,7 +44,7 @@ export const config: Category[] = [
       {
         name: "知乎",
         url: "https://www.zhihu.com/",
-        icon: "Zhihu"
+        icon: "xicon:Zhihu"
       },
       {
         name: "Google Drive",
