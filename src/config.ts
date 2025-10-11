@@ -28,7 +28,7 @@ export const config: Category[] = [
       },
       {
         name: "YouTube",
-        url: "https://www.youtube.com/,
+        url: "https://www.youtube.com/",
         icon: "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Streaming Service Platform/Youtube.png"
       },
       {
