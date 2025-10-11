@@ -42,7 +42,7 @@ background:
   # 本地视频示例: video.mp4 或 videos/background.mp4
   # 网络视频示例: https://example.com/video.mp4
   # 支持的视频格式: mp4, webm, ogg, avi, mov, wmv, flv, mkv
-  image: "https://image.gw124.top/Video/Network%20-%2045961.mp4"
+  image: "https://image.gw124.top/Video/1.mp4"
 
 # 字体颜色配置
 colors:
