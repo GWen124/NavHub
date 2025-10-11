@@ -13,23 +13,23 @@ export interface Category {
 
 export const config: Category[] = [
   {
-    name: "工作工具",
+    name: "常用网站",
     icon: "xicon:briefcase",
     sites: [
+      {
+        name: "Google",
+        url: "https://www.google.com/",
+        icon: "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Google/Google.png"
+      },
       {
         name: "GitHub",
         url: "https://github.com",
         icon: "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Project Management & To-do List/GitHub_A.png"
       },
       {
-        name: "Stack Overflow",
-        url: "https://stackoverflow.com",
-        icon: "xicon:stack-overflow"
-      },
-      {
-        name: "Figma",
-        url: "https://figma.com",
-        icon: "xicon:figma"
+        name: "YouTube",
+        url: "https://www.youtube.com/,
+        icon: "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Streaming Service Platform/Youtube.png"
       },
       {
         name: "Notion",
@@ -37,14 +37,14 @@ export const config: Category[] = [
         icon: "xicon:sticky-note"
       },
       {
-        name: "VS Code",
-        url: "https://code.visualstudio.com",
-        icon: "fas fa-code"
+        name: "Bilibili",
+        url: "https://www.bilibili.com/",
+        icon: "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Streaming Service Platform/Bilibili.png"
       },
       {
-        name: "Slack",
-        url: "https://slack.com",
-        icon: "💬"
+        name: "知乎",
+        url: "https://www.zhihu.com/",
+        icon: "Zhihu"
       },
       {
         name: "Google Drive",
