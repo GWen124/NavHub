@@ -21,7 +21,7 @@ import {
   Code,
   Briefcase,
   Search,
-  QuestionCircle
+  Zhihu
 } from '@vicons/fa'
 
 // Xicons 图标映射表
@@ -58,7 +58,7 @@ export const xiconMap: Record<string, any> = {
   Search,
   
   // 知乎相关图标
-  Zhihu: QuestionCircle
+  Zhihu
 }
 
 // 判断是否为 Xicon 图标
