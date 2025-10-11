@@ -53,7 +53,7 @@
 import { ref, onMounted, computed, onUnmounted } from 'vue'
 import { config, type Category } from '@/config'
 import { useThemeStore } from '@/stores/theme'
-import { loadConfig, applyBackgroundConfig, applyPageTitle, applyFaviconConfig, applyColorsConfig, appConfig, formatCopyrightYear } from '@/utils/configLoader'
+import { loadConfig, applyBackgroundConfig, applyPageTitle, applyFaviconConfig, applyColorsConfig, appConfig, formatCopyrightYear } from '@/config/generated'
 import CategorySection from '@/components/CategorySection.vue'
 import { getIconComponent } from '@/utils/icons'
 

@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'node:url'
-import { copyFileSync } from 'fs'
+import { execSync } from 'child_process'
 import { resolve } from 'path'
 
 // https://vitejs.dev/config/
@@ -9,14 +9,14 @@ export default defineConfig({
   plugins: [
     vue(),
     {
-      name: 'copy-config',
-      writeBundle() {
-        // 复制 config.yml 到 dist 目录
+      name: 'generate-config',
+      buildStart() {
+        // 构建前生成配置
         try {
-          copyFileSync(resolve(__dirname, 'config.yml'), resolve(__dirname, 'dist/config.yml'))
-          console.log('✅ config.yml copied to dist/')
+          execSync('node scripts/generate-config.js', { stdio: 'inherit' })
+          console.log('✅ 配置已生成')
         } catch (error) {
-          console.warn('⚠️ Failed to copy config.yml:', error)
+          console.warn('⚠️ 配置生成失败:', error)
         }
       }
     }
