@@ -75,7 +75,7 @@ const currentDate = ref('')
 
 // 搜索图标组件
 const searchIconComponent = computed(() => {
-  return getIconComponent('search')
+  return getIconComponent('Search')
 })
 
 // 更新时间
