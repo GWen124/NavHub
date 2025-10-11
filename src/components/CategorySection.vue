@@ -90,7 +90,7 @@ const props = defineProps<Props>()
 
 @media (max-width: 480px) {
   .sites-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 6px;
   }
   
@@ -98,6 +98,13 @@ const props = defineProps<Props>()
     font-size: 0.95rem;
   }
   
+  .category-header {
+    width: 95%;
+  }
+  
+  .sites-grid {
+    width: 95%;
+  }
 }
 
 

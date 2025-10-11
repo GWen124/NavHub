@@ -214,40 +214,80 @@ const xiconComponent = computed(() => {
 /* 响应式设计 */
 @media (max-width: 768px) {
   .site-card {
-    padding: 2px 10px;
-    min-height: 32px;
-    gap: 8px;
+    padding: 3px 8px;
+    min-height: 36px;
+    gap: 6px;
   }
   
   .site-icon {
-    width: 48px;
-    height: 48px;
-    font-size: 20px;
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
   }
   
   .site-icon img {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
   }
   
   .site-icon :deep(svg) {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
   }
   
   .emoji-icon {
-    font-size: 32px;
+    font-size: 28px;
   }
   
   .text-icon {
-    font-size: 24px;
-    width: 48px;
-    height: 48px;
+    font-size: 20px;
+    width: 44px;
+    height: 44px;
     color: #000000;
   }
   
   .site-name {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    line-height: 1.2;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-card {
+    padding: 2px 6px;
+    min-height: 32px;
+    gap: 4px;
+  }
+  
+  .site-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+  
+  .site-icon img {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .site-icon :deep(svg) {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .emoji-icon {
+    font-size: 24px;
+  }
+  
+  .text-icon {
+    font-size: 18px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .site-name {
+    font-size: 0.7rem;
+    line-height: 1.1;
   }
 }
 </style>
