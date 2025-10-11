@@ -127,13 +127,13 @@ import AutoIcon from './AutoIcon.vue'
 import { 
   getAutoIconConfig, 
   updateAutoIconConfig, 
-  shouldUseAutoIcon,
+  shouldUseAutoIcon as shouldUseAutoIconFromConfig,
   getModeDescription,
   loadAutoIconConfig
 } from '@/config/autoIconConfigLoader'
 
 // 响应式配置
-const selectedMode = ref<1 | 2 | 3>(2)
+const selectedMode = ref<1 | 2 | 3 | 4>(2)
 const selectedSize = ref<number>(64)
 const enableCache = ref<boolean>(true)
 const showInitials = ref<boolean>(true)
@@ -289,7 +289,13 @@ const resetConfig = () => {
   
   updateAutoIconConfig({
     mode: 2,
-    icon: { size: 64, cache: true, cacheExpiry: 24 },
+    icon: { 
+      size: 64, 
+      cache: true, 
+      cacheExpiry: 24,
+      shapePriority: ['square', 'round', 'any'],
+      qualityPriority: ['hd', 'normal', 'any']
+    },
     fallback: { showInitials: true, backgroundColor: '', textColor: '#ffffff' },
     debug: { enableLogging: false, showLoadingState: true }
   })
@@ -297,7 +303,7 @@ const resetConfig = () => {
 
 // 判断网站是否应该使用自动图标
 const shouldUseAutoIcon = (site: any): boolean => {
-  return shouldUseAutoIcon(site)
+  return shouldUseAutoIconFromConfig(site)
 }
 
 // 获取网站模式描述

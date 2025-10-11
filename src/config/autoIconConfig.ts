@@ -126,7 +126,8 @@ export const loadAllAutoIcons = async (config: Category[]): Promise<Record<strin
  * @returns Promise<string>
  */
 export const getAutoIcon = async (url: string): Promise<string> => {
-  return await getSmartFavicon(url)
+  const result = await getSmartFavicon(url)
+  return result || ''
 }
 
 /**
@@ -141,7 +142,8 @@ export const updateConfigWithAutoIcons = async (config: Category[]): Promise<Cat
     for (const site of category.sites) {
       if (site.autoIcon && !site.icon) {
         try {
-          site.icon = await getSmartFavicon(site.url)
+          const icon = await getSmartFavicon(site.url)
+          site.icon = icon || ''
         } catch (error) {
           console.error(`获取 ${site.name} 图标失败:`, error)
         }

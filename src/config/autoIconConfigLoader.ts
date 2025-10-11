@@ -98,7 +98,10 @@ const loadConfigFromYaml = async (): Promise<Partial<AutoIconConfig>> => {
       }
       
       if (inAutoIconSection && trimmedLine.startsWith('mode:')) {
-        mode = parseInt(trimmedLine.split(':')[1].trim())
+        const modeValue = parseInt(trimmedLine.split(':')[1].trim())
+        if (modeValue >= 1 && modeValue <= 4) {
+          mode = modeValue as 1 | 2 | 3 | 4
+        }
         continue
       }
       
@@ -109,7 +112,7 @@ const loadConfigFromYaml = async (): Promise<Partial<AutoIconConfig>> => {
     }
     
     return {
-      mode,
+      mode: mode as 1 | 2 | 3 | 4,
       services: ['clearbit', 'google', 'duckduckgo', 'iconhorse', 'simple', 'iconify', 'iconfont', 'direct'],
       customSources: defaultConfig.customSources,
       icon: {
