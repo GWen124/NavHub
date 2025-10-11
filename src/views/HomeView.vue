@@ -300,7 +300,7 @@ onUnmounted(() => {
   padding: 0 24px;
   text-align: center;
   color: var(--footer-color, #000000);
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .footer-link {
