@@ -98,9 +98,12 @@ const loadConfigFromYaml = async (): Promise<Partial<AutoIconConfig>> => {
       }
       
       if (inAutoIconSection && trimmedLine.startsWith('mode:')) {
-        const modeValue = parseInt(trimmedLine.split(':')[1].trim())
-        if (modeValue >= 1 && modeValue <= 4) {
-          mode = modeValue as 1 | 2 | 3 | 4
+        const parts = trimmedLine.split(':')
+        if (parts.length > 1) {
+          const modeValue = parseInt(parts[1].trim())
+          if (modeValue >= 1 && modeValue <= 4) {
+            mode = modeValue as 1 | 2 | 3 | 4
+          }
         }
         continue
       }
