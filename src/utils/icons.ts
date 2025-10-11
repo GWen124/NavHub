@@ -20,7 +20,8 @@ import {
   Microchip,
   Code,
   Briefcase,
-  Search
+  Search,
+  QuestionCircle
 } from '@vicons/fa'
 
 // 图标映射表
@@ -54,7 +55,10 @@ export const iconMap: Record<string, any> = {
   'code': Code,
   
   // 功能图标
-  'search': Search
+  'search': Search,
+  
+  // 知乎相关图标
+  'Zhihu': QuestionCircle
 }
 
 // 获取图标组件
@@ -64,12 +68,12 @@ export function getIconComponent(iconName: string) {
 
 // 判断是否为 Xicon 图标
 export function isXicon(icon: string): boolean {
-  return icon.startsWith('xicon:')
+  return icon.startsWith('xicon:') || icon.startsWith('fa:')
 }
 
-// 获取图标名称（去掉 xicon: 前缀）
+// 获取图标名称（去掉 xicon: 或 fa: 前缀）
 export function getIconName(icon: string): string {
-  return icon.replace('xicon:', '')
+  return icon.replace(/^(xicon:|fa:)/, '')
 }
 
 // 添加新图标的方法
