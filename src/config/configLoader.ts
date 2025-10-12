@@ -268,7 +268,9 @@ async function refreshBingImages(): Promise<void> {
       
       // 立即应用第一张新图片
       const firstImageUrl = bingImages[0]
-      setBackgroundImage(firstImageUrl)
+      if (firstImageUrl) {
+        setBackgroundImage(firstImageUrl)
+      }
       
       // 根据新背景设置文字颜色
       if (firstImageUrl) {
@@ -402,7 +404,9 @@ function startBingCarousel(): void {
       }
       
       // 应用背景
-      setBackgroundImage(imageUrl)
+      if (imageUrl) {
+        setBackgroundImage(imageUrl)
+      }
       
       
       // 根据新背景设置文字颜色
@@ -494,9 +498,7 @@ function setCustomBackground(mediaUrl: string): void {
     
   } else {
     // 设置图片背景
-    const backgroundImageUrl = `url(${mediaUrl})`
-    
-      setBackgroundImage(imageUrl)
+    setBackgroundImage(mediaUrl)
     
     // 根据自定义背景设置文字颜色
     setTextColorBasedOnBackground(mediaUrl)
@@ -541,8 +543,9 @@ function startBingRetry(): void {
           const firstImageUrl = bingImages[0]
           const backgroundImageUrl = `url(${firstImageUrl})`
           
-          const body = document.body
-      setBackgroundImage(imageUrl)
+          if (firstImageUrl) {
+            setBackgroundImage(firstImageUrl)
+          }
           
           // 重新启动轮播
           startBingCarousel()
@@ -590,7 +593,9 @@ export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise
         currentImageIndex = 0
         cycleCount = 0
         const firstImageUrl = bingImages[0]
-        setBackgroundImage(firstImageUrl)
+        if (firstImageUrl) {
+          setBackgroundImage(firstImageUrl)
+        }
         
         // 根据背景设置文字颜色
         if (firstImageUrl) {
@@ -621,7 +626,9 @@ export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise
           }
           
           // 设置Bing图片背景，使用更强的优先级
-          setBackgroundImage(firstImageUrl)
+          if (firstImageUrl) {
+            setBackgroundImage(firstImageUrl)
+          }
           
           // 根据背景设置文字颜色
           if (firstImageUrl) {
