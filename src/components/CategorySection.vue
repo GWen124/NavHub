@@ -49,24 +49,31 @@ const props = defineProps<Props>()
 }
 
 .sites-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   width: 85%;
   margin: 0 auto;
-  align-items: stretch;
+  justify-content: space-between;
+}
+
+.sites-grid .site-card {
+  flex: 0 0 calc(20% - 9.6px);
+  max-width: calc(20% - 9.6px);
 }
 
 /* 响应式设计 */
 @media (max-width: 1200px) {
-  .sites-grid {
-    grid-template-columns: repeat(4, 1fr);
+  .sites-grid .site-card {
+    flex: 0 0 calc(25% - 9px);
+    max-width: calc(25% - 9px);
   }
 }
 
 @media (max-width: 992px) {
-  .sites-grid {
-    grid-template-columns: repeat(3, 1fr);
+  .sites-grid .site-card {
+    flex: 0 0 calc(33.333% - 8px);
+    max-width: calc(33.333% - 8px);
   }
 }
 
@@ -80,15 +87,12 @@ const props = defineProps<Props>()
   }
   
   .sites-grid {
-    display: flex;
-    flex-wrap: wrap;
     gap: 12px;
-    justify-content: space-between;
   }
   
   .sites-grid .site-card {
-    flex: 0 0 calc(33.333% - 8px);
-    max-width: calc(33.333% - 8px);
+    flex: 0 0 calc(25% - 9px);
+    max-width: calc(25% - 9px);
   }
   
   .category-title {
