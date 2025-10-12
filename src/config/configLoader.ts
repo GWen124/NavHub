@@ -590,15 +590,15 @@ export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise
         currentImageIndex = 0
         cycleCount = 0
         const firstImageUrl = bingImages[0]
-        const backgroundImageUrl = `url(${firstImageUrl})`
-        
-      setBackgroundImage(imageUrl)
-        
+        setBackgroundImage(firstImageUrl)
         
         // 根据背景设置文字颜色
         if (firstImageUrl) {
           setTextColorBasedOnBackground(firstImageUrl)
         }
+        
+        // 启动轮播
+        startBingCarousel()
       } else {
         // localFirst模式：先显示本地背景，30秒后切换到Bing轮播
         const imageUrl = bgConfig.image && bgConfig.image.trim() !== '' ? bgConfig.image : null
@@ -613,7 +613,6 @@ export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise
           currentImageIndex = 0
           cycleCount = 0
           const firstImageUrl = bingImages[0]
-          const backgroundImageUrl = `url(${firstImageUrl})`
           
           // 先移除视频背景
           const existingVideo = document.getElementById('background-video')
@@ -632,7 +631,7 @@ export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise
         
         // 启动轮播
         startBingCarousel()
-      
+      }
     } else {
       // 先显示自定义背景作为初始背景
       const imageUrl = bgConfig.image && bgConfig.image.trim() !== '' ? bgConfig.image : null
