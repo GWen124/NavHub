@@ -517,25 +517,47 @@ export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> 
     return
   }
   
-  // 加载字体
-  const fontConfigs = [
-    { font: header.fontA, region: 'header', type: 'a' as const },
-    { font: header.fontB, region: 'header', type: 'b' as const },
-    { font: content.category?.fontA, region: 'category', type: 'a' as const },
-    { font: content.category?.fontB, region: 'category', type: 'b' as const },
-    { font: content.site?.fontA, region: 'site', type: 'a' as const },
-    { font: content.site?.fontB, region: 'site', type: 'b' as const },
-    { font: footer.fontA, region: 'footer', type: 'a' as const },
-    { font: footer.fontB, region: 'footer', type: 'b' as const }
-  ]
-  
-  for (const config of fontConfigs) {
-    if (config.font && config.font.trim() !== '') {
-      const fontUrl = config.font.startsWith('http') ? config.font : `/${config.font}`
-      const fontName = generateFontName(config.font, config.region, config.type)
-      await loadFont(fontName, fontUrl)
+  // 注入CSS @font-face规则（在字体应用之前）
+  const style = document.createElement('style')
+  style.textContent = `
+    @font-face {
+      font-family: 'AnJingChenXinShouJinTi';
+      src: url('/fonts/AnJingChenXinShouJinTi.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
     }
-  }
+    @font-face {
+      font-family: 'brand';
+      src: url('/fonts/brand.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'SanJiZhengYaHei-Cu';
+      src: url('/fonts/SanJiZhengYaHei-Cu.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'SanJiZhengYaHei-ZhongCu';
+      src: url('/fonts/SanJiZhengYaHei-ZhongCu.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'SanJiZhengYaHei-Xi';
+      src: url('/fonts/SanJiZhengYaHei-Xi.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'footer-font-a';
+      src: url('https://raw.githubusercontent.com/GWen124/HomePage/main/public/fonts/brand.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+  `
+  document.head.appendChild(style)
   
   // 应用字体样式
   const root = document.documentElement
@@ -602,48 +624,6 @@ export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> 
   
   // 设置body默认字体
   document.body.style.fontFamily = 'var(--site-font-family)'
-  
-  // 注入CSS @font-face规则
-  const style = document.createElement('style')
-  style.textContent = `
-    @font-face {
-      font-family: 'AnJingChenXinShouJinTi';
-      src: url('/fonts/AnJingChenXinShouJinTi.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'brand';
-      src: url('/fonts/brand.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'SanJiZhengYaHei-Cu';
-      src: url('/fonts/SanJiZhengYaHei-Cu.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'SanJiZhengYaHei-ZhongCu';
-      src: url('/fonts/SanJiZhengYaHei-ZhongCu.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'SanJiZhengYaHei-Xi';
-      src: url('/fonts/SanJiZhengYaHei-Xi.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'footer-font-a';
-      src: url('https://raw.githubusercontent.com/GWen124/HomePage/main/public/fonts/brand.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-  `
-  document.head.appendChild(style)
   
   // 应用字体到所有元素
   setTimeout(() => {
