@@ -130,6 +130,8 @@ const xiconComponent = computed(() => {
   justify-content: flex-start;
   gap: 10px;
   backdrop-filter: blur(10px);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .site-card:hover {
@@ -208,6 +210,7 @@ const xiconComponent = computed(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 0;
 }
 
 
