@@ -201,8 +201,9 @@ const xiconComponent = computed(() => {
 }
 
 .site-name {
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-family: var(--site-font-family, inherit);
+  font-size: var(--site-font-size, 0.9rem);
+  font-weight: var(--site-font-weight, 700);
   color: var(--card-title-color, #000000);
   text-align: left;
   line-height: 1.2;

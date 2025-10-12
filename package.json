@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:watch": "node scripts/watch-config.js",
     "build": "node scripts/generate-config.js && run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",

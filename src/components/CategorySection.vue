@@ -42,8 +42,9 @@ const props = defineProps<Props>()
 }
 
 .category-title {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-family: var(--category-font-family, inherit);
+  font-size: var(--category-font-size, 1.1rem);
+  font-weight: var(--category-font-weight, 600);
   color: var(--card-title-color, #000000);
   margin: 0;
 }

@@ -1,167 +1,221 @@
-import { ref, reactive } from 'vue'
+import { reactive } from 'vue'
 
 // 配置接口定义
 export interface BackgroundConfig {
-  bingWallpaper: boolean
-  image: string
+  image?: string
+  bingWallpaper?: boolean
   bingMode?: string
 }
 
 export interface FooterConfig {
-  websiteText: string
-  websiteUrl: string
-  authorText: string
-  authorUrl: string
+  enabled?: boolean
+  text?: string
+  link?: string
+  linkText?: string
+  websiteText?: string
+  websiteUrl?: string
+  authorText?: string
+  authorUrl?: string
 }
 
 export interface FaviconConfig {
-  icon: string
+  enabled?: boolean
+  url?: string
+  icon?: string
+}
+
+export interface TimeDateConfig {
+  enabled?: boolean
 }
 
 export interface CopyrightConfig {
-  startDate: string
-  autoRange: boolean
+  year?: number
+  text?: string
+  startDate?: string
+  autoRange?: boolean
 }
 
 export interface ManualColorsConfig {
-  header: string    // 头部区域：主标题、时间、日期、竖线分割线、搜索图标
-  cardTitle: string // 中部区域：网站分类标题、网站卡片标题
-  footer: string    // Footer区域：版权信息、链接文字、分割线
+  primary?: string
+  secondary?: string
+  accent?: string
+  header?: string
+  cardTitle?: string
+  footer?: string
 }
 
 export interface ColorsConfig {
-  autoColor: boolean
-  manual: ManualColorsConfig
+  auto?: boolean
+  autoColor?: boolean
+  manual?: ManualColorsConfig
+}
+
+export interface FontConfig {
+  fontA?: string
+  fontB?: string
+  size?: string
+  weight?: string
+}
+
+export interface ContentFontConfig {
+  category?: FontConfig
+  site?: FontConfig
+}
+
+export interface FontsConfig {
+  header?: FontConfig
+  content?: ContentFontConfig
+  footer?: FontConfig
 }
 
 export interface AppConfig {
-  pageTitle: string
-  pageQuote: string
-  footer: FooterConfig
-  background: BackgroundConfig
-  favicon: FaviconConfig
-  copyright: CopyrightConfig
-  colors: ColorsConfig
+  pageTitle?: string
+  pageQuote?: string
+  background?: BackgroundConfig
+  footer?: FooterConfig
+  favicon?: FaviconConfig
+  timeDate?: TimeDateConfig
+  copyright?: CopyrightConfig
+  colors?: ColorsConfig
+  fonts?: FontsConfig
 }
 
-// 默认配置（与config.yml保持一致）
+// 默认配置
 const defaultConfig: AppConfig = {
-  pageTitle: "Website Panel",
-  pageQuote: "人生寂寞，知己难求。",
-  footer: {
-    websiteText: "WEBSITE.GW124.TOP",
-    websiteUrl: "https://gw124.top",
-    authorText: "Wen",
-    authorUrl: "https://github.com/GWen124"
-  },
+  pageTitle: 'Website Panel',
+  pageQuote: '人生寂寞，知己难求。',
   background: {
-    bingWallpaper: true,
-    image: "https://image.gw124.top/Video/Network%20-%2045961.mp4"
+    image: '',
+    bingWallpaper: false,
+    bingMode: 'localFirst'
+  },
+  footer: {
+    enabled: true,
+    text: 'Powered by Vue.js',
+    link: 'https://vuejs.org',
+    linkText: 'Vue.js'
   },
   favicon: {
-    icon: "https://image.gw124.top/Avatar/imgbin_a1bee513649d120523b69c8584c25695.png"
+    enabled: true,
+    url: '/favicon.ico'
+  },
+  timeDate: {
+    enabled: true
   },
   copyright: {
-    startDate: "2025-10-01",
-    autoRange: true
+    year: new Date().getFullYear(),
+    text: 'All rights reserved.'
   },
   colors: {
-    autoColor: true,
+    auto: true,
     manual: {
-      header: "#000000",
-      cardTitle: "#000000",
-      footer: "#000000"
+      primary: '#3b82f6',
+      secondary: '#64748b',
+      accent: '#f59e0b'
+    }
+  },
+  fonts: {
+    header: {
+      fontA: '',
+      fontB: '',
+      size: '',
+      weight: ''
+    },
+    content: {
+      category: {
+        fontA: '',
+        fontB: '',
+        size: '',
+        weight: ''
+      },
+      site: {
+        fontA: '',
+        fontB: '',
+        size: '',
+        weight: ''
+      }
+    },
+    footer: {
+      fontA: '',
+      fontB: '',
+      size: '',
+      weight: ''
     }
   }
 }
 
-// 配置状态
 export const appConfig = reactive<AppConfig>({ ...defaultConfig })
 
-// 加载配置（从config.yml文件）
+// 加载配置
 export async function loadConfig(): Promise<void> {
-  // 在生产环境中，配置已经通过 generated.ts 嵌入，无需加载
-  // 在开发环境中，尝试从 config.yml 加载配置
-  if (import.meta.env.DEV) {
-    try {
+  try {
+    if (import.meta.env.DEV) {
+      // 开发环境：从 config.yml 加载
       const response = await fetch('/config.yml')
-      
-      if (response.ok) {
-        const yamlText = await response.text()
-        const parsedConfig = parseYaml(yamlText)
-        
-        // 合并配置
-        Object.assign(appConfig, {
-          ...defaultConfig,
-          ...parsedConfig,
-          footer: { 
-            ...defaultConfig.footer, 
-            ...parsedConfig.footer,
-            // 强制保持作者信息为默认值
-            authorText: defaultConfig.footer.authorText,
-            authorUrl: defaultConfig.footer.authorUrl
-          },
-          background: { ...defaultConfig.background, ...parsedConfig.background },
-          favicon: { ...defaultConfig.favicon, ...parsedConfig.favicon },
-          copyright: { ...defaultConfig.copyright, ...parsedConfig.copyright }
-        })
-      } else {
-        console.warn('config.yml not found, using default config')
+      if (!response.ok) {
+        console.warn('无法加载 config.yml，使用默认配置')
+        return
       }
-    } catch (error) {
-      console.warn('配置加载失败，使用默认配置:', error)
+      
+      const yamlText = await response.text()
+      const config = parseYamlConfig(yamlText)
+      
+      // 更新配置
+      Object.assign(appConfig, config)
+      
+      // 应用配置
+      await applyAllConfigs()
+    } else {
+      // 生产环境：使用嵌入的配置
+      const { appConfig: embeddedConfig } = await import('./generated')
+      Object.assign(appConfig, embeddedConfig)
+      await applyAllConfigs()
     }
+  } catch (error) {
+    console.error('加载配置失败:', error)
   }
-  // 生产环境中，配置已通过 generated.ts 嵌入，无需额外处理
 }
 
-// 简单的 YAML 解析器
-function parseYaml(yamlText: string): Partial<AppConfig> {
+// 解析YAML配置
+function parseYamlConfig(yamlText: string): any {
+  const result: any = {}
   const lines = yamlText.split('\n')
-  const result: Record<string, any> = {}
-  let currentSection: Record<string, any> | null = null
+  let currentSection: any = null
   
   for (const line of lines) {
     const trimmedLine = line.trim()
+    if (!trimmedLine || trimmedLine.startsWith('#')) continue
     
-    // 跳过注释和空行
-    if (!trimmedLine || trimmedLine.startsWith('#')) {
-      continue
+    const keyValue = trimmedLine.split(':')
+    if (keyValue.length < 2) continue
+    
+    const key = keyValue[0]?.trim() || ''
+    let value = keyValue.slice(1).join(':').trim()
+    
+    // 处理引号
+    if (value.startsWith('"') && value.endsWith('"')) {
+      value = value.slice(1, -1)
+    } else if (value.startsWith("'") && value.endsWith("'")) {
+      value = value.slice(1, -1)
     }
-
-    const indent = line.search(/\S/) // Find first non-whitespace character
-    if (indent === 0) {
-      currentSection = null // Reset for top-level properties
+    
+    // 处理布尔值
+    if (value === 'true') {
+      value = true as any
+    } else if (value === 'false') {
+      value = false as any
     }
-
-    const colonIndex = trimmedLine.indexOf(':')
-    if (colonIndex > 0) {
-      const key = trimmedLine.substring(0, colonIndex).trim()
-      const value = trimmedLine.substring(colonIndex + 1).trim()
-
-      // 移除引号并处理布尔值
-      let cleanValue: string | boolean = value.replace(/^["']|["']$/g, '')
-
-      // 处理布尔值
-      if (cleanValue === 'true') {
-        cleanValue = true
-      } else if (cleanValue === 'false') {
-        cleanValue = false
+    
+    // 处理嵌套对象
+    if (key === 'footer' || key === 'background' || key === 'favicon' || key === 'copyright' || key === 'colors' || key === 'fonts') {
+      if (!result[key]) {
+        result[key] = {}
       }
-      
-      // 处理嵌套对象
-      if (key === 'footer' || key === 'background' || key === 'favicon' || key === 'copyright' || key === 'colors') {
-        if (!result[key]) {
-          result[key] = {}
-        }
-        currentSection = result[key]
-      } else if (currentSection) {
-        // 处理嵌套属性
-        currentSection[key] = cleanValue
-      } else {
-        // 处理顶级属性
-        result[key] = cleanValue
-      }
+      currentSection = result[key]
+    } else if (currentSection) {
+      (currentSection as any)[key] = value
+    } else {
+      result[key] = value
     }
   }
   
@@ -176,18 +230,15 @@ let bingErrorCount = 0
 let bingRetryInterval: number | null = null
 let isBingAvailable = true
 let currentConfig: BackgroundConfig | null = null
-let cycleCount = 0 // 轮播循环计数
-let isRefreshingImages = false // 是否正在刷新图片
+let cycleCount = 0
+let isRefreshingImages = false
 
 // 获取多张 Bing 图片
 async function getBingWallpapers(): Promise<string[]> {
   try {
-    // 直接使用 CORS 代理获取 Bing 每日图片API
-    // 获取更多天的图片，增加多样性
     const bingApiUrl = 'https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=16&mkt=zh-CN'
     const proxyUrl = 'https://api.allorigins.win/raw?url='
     const fullUrl = proxyUrl + encodeURIComponent(bingApiUrl)
-    
     
     const response = await fetch(fullUrl, {
       method: 'GET',
@@ -196,294 +247,54 @@ async function getBingWallpapers(): Promise<string[]> {
       }
     })
     
-    
-    if (response.ok) {
-      const data = await response.json()
-      if (data.images && Array.isArray(data.images)) {
-        const imageUrls = data.images.map((image: any) => {
-          return `https://www.bing.com${image.url}`
-        })
-        return imageUrls
-      }
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
     }
     
-    // 如果代理失败，尝试其他代理
-    const alternativeProxies = [
-      'https://cors-anywhere.herokuapp.com/',
-      'https://api.codetabs.com/v1/proxy?quest='
-    ]
+    const data = await response.json()
     
-    for (const proxy of alternativeProxies) {
-      try {
-        const proxyResponse = await fetch(proxy + bingApiUrl, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-          }
-        })
-        
-        
-        if (proxyResponse.ok) {
-          const data = await proxyResponse.json()
-          if (data.images && Array.isArray(data.images)) {
-            const imageUrls = data.images.map((image: any) => {
-              return `https://www.bing.com${image.url}`
-            })
-            return imageUrls
-          }
+    if (data.images && Array.isArray(data.images)) {
+      const imageUrls = data.images.map((img: any) => {
+        if (img.url) {
+          return `https://www.bing.com${img.url}`
         }
-      } catch (proxyError) {
-        continue // 尝试下一个代理
-      }
+        return null
+      }).filter((url: string | null) => url !== null)
+      
+      return imageUrls
     }
     
-    // 如果所有代理都失败，使用备用方案
-    const fallbackImages = [
-      'https://www.bing.com/th?id=OHR.SaranacLake_ZH-CN0224689397_1920x1080.jpg',
-      'https://www.bing.com/th?id=OHR.WoodDuckHen_ZH-CN9558916773_1920x1080.jpg',
-      'https://www.bing.com/th?id=OHR.MonurikiFiji_ZH-CN9178115886_1920x1080.jpg',
-      'https://www.bing.com/th?id=OHR.WebbPillars_ZH-CN9054137596_1920x1080.jpg',
-      'https://www.bing.com/th?id=OHR.OctopusCyanea_ZH-CN8948609460_1920x1080.jpg',
-      'https://www.bing.com/th?id=OHR.RidgwayAspens_ZH-CN8735375502_1920x1080.jpg',
-      'https://www.bing.com/th?id=OHR.AnshunBridge_ZH-CN8392458102_1920x1080.jpg',
-      'https://www.bing.com/th?id=OHR.TeacherOwl_ZH-CN8289875605_1920x1080.jpg'
-    ]
-    return fallbackImages
+    return []
   } catch (error) {
     console.error('获取Bing图片失败:', error)
     return []
   }
 }
 
-// 刷新 Bing 图片
-async function refreshBingImages(): Promise<void> {
-  if (isRefreshingImages) {
-    return
-  }
-  
-  isRefreshingImages = true
-  
-  try {
-    const newImages = await getBingWallpapers()
-    if (newImages.length > 0) {
-      bingImages = newImages
-      currentImageIndex = 0
-      cycleCount = 0
-      
-      // 立即应用第一张新图片
-      const firstImageUrl = bingImages[0]
-      if (firstImageUrl) {
-        setBackgroundImage(firstImageUrl)
-      }
-      
-      // 根据新背景设置文字颜色
-      if (firstImageUrl) {
-        setTextColorBasedOnBackground(firstImageUrl)
-      }
-    }
-  } catch (error) {
-    console.error('刷新 Bing 图片时出错:', error)
-  } finally {
-    isRefreshingImages = false
-  }
+// 设置背景图片
+function setBackgroundImage(imageUrl: string): void {
+  document.body.style.backgroundImage = `url("${imageUrl}")`
+  document.body.style.backgroundSize = 'cover'
+  document.body.style.backgroundPosition = 'center'
+  document.body.style.backgroundRepeat = 'no-repeat'
+  document.body.style.backgroundAttachment = 'fixed'
 }
 
-// 检查是否需要刷新Bing图片（每天刷新一次）
-function shouldRefreshBingImages(): boolean {
-  const lastRefreshKey = 'bing_last_refresh'
-  const lastRefresh = localStorage.getItem(lastRefreshKey)
-  
-  if (!lastRefresh) {
-    return true
-  }
-  
-  const lastRefreshTime = parseInt(lastRefresh)
-  const now = Date.now()
-  const oneDay = 24 * 60 * 60 * 1000 // 24小时
-  
-  return (now - lastRefreshTime) > oneDay
+// 设置白色背景
+function setWhiteBackground(): void {
+  document.body.style.backgroundImage = 'none'
+  document.body.style.backgroundColor = '#ffffff'
 }
 
-// 设置最后刷新时间
-function setLastRefreshTime(): void {
-  const lastRefreshKey = 'bing_last_refresh'
-  localStorage.setItem(lastRefreshKey, Date.now().toString())
-}
-
-// 常量定义
-const BRIGHTNESS_THRESHOLD = 128 // 亮度阈值，超过此值使用黑色文字
-const PIXEL_SAMPLE_INTERVAL = 40 // 像素采样间隔（每40个像素采样一次）
-const CAROUSEL_INTERVAL = 30000 // 轮播间隔（30秒）
-const MAX_BING_ERRORS = 3 // 最大错误次数
-const BING_RETRY_INTERVAL = 5 * 60 * 1000 // Bing重试间隔（5分钟）
-
-// 计算图片亮度并设置文字颜色
-async function setTextColorBasedOnBackground(imageUrl: string): Promise<void> {
-  try {
-    const img = new Image()
-    img.crossOrigin = 'anonymous'
-    
-    img.onload = () => {
-      const canvas = document.createElement('canvas')
-      const ctx = canvas.getContext('2d')
-      
-      if (!ctx) return
-      
-      canvas.width = img.width
-      canvas.height = img.height
-      ctx.drawImage(img, 0, 0)
-      
-      // 获取图片数据
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-      const data = imageData.data
-      
-      let totalBrightness = 0
-      let pixelCount = 0
-      
-      // 采样计算平均亮度（每40个像素采样一次以提高性能）
-      for (let i = 0; i < data.length; i += PIXEL_SAMPLE_INTERVAL) {
-        const r = data[i] || 0
-        const g = data[i + 1] || 0
-        const b = data[i + 2] || 0
-        
-        // 计算亮度 (0-255)
-        const brightness = (r * 0.299 + g * 0.587 + b * 0.114)
-        totalBrightness += brightness
-        pixelCount++
-      }
-      
-      const averageBrightness = totalBrightness / pixelCount
-      
-      // 根据亮度设置文字颜色
-      const textColor = averageBrightness > BRIGHTNESS_THRESHOLD ? '#000000' : '#ffffff'
-      
-      // 只有在自动变色模式下才应用颜色
-      if (appConfig.colors && appConfig.colors.autoColor) {
-        // 设置三个区域的颜色变量
-        document.documentElement.style.setProperty('--header-color', textColor)
-        document.documentElement.style.setProperty('--card-title-color', textColor)
-        document.documentElement.style.setProperty('--footer-color', textColor)
-      }
-      
-    }
-    
-    img.src = imageUrl
-  } catch (error) {
-    console.error('计算背景亮度失败:', error)
-    // 失败时只有在自动变色模式下才使用默认颜色
-    if (appConfig.colors && appConfig.colors.autoColor) {
-      document.documentElement.style.setProperty('--header-color', '#000000')
-      document.documentElement.style.setProperty('--card-title-color', '#000000')
-      document.documentElement.style.setProperty('--footer-color', '#000000')
-    }
-  }
-}
-
-// 启动 Bing 轮播
-function startBingCarousel(): void {
-  if (carouselInterval) {
-    clearInterval(carouselInterval)
-  }
-  
-  // 每 30 秒切换一次背景
-  carouselInterval = setInterval(() => {
-    if (bingImages.length > 0) {
-      // 随机选择下一张图片，增加多样性
-      let nextIndex
-      do {
-        nextIndex = Math.floor(Math.random() * bingImages.length)
-      } while (nextIndex === currentImageIndex && bingImages.length > 1)
-      
-      currentImageIndex = nextIndex
-      const imageUrl = bingImages[currentImageIndex]
-      
-      // 检查是否完成一轮循环
-      if (currentImageIndex === 0) {
-        cycleCount++
-        
-        // 异步刷新图片，不阻塞当前轮播
-        refreshBingImages().catch(error => {
-          console.error('异步刷新图片失败:', error)
-        })
-      }
-      
-      // 应用背景
-      if (imageUrl) {
-        setBackgroundImage(imageUrl)
-      }
-      
-      
-      // 根据新背景设置文字颜色
-      if (imageUrl) {
-        setTextColorBasedOnBackground(imageUrl)
-      }
-    }
-  }, CAROUSEL_INTERVAL) // 30秒切换一次
-}
-
-// 停止 Bing 轮播
-function stopBingCarousel(): void {
-  if (carouselInterval) {
-    clearInterval(carouselInterval)
-    carouselInterval = null
-  }
-  if (bingRetryInterval) {
-    clearInterval(bingRetryInterval)
-    bingRetryInterval = null
-  }
-}
-
-// 回退到自定义背景
-function fallbackToCustomBackground(): void {
-  // 停止 Bing 轮播
-  stopBingCarousel()
-  
-  if (!currentConfig) {
-    setWhiteBackground()
-    return
-  }
-  
-  // 检查是否有自定义背景
-  const customImage = currentConfig.image && currentConfig.image.trim() !== ''
-  
-  if (customImage) {
-    setCustomBackground(currentConfig.image)
-  } else {
-    setWhiteBackground()
-  }
-  
-  // 启动重试机制
-  startBingRetry()
-}
-
-// 检查是否为视频文件
-function isVideoFile(url: string): boolean {
-  const videoExtensions = ['.mp4', '.webm', '.ogg', '.avi', '.mov', '.wmv', '.flv', '.mkv']
-  const lowerUrl = url.toLowerCase()
-  return videoExtensions.some(ext => lowerUrl.includes(ext))
-}
-
-// 设置自定义背景（支持图片和视频）
-function setCustomBackground(mediaUrl: string): void {
-  const body = document.body
-  
-  // 清理之前的视频元素
-  const existingVideo = document.getElementById('background-video')
-  if (existingVideo) {
-    existingVideo.remove()
-  }
-  
-  if (isVideoFile(mediaUrl)) {
-    // 创建视频背景
+// 设置自定义背景
+function setCustomBackground(imageUrl: string): void {
+  if (imageUrl.endsWith('.mp4') || imageUrl.endsWith('.webm') || imageUrl.endsWith('.ogg')) {
+    // 视频背景
     const video = document.createElement('video')
-    video.id = 'background-video'
-    video.src = mediaUrl
+    video.src = imageUrl
     video.autoplay = true
     video.loop = true
     video.muted = true
-    video.playsInline = true
-    
-    // 视频样式
     video.style.position = 'fixed'
     video.style.top = '0'
     video.style.left = '0'
@@ -491,188 +302,101 @@ function setCustomBackground(mediaUrl: string): void {
     video.style.height = '100%'
     video.style.objectFit = 'cover'
     video.style.zIndex = '-1'
-    video.style.pointerEvents = 'none'
     
-    // 添加到页面
-    document.body.appendChild(video)
-    
-    // 设置body背景
-    body.style.setProperty('background-color', 'transparent', 'important')
-    body.style.setProperty('background-image', 'none', 'important')
-    
-  } else {
-    // 设置图片背景
-    setBackgroundImage(mediaUrl)
-    
-    // 根据自定义背景设置文字颜色
-    setTextColorBasedOnBackground(mediaUrl)
-    
-  }
-}
-
-// 设置背景图片的通用函数
-function setBackgroundImage(imageUrl: string): void {
-  const body = document.body
-  const backgroundImageUrl = `url(${imageUrl})`
-  body.style.setProperty('background-image', backgroundImageUrl, 'important')
-  body.style.setProperty('background-color', 'transparent', 'important')
-  body.style.setProperty('background-size', 'cover', 'important')
-  body.style.setProperty('background-position', 'center', 'important')
-  body.style.setProperty('background-repeat', 'no-repeat', 'important')
-  body.style.setProperty('background-attachment', 'fixed', 'important')
-}
-
-// 设置白色背景
-function setWhiteBackground(): void {
-  const body = document.body
-  
-  body.style.setProperty('background-image', 'none', 'important')
-  body.style.setProperty('background-color', '#ffffff', 'important')
-}
-
-// 启动 Bing 重试机制
-function startBingRetry(): void {
-  if (bingRetryInterval) {
-    clearInterval(bingRetryInterval)
-  }
-  
-  // 每 5 分钟重试一次
-  bingRetryInterval = setInterval(async () => {
-    if (!isBingAvailable && currentConfig && currentConfig.bingWallpaper) {
-      try {
-        const testImages = await getBingWallpapers()
-        if (testImages.length > 0) {
-          isBingAvailable = true
-          bingImages = testImages
-          currentImageIndex = 0
-          
-          // 设置第一张图片
-          currentImageIndex = 0
-          cycleCount = 0
-          const firstImageUrl = bingImages[0]
-          const backgroundImageUrl = `url(${firstImageUrl})`
-          
-          if (firstImageUrl) {
-            setBackgroundImage(firstImageUrl)
-          }
-          
-          // 重新启动轮播
-          startBingCarousel()
-          
-          // 停止重试
-          if (bingRetryInterval) {
-            clearInterval(bingRetryInterval)
-            bingRetryInterval = null
-          }
-        }
-      } catch (error) {
-        // Bing 服务仍不可用，继续使用备用背景
-      }
+    // 移除旧的视频元素
+    const oldVideo = document.querySelector('video')
+    if (oldVideo) {
+      oldVideo.remove()
     }
-  }, BING_RETRY_INTERVAL) // 5分钟
+    
+    document.body.appendChild(video)
+  } else {
+    // 图片背景
+    setBackgroundImage(imageUrl)
+  }
+}
+
+// 开始Bing轮播
+function startBingCarousel(): void {
+  if (bingImages.length === 0) return
+  
+  if (carouselInterval) {
+    clearInterval(carouselInterval)
+  }
+  
+  carouselInterval = setInterval(() => {
+    if (bingImages.length === 0) return
+    
+    const nextIndex = Math.floor(Math.random() * bingImages.length)
+    const nextImageUrl = bingImages[nextIndex]
+    
+    if (nextImageUrl) {
+      setBackgroundImage(nextImageUrl)
+      currentImageIndex = nextIndex
+    }
+  }, 30000) // 30秒切换一次
 }
 
 // 应用背景配置
 export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise<void> {
-  const body = document.body
-  
-  // 保存当前配置
   currentConfig = bgConfig
   
-  // 停止之前的轮播和重试
-  stopBingCarousel()
-  
-  // 重置状态
-  bingErrorCount = 0
-  isBingAvailable = true
-  
-  // 检查是否启用 Bing 轮播背景
   if (bgConfig.bingWallpaper) {
-    // 强制获取新的Bing图片
-    bingImages = await getBingWallpapers()
-    // 设置最后刷新时间
-    setLastRefreshTime()
-    
-    if (bingImages.length > 0) {
-      // 根据bingMode配置决定显示方式
-      const bingMode = (bgConfig as any).bingMode || 'localFirst'
+    try {
+      bingImages = await getBingWallpapers()
       
-      if (bingMode === 'direct') {
-        // 直接显示Bing轮播第一张图片
-        currentImageIndex = 0
-        cycleCount = 0
-        const firstImageUrl = bingImages[0]
-        if (firstImageUrl) {
-          setBackgroundImage(firstImageUrl)
+      if (bingImages.length > 0) {
+        if (bgConfig.bingMode === 'direct') {
+          // 直接显示Bing图片
+      const firstImageUrl = bingImages[0]
+      if (firstImageUrl) {
+        setBackgroundImage(firstImageUrl)
+      }
+          startBingCarousel()
+        } else {
+          // 先显示本地背景，然后切换到Bing
+          if (bgConfig.image && bgConfig.image.trim() !== '') {
+            setCustomBackground(bgConfig.image)
+          } else {
+            setWhiteBackground()
+          }
+          
+          // 30秒后切换到第一张Bing图片
+          setTimeout(() => {
+            if (bingImages.length > 0) {
+      const firstImageUrl = bingImages[0]
+      if (firstImageUrl) {
+        setBackgroundImage(firstImageUrl)
+      }
+              currentImageIndex = 0
+              startBingCarousel()
+            }
+          }, 30000)
         }
-        
-        // 根据背景设置文字颜色
-        if (firstImageUrl) {
-          setTextColorBasedOnBackground(firstImageUrl)
-        }
-        
-        // 启动轮播
-        startBingCarousel()
       } else {
-        // localFirst模式：先显示本地背景，30秒后切换到Bing轮播
-        const imageUrl = bgConfig.image && bgConfig.image.trim() !== '' ? bgConfig.image : null
-        if (imageUrl) {
-          setCustomBackground(imageUrl)
+        // 没有获取到Bing图片，使用本地背景
+        if (bgConfig.image && bgConfig.image.trim() !== '') {
+          setCustomBackground(bgConfig.image)
         } else {
           setWhiteBackground()
         }
-        
-        // 延迟30秒后切换到Bing轮播第一张图片
-        setTimeout(() => {
-          currentImageIndex = 0
-          cycleCount = 0
-          const firstImageUrl = bingImages[0]
-          
-          // 先移除视频背景
-          const existingVideo = document.getElementById('background-video')
-          if (existingVideo) {
-            existingVideo.remove()
-          }
-          
-          // 设置Bing图片背景，使用更强的优先级
-          if (firstImageUrl) {
-            setBackgroundImage(firstImageUrl)
-          }
-          
-          // 根据背景设置文字颜色
-          if (firstImageUrl) {
-            setTextColorBasedOnBackground(firstImageUrl)
-          }
-        }, 30000) // 30秒延迟
-        
-        // 启动轮播
-        startBingCarousel()
       }
-    } else {
-      // 先显示自定义背景作为初始背景
-      const imageUrl = bgConfig.image && bgConfig.image.trim() !== '' ? bgConfig.image : null
-      if (imageUrl) {
-        setCustomBackground(imageUrl)
+    } catch (error) {
+      console.error('Bing壁纸设置失败:', error)
+      if (bgConfig.image && bgConfig.image.trim() !== '') {
+        setCustomBackground(bgConfig.image)
       } else {
         setWhiteBackground()
       }
-      
-      // 启动重试机制
-      startBingRetry()
     }
   } else {
-    const imageUrl = bgConfig.image && bgConfig.image.trim() !== '' ? bgConfig.image : null
-    
-    if (imageUrl) {
-      setCustomBackground(imageUrl)
+    // 不使用Bing壁纸
+    if (bgConfig.image && bgConfig.image.trim() !== '') {
+      setCustomBackground(bgConfig.image)
     } else {
       setWhiteBackground()
     }
   }
-  
-  // 清理可能存在的CSS变量
-  document.documentElement.style.removeProperty('--bg-image')
-  document.documentElement.style.removeProperty('--bg-color')
 }
 
 // 应用页面标题
@@ -682,78 +406,320 @@ export function applyPageTitle(title: string): void {
 
 // 格式化版权年份
 export function formatCopyrightYear(copyrightConfig: CopyrightConfig): string {
-  if (!copyrightConfig.autoRange) {
-    // 如果禁用自动范围，只显示开始年份
-    return copyrightConfig.startDate.split('-')[0] || ''
-  }
-
-  try {
-    const startDate = new Date(copyrightConfig.startDate)
-    const currentDate = new Date()
-    
-    const startYear = startDate.getFullYear()
-    const currentYear = currentDate.getFullYear()
-    
-    // 计算年份差
-    const yearDiff = currentYear - startYear
-    
-    if (yearDiff <= 0) {
-      // 当前年份小于等于开始年份，只显示开始年份
-      return startYear.toString()
-    } else if (yearDiff >= 1) {
-      // 超过一年，显示年份范围
-      return `${startYear}-${currentYear}`
-    } else {
-      // 不到一年，只显示开始年份
-      return startYear.toString()
-    }
-  } catch (error) {
-    console.error('版权年份格式化错误:', error)
-    // 出错时返回开始年份
-    return copyrightConfig.startDate.split('-')[0] || ''
+  const currentYear = new Date().getFullYear()
+  const configYear = copyrightConfig.year || currentYear
+  
+  if (configYear === currentYear) {
+    return currentYear.toString()
+  } else if (configYear < currentYear) {
+    return `${configYear}-${currentYear}`
+  } else {
+    return configYear.toString()
   }
 }
 
 // 应用颜色配置
 export function applyColorsConfig(colorsConfig: ColorsConfig): void {
-  if (colorsConfig.autoColor) {
-    // 自动变色模式：使用基于背景亮度的颜色
-    // 这里不设置颜色，让背景亮度计算函数来处理
-    return
-  } else {
-    // 手动颜色模式：使用配置的颜色
-    const manual = colorsConfig.manual
-    // 设置三个区域的颜色变量
-    document.documentElement.style.setProperty('--header-color', manual.header)
-    document.documentElement.style.setProperty('--card-title-color', manual.cardTitle)
-    document.documentElement.style.setProperty('--footer-color', manual.footer)
+  const root = document.documentElement
+  
+  if (colorsConfig.auto) {
+    // 自动颜色模式
+    root.style.setProperty('--primary-color', '')
+    root.style.setProperty('--secondary-color', '')
+    root.style.setProperty('--accent-color', '')
+  } else if (colorsConfig.manual) {
+    // 手动颜色模式
+    const { primary, secondary, accent } = colorsConfig.manual
+    if (primary) root.style.setProperty('--primary-color', primary)
+    if (secondary) root.style.setProperty('--secondary-color', secondary)
+    if (accent) root.style.setProperty('--accent-color', accent)
   }
 }
 
+// 应用Favicon配置
 export function applyFaviconConfig(faviconConfig: FaviconConfig): void {
-  // 移除现有的 favicon 链接
-  const existingFavicons = document.querySelectorAll('link[rel*="icon"]')
-  existingFavicons.forEach(link => link.remove())
+  if (!faviconConfig.enabled) return
   
-  if (!faviconConfig.icon || faviconConfig.icon.trim() === '') {
-    // 使用默认 favicon
-    const defaultFavicon = document.createElement('link')
-    defaultFavicon.rel = 'icon'
-    defaultFavicon.type = 'image/x-icon'
-    defaultFavicon.href = '/favicon.ico'
-    document.head.appendChild(defaultFavicon)
-  } else {
-    // 创建新的 favicon 链接
-    const favicon = document.createElement('link')
-    favicon.rel = 'icon'
-    favicon.type = 'image/x-icon'
-    favicon.href = faviconConfig.icon
-    document.head.appendChild(favicon)
-    
-    // 同时添加 apple-touch-icon 支持
-    const appleIcon = document.createElement('link')
-    appleIcon.rel = 'apple-touch-icon'
-    appleIcon.href = faviconConfig.icon
-    document.head.appendChild(appleIcon)
+  const faviconUrl = faviconConfig.url || '/favicon.ico'
+  const existingLink = document.querySelector("link[rel*='icon']") as HTMLLinkElement
+  const link = existingLink || document.createElement('link')
+  link.type = 'image/x-icon'
+  link.rel = 'shortcut icon'
+  link.href = faviconUrl
+  const head = document.getElementsByTagName('head')[0]
+  if (head) {
+    head.appendChild(link)
   }
 }
+
+// 生成字体名称
+function generateFontName(fontPath: string, region: string, type: 'a' | 'b'): string {
+  if (fontPath.startsWith('http')) {
+    return `${region}-font-${type}`
+  }
+  return fontPath.split('/').pop()?.split('.')[0] || (type === 'a' ? 'SanJiZhengYaHei-XianXi' : 'brand')
+}
+
+// 生成字体族
+function generateFontFamily(fontA: string, fontB: string, region: string): string {
+  const fonts: string[] = []
+  
+  if (fontA && fontA.trim() !== '') {
+    const fontName = generateFontName(fontA, region, 'a')
+    fonts.push(`"${fontName}"`)
+  }
+  
+  if (fontB && fontB.trim() !== '') {
+    const fontName = generateFontName(fontB, region, 'b')
+    fonts.push(`"${fontName}"`)
+  }
+  
+  fonts.push('system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif')
+  
+  return fonts.join(', ')
+}
+
+// 应用字体配置
+export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> {
+  const { header, content, footer } = fontsConfig
+  
+  if (!header || !content || !footer) {
+    console.warn('字体配置不完整，跳过应用')
+    return
+  }
+  
+  // 加载字体
+  const fontConfigs = [
+    { font: header.fontA, region: 'header', type: 'a' as const },
+    { font: header.fontB, region: 'header', type: 'b' as const },
+    { font: content.category?.fontA, region: 'category', type: 'a' as const },
+    { font: content.category?.fontB, region: 'category', type: 'b' as const },
+    { font: content.site?.fontA, region: 'site', type: 'a' as const },
+    { font: content.site?.fontB, region: 'site', type: 'b' as const },
+    { font: footer.fontA, region: 'footer', type: 'a' as const },
+    { font: footer.fontB, region: 'footer', type: 'b' as const }
+  ]
+  
+  for (const config of fontConfigs) {
+    if (config.font && config.font.trim() !== '') {
+      const fontUrl = config.font.startsWith('http') ? config.font : `/${config.font}`
+      const fontName = generateFontName(config.font, config.region, config.type)
+      await loadFont(fontName, fontUrl)
+    }
+  }
+  
+  // 应用字体样式
+  const root = document.documentElement
+  
+  // 头部字体样式
+  const headerFontFamily = generateFontFamily(header.fontA || '', header.fontB || '', 'header')
+  root.style.setProperty('--header-font-family', headerFontFamily)
+  if (header.size) root.style.setProperty('--header-font-size', `${header.size}px`)
+  if (header.weight) root.style.setProperty('--header-font-weight', header.weight)
+
+  // 头部B字体样式（专门用于数字）
+  const headerBFontFamily = generateFontFamily('', header.fontB || '', 'header-b')
+  root.style.setProperty('--header-font-b-family', headerBFontFamily)
+  
+  // 等待字体加载完成后应用
+  if (header.fontB && header.fontB.trim() !== '') {
+    document.fonts.ready.then(() => {
+      const timeElements = document.querySelectorAll('.current-time')
+      timeElements.forEach((el) => {
+        const element = el as HTMLElement
+        element.style.fontFamily = 'var(--header-font-b-family)'
+      })
+      
+      const dateElements = document.querySelectorAll('.current-date')
+      dateElements.forEach((el) => {
+        const element = el as HTMLElement
+        const dateText = element.textContent || ''
+        if (/[\u4e00-\u9fff]/.test(dateText)) {
+          element.style.fontFamily = 'var(--header-font-family)'
+        } else {
+          element.style.fontFamily = 'var(--header-font-b-family)'
+        }
+      })
+    })
+  }
+
+  // 智能字体选择函数
+  function createSmartFontFamily(fontA: string, fontB: string, region: string): string {
+    if (fontA && fontB) {
+      const fontAName = generateFontName(fontA, region, 'a')
+      const fontBName = generateFontName(fontB, region, 'b')
+      return `"${fontBName}", "${fontAName}", system-ui, -apple-system, BlinkMacSystemFont, sans-serif`
+    }
+    return generateFontFamily(fontA, fontB, region)
+  }
+
+  // 分组标题字体样式
+  const categoryFontFamily = createSmartFontFamily(content.category?.fontA || '', content.category?.fontB || '', 'category')
+  root.style.setProperty('--category-font-family', categoryFontFamily)
+  if (content.category?.size) root.style.setProperty('--category-font-size', `${content.category.size}px`)
+  if (content.category?.weight) root.style.setProperty('--category-font-weight', content.category.weight)
+
+  // 网站卡片字体样式
+  const siteFontFamily = createSmartFontFamily(content.site?.fontA || '', content.site?.fontB || '', 'site')
+  root.style.setProperty('--site-font-family', siteFontFamily)
+  if (content.site?.size) root.style.setProperty('--site-font-size', `${content.site.size}px`)
+  if (content.site?.weight) root.style.setProperty('--site-font-weight', content.site.weight)
+
+  // Footer字体样式
+  const footerFontFamily = generateFontFamily(footer.fontA || '', footer.fontB || '', 'footer')
+  root.style.setProperty('--footer-font-family', footerFontFamily)
+  if (footer.size) root.style.setProperty('--footer-font-size', `${footer.size}px`)
+  if (footer.weight) root.style.setProperty('--footer-font-weight', footer.weight)
+  
+  // 设置body默认字体
+  document.body.style.fontFamily = 'var(--site-font-family)'
+  
+  // 注入CSS @font-face规则
+  const style = document.createElement('style')
+  style.textContent = `
+    @font-face {
+      font-family: 'AnJingChenXinShouJinTi';
+      src: url('/fonts/AnJingChenXinShouJinTi.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'SanJiZhengYaHei-Cu';
+      src: url('/fonts/SanJiZhengYaHei-Cu.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'SanJiZhengYaHei-XianXi';
+      src: url('/fonts/SanJiZhengYaHei-XianXi.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'SanJiZhengYaHei-Xi-2';
+      src: url('/fonts/SanJiZhengYaHei-Xi-2.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'SanJiZhengYaHei-XianXi-2';
+      src: url('/fonts/SanJiZhengYaHei-XianXi-2.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'brand';
+      src: url('/fonts/brand.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Brand';
+      src: url('/fonts/brand.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'BRAND';
+      src: url('/fonts/brand.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'BrandFont';
+      src: url('/fonts/brand.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'SanJiZhengYaHei-ZhongCu';
+      src: url('/fonts/SanJiZhengYaHei-ZhongCu.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'SanJiZhengYaHei-Xi';
+      src: url('/fonts/SanJiZhengYaHei-Xi.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'footer-font-a';
+      src: url('https://raw.githubusercontent.com/GWen124/HomePage/main/public/fonts/brand.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+  `
+  document.head.appendChild(style)
+  
+  // 应用字体到所有元素
+  setTimeout(() => {
+    const mainQuoteElements = document.querySelectorAll('.main-quote')
+    mainQuoteElements.forEach(el => {
+      (el as HTMLElement).style.fontFamily = 'var(--header-font-family)'
+    })
+    
+    const dateNumbersElements = document.querySelectorAll('.date-numbers')
+    dateNumbersElements.forEach((el) => {
+      const element = el as HTMLElement
+      element.style.fontFamily = '"brand", system-ui, sans-serif'
+    })
+    
+    const dateChineseElements = document.querySelectorAll('.date-chinese')
+    dateChineseElements.forEach((el) => {
+      const element = el as HTMLElement
+      element.style.fontFamily = '"AnJingChenXinShouJinTi", "SanJiZhengYaHei-Cu", system-ui, sans-serif'
+      element.style.fontWeight = 'bold'
+    })
+    
+    const categoryElements = document.querySelectorAll('.category-title')
+    categoryElements.forEach(el => {
+      (el as HTMLElement).style.fontFamily = 'var(--category-font-family)'
+    })
+    
+    const siteElements = document.querySelectorAll('.site-name')
+    siteElements.forEach(el => {
+      (el as HTMLElement).style.fontFamily = 'var(--site-font-family)'
+    })
+  }, 1000)
+}
+
+// 加载字体
+async function loadFont(fontName: string, fontUrl: string): Promise<void> {
+  try {
+    const font = new FontFace(fontName, `url(${fontUrl})`)
+    await font.load()
+    document.fonts.add(font)
+  } catch (error) {
+    console.warn(`字体加载失败: ${fontName}`, error)
+  }
+}
+
+// 应用所有配置
+export async function applyAllConfigs(): Promise<void> {
+  if (appConfig.background) {
+    await applyBackgroundConfig(appConfig.background)
+  }
+  
+  if (appConfig.pageTitle) {
+    applyPageTitle(appConfig.pageTitle)
+  }
+  
+  if (appConfig.favicon) {
+    applyFaviconConfig(appConfig.favicon)
+  }
+  
+  if (appConfig.colors) {
+    applyColorsConfig(appConfig.colors)
+  }
+  
+  if (appConfig.fonts) {
+    await applyFontsConfig(appConfig.fonts)
+  }
+}
+
+
+
+
+
+

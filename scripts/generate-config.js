@@ -39,7 +39,7 @@ export async function loadConfig(): Promise<void> {
 }
 
 // 导出其他函数（保持兼容性）
-export { applyBackgroundConfig, applyPageTitle, applyFaviconConfig, applyColorsConfig, formatCopyrightYear } from './configLoader'
+export { applyBackgroundConfig, applyPageTitle, applyFaviconConfig, applyColorsConfig, applyFontsConfig, formatCopyrightYear } from './configLoader'
 `
 
 // 写入文件

@@ -12,7 +12,14 @@ favicon:
   icon: "https://image.gw124.top/Avatar/imgbin_a1bee513649d120523b69c8584c25695.png"
 
 # 页面主标题文字
-pageQuote: "Website Panel"
+pageQuote: "人生寂寞，知己难求。"
+
+# 时间日期模块配置
+timeDate:
+  # 是否显示时间日期模块
+  # true: 显示时间日期模块
+  # false: 隐藏时间日期模块，标题居中显示
+  enabled: true
 
 # Footer 信息配置
 footer:
@@ -62,6 +69,52 @@ colors:
     cardTitle: "#000000"
     # 3. Footer区域颜色（版权信息、链接文字、分割线）
     footer: "#000000"
+
+# 字体配置
+fonts:
+  # 头部区域字体（主标题、时间、日期、搜索栏）
+  header:
+    # A字体：汉字优先级高（中文、日文、韩文等）
+    # 本地路径示例: fonts/chinese.ttf 或 ./fonts/custom.woff2
+    # 远程URL示例: https://github.com/GWen124/HomePage/blob/main/public/fonts/brand.ttf
+    # 留空使用系统默认字体
+    fontA: "fonts/AnJingChenXinShouJinTi.ttf"
+    # B字体：英文和数字优先级高（英文、数字、符号等）
+    # 留空则只使用A字体
+    # 示例：使用Google Fonts的Roboto字体
+    fontB: "fonts/brand.ttf"
+    # 字体大小（可选，留空使用默认大小）
+    size: ""
+    # 字体粗细（可选，留空使用默认粗细）
+    weight: ""
+  
+  # 中部区域字体（网站分类标题、网站卡片标题）
+  content:
+    # 分组标题字体
+    category:
+      # A字体：汉字优先级高
+      fontA: "fonts/SanJiZhengYaHei-ZhongCu.ttf"
+      # B字体：英文和数字优先级高
+      fontB: ""
+      size: ""
+      weight: ""
+    # 网站卡片标题字体
+    site:
+      # A字体：汉字优先级高
+      fontA: "fonts/SanJiZhengYaHei-Xi.ttf"
+      # B字体：英文和数字优先级高
+      fontB: ""
+      size: ""
+      weight: ""
+  
+  # Footer区域字体（版权信息、链接文字）
+  footer:
+    # A字体：汉字优先级高
+    fontA: "https://raw.githubusercontent.com/GWen124/HomePage/main/public/fonts/brand.ttf"
+    # B字体：英文和数字优先级高
+    fontB: ""
+    size: ""
+    weight: ""
 
 # 自动图标配置
 autoIcon:

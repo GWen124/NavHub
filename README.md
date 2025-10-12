@@ -1,45 +1,42 @@
 # Website Panel
 
-一个现代化的网站导航面板，支持自定义网站、自动图标获取、搜索引擎集成等功能。
+一个现代化的网站导航面板，基于 Vue 3 + TypeScript + Vite 构建，支持自定义字体、自动图标获取、Bing 壁纸轮播等功能。
 
 ## ✨ 功能特性
 
-### 🎨 界面设计
-- **响应式设计**：完美适配桌面端、平板端、移动端
-- **现代化UI**：简洁美观的卡片式布局
-- **自适应布局**：智能调整卡片大小和排列
-- **深色/浅色主题**：自动根据背景亮度切换文字颜色
-
-### 🔍 搜索引擎集成
-- **多引擎支持**：Google、百度、必应、DuckDuckGo、GitHub、Stack Overflow、YouTube、知乎
-- **智能搜索**：支持本地网站搜索和搜索引擎搜索
-- **搜索历史**：自动保存搜索记录
-- **快捷键支持**：Enter键快速搜索
-
-### 🎯 自动图标系统
-- **智能获取**：自动从多个服务商获取高质量图标
-- **多种模式**：
-  - 模式1：强制所有网站自动获取图标
-  - 模式2：网站图标为空时自动获取
-  - 模式3：非本地或链接图标自动获取（智能回退）
-- **图标缓存**：永久缓存获取的图标，提升加载速度
-- **质量优先**：优先选择高清、方形图标
-
-### 🌅 背景系统
+### 🎨 视觉设计
+- **响应式布局**：完美适配桌面、平板、手机等各种设备
+- **智能颜色切换**：根据背景亮度自动切换文字颜色（黑白）
+- **Bing 壁纸轮播**：支持每日 Bing 壁纸自动轮播
 - **自定义背景**：支持图片和视频背景
-- **Bing轮播**：每日自动更新Bing精美图片
-- **智能切换**：根据背景亮度自动调整文字颜色
-- **性能优化**：智能缓存和懒加载
+- **时间日期显示**：实时显示当前时间和日期
 
-### 📱 移动端优化
-- **触摸友好**：优化的触摸交互体验
-- **手势支持**：支持滑动和点击操作
-- **性能优化**：针对移动设备的性能优化
+### 🔤 字体系统
+- **A/B 字体配置**：支持中英文字体分别配置
+- **智能字体选择**：中文字符优先使用 A 字体，英文数字优先使用 B 字体
+- **本地/远程字体**：支持本地字体文件和远程字体 URL
+- **字体粗细控制**：支持字体大小和粗细自定义
+
+### 🎯 自动图标
+- **智能图标获取**：自动为网站获取高质量图标
+- **多服务商支持**：集成多个图标服务提供商
+- **图标缓存**：获取的图标永久缓存，避免重复请求
+- **优先级匹配**：方形图标 > 圆形图标 > 其他形状，高清优先
+
+### 🔍 搜索功能
+- **多搜索引擎**：支持 Google、百度、Bing、DuckDuckGo、GitHub、Stack Overflow、YouTube、知乎
+- **本地搜索**：支持网站名称和分组名称搜索
+- **搜索框动画**：优雅的搜索框展开动画
+
+### ⚙️ 配置管理
+- **YAML 配置**：使用 YAML 格式进行配置管理
+- **热重载**：开发环境下配置变更自动重载
+- **生产优化**：生产环境使用嵌入配置，无需外部文件
 
 ## 🚀 快速开始
 
 ### 环境要求
-- Node.js 16.0+
+- Node.js 16+ 
 - npm 或 yarn
 
 ### 安装依赖
@@ -49,208 +46,260 @@ npm install
 
 ### 开发模式
 ```bash
+# 启动开发服务器（支持配置热重载）
+npm run dev:watch
+
+# 或使用普通开发模式
 npm run dev
 ```
 
-### 构建生产版本
+### 构建部署
 ```bash
+# 构建生产版本
 npm run build
-```
 
-### 预览生产版本
-```bash
+# 预览构建结果
 npm run preview
 ```
 
-## ⚙️ 配置说明
+## 📝 配置说明
 
-### 基础配置 (config.yml)
+### 基础配置
 
+#### 页面信息
 ```yaml
 # 页面标题
 pageTitle: "Website Panel"
 
-# 页面图标
+# 页面副标题
+pageQuote: "人生寂寞，知己难求。"
+
+# 标签页图标
 favicon:
   icon: "https://example.com/favicon.ico"
+```
 
-# 页面引用
-pageQuote: "Website Panel"
+#### 时间日期模块
+```yaml
+timeDate:
+  # 是否显示时间日期模块
+  enabled: true
+```
 
-# 页脚配置
-footer:
-  websiteText: "WEBSITE.GW124.TOP"
-  websiteUrl: "https://gw124.top"
-  authorText: "Wen"
-  authorUrl: "https://github.com/GWen124"
-
-# 版权信息
-copyright:
-  startDate: "2025-10-01"
-  autoRange: false
-
-# 背景配置
+#### 背景设置
+```yaml
 background:
-  # Bing轮播背景开关
-  bingWallpaper: false
   # 自定义背景图片/视频
-  image: "https://example.com/background.jpg"
-  # Bing轮播模式
-  bingMode: "localFirst" # "localFirst" | "direct"
+  image: "https://example.com/background.mp4"
+  
+  # 是否启用 Bing 壁纸轮播
+  bingWallpaper: true
+  
+  # Bing 壁纸模式
+  bingMode: "localFirst"  # "localFirst" | "direct"
+```
 
-# 颜色配置
+### 字体配置
+
+#### 头部字体
+```yaml
+fonts:
+  header:
+    # A字体：汉字优先级高
+    fontA: "fonts/AnJingChenXinShouJinTi.ttf"
+    # B字体：英文和数字优先级高
+    fontB: "fonts/brand.ttf"
+    size: ""
+    weight: ""
+```
+
+#### 中部区域字体
+```yaml
+fonts:
+  content:
+    # 分组标题字体
+    category:
+      fontA: "fonts/SanJiZhengYaHei-ZhongCu.ttf"
+      fontB: ""
+    # 网站卡片标题字体
+    site:
+      fontA: "fonts/SanJiZhengYaHei-Xi.ttf"
+      fontB: ""
+```
+
+#### Footer 字体
+```yaml
+fonts:
+  footer:
+    fontA: "https://raw.githubusercontent.com/example/font.ttf"
+    fontB: ""
+```
+
+### 颜色配置
+
+```yaml
 colors:
   # 自动颜色切换
   autoColor: true
-  # 手动颜色设置
+  
+  # 手动颜色设置（仅在 autoColor: false 时生效）
   manual:
     header: "#000000"
     cardTitle: "#000000"
-    footer: "#000000"
+    footer: "#666666"
+```
 
-# 自动图标配置
+### 自动图标配置
+
+```yaml
 autoIcon:
   # 自动图标模式
-  mode: 3 # 1 | 2 | 3
+  mode: 3  # 1: 强制所有网站自动获取 | 2: 空图标自动获取 | 3: 非本地/链接图标自动获取
+  
+  # 图标服务商优先级（按顺序）
+  services:
+    - "Google Favicon"
+    - "DuckDuckGo Favicon"
+    - "Favicon.io"
+    - "icon.horse"
+    - "Clearbit"
+    - "Brandfetch"
+    - "Logo.dev"
+    - "Simple Icons"
+    - "Iconify"
+    - "Iconfont"
+    - "xicon"
+    - "Font Awesome"
+    - "文字图标"
 ```
 
-### 网站配置 (src/config.ts)
+## 🎨 自定义指南
+
+### 添加网站
+在 `src/config.ts` 中添加网站配置：
 
 ```typescript
-export default [
-  {
-    name: "Favorites - 常用网站",
-    sites: [
-      {
-        name: "Google",
-        url: "https://www.google.com",
-        icon: "" // 留空自动获取
-      }
-    ]
-  }
-]
+{
+  name: "网站名称",
+  url: "https://example.com",
+  icon: ""  // 留空自动获取图标
+}
 ```
 
-## 🎨 自定义主题
+### 添加分组
+在 `src/config.ts` 中添加分组配置：
 
-### 颜色配置
-- **自动模式**：根据背景亮度自动切换文字颜色
-- **手动模式**：自定义标题、卡片、页脚颜色
+```typescript
+{
+  name: "分组名称",
+  sites: [
+    // 网站列表
+  ]
+}
+```
 
-### 背景配置
-- **图片背景**：支持本地和网络图片
-- **视频背景**：支持MP4格式视频
-- **Bing轮播**：每日自动更新精美图片
+### 自定义字体
+1. 将字体文件放入 `public/fonts/` 目录
+2. 在 `config.yml` 中配置字体路径
+3. 支持本地字体和远程字体 URL
 
-## 🔧 高级功能
+### 自定义背景
+- **图片背景**：设置 `background.image` 为图片 URL
+- **视频背景**：设置 `background.image` 为视频 URL（支持 .mp4, .webm, .ogg）
+- **Bing 壁纸**：设置 `background.bingWallpaper: true`
 
-### 自动图标系统
-支持多种图标获取方式：
-1. **直接获取**：从网站直接获取favicon
-2. **服务商获取**：从Clearbit、Google、DuckDuckGo等服务商获取
-3. **图标库获取**：从xicons、Font Awesome等图标库获取
-4. **文字图标**：自动生成文字图标作为备选
-
-### 搜索引擎集成
-- **本地搜索**：搜索网站名称和分类
-- **网络搜索**：集成8个主流搜索引擎
-- **搜索历史**：自动保存和显示搜索记录
-
-### 响应式设计
-- **桌面端**：多列网格布局，最佳浏览体验
-- **平板端**：自适应列数，触摸友好
-- **移动端**：单列布局，优化触摸操作
-
-## 📱 移动端特性
-
-### 触摸优化
-- **大按钮设计**：适合手指点击
-- **滑动支持**：支持上下滑动浏览
-- **手势识别**：智能识别触摸操作
-
-### 性能优化
-- **懒加载**：按需加载图片和资源
-- **缓存机制**：智能缓存提升加载速度
-- **压缩优化**：自动压缩和优化资源
-
-## 🛠️ 开发指南
+## 🔧 开发指南
 
 ### 项目结构
 ```
-src/
-├── components/          # Vue组件
-│   ├── AutoIcon.vue    # 自动图标组件
-│   ├── SiteCard.vue    # 网站卡片组件
-│   └── ...
-├── config/             # 配置文件
-│   ├── configLoader.ts # 配置加载器
-│   └── generated.ts   # 生成的配置
-├── utils/              # 工具函数
-├── views/              # 页面视图
-└── main.ts            # 入口文件
+Website Panel/
+├── public/                 # 静态资源
+│   ├── fonts/             # 字体文件
+│   └── favicon.ico        # 网站图标
+├── src/
+│   ├── components/        # Vue 组件
+│   │   ├── AutoIcon.vue   # 自动图标组件
+│   │   ├── SiteCard.vue   # 网站卡片组件
+│   │   ├── CategorySection.vue  # 分组组件
+│   │   └── SearchEngineSelector.vue  # 搜索引擎选择器
+│   ├── config/            # 配置管理
+│   │   ├── configLoader.ts    # 配置加载器
+│   │   ├── generated.ts       # 生成的配置
+│   │   └── autoIconConfigLoader.ts  # 自动图标配置
+│   ├── views/             # 页面视图
+│   │   └── HomeView.vue   # 主页
+│   └── App.vue            # 根组件
+├── config.yml            # 配置文件
+└── scripts/              # 构建脚本
+    ├── generate-config.js    # 配置生成脚本
+    └── watch-config.js       # 配置监听脚本
 ```
 
-### 添加新网站
-1. 编辑 `src/config.ts`
-2. 在对应分类下添加网站信息
-3. 图标字段留空自动获取
+### 核心组件
 
-### 自定义样式
-- 修改 `src/assets/styles/` 下的CSS文件
-- 使用CSS变量进行主题定制
-- 支持响应式断点自定义
+#### AutoIcon 组件
+负责自动获取网站图标，支持多种图标服务商和智能匹配。
+
+#### SiteCard 组件
+显示单个网站卡片，支持图标显示和点击跳转。
+
+#### CategorySection 组件
+显示网站分组，包含分组标题和网站列表。
+
+#### SearchEngineSelector 组件
+提供搜索引擎选择功能，支持多种搜索引擎。
+
+### 配置系统
+
+#### 开发环境
+- 从 `config.yml` 动态加载配置
+- 支持配置热重载
+- 配置变更自动重启开发服务器
+
+#### 生产环境
+- 配置嵌入到构建产物中
+- 无需外部配置文件
+- 更快的加载速度
 
 ## 🚀 部署指南
 
-### GitHub Pages
+### GitHub Pages 部署
 1. 构建项目：`npm run build`
-2. 推送dist目录到gh-pages分支
-3. 在GitHub仓库设置中启用Pages
+2. 将 `dist` 目录内容推送到 GitHub Pages
+3. 配置 GitHub Pages 源为 `main` 分支的 `dist` 目录
 
-### Vercel部署
-1. 连接GitHub仓库
-2. 设置构建命令：`npm run build`
-3. 设置输出目录：`dist`
-4. 自动部署
-
-### Netlify部署
-1. 连接GitHub仓库
-2. 设置构建命令：`npm run build`
-3. 设置发布目录：`dist`
-4. 自动部署
-
-## 🔍 故障排除
-
-### 常见问题
-1. **图标不显示**：检查网络连接，尝试刷新页面
-2. **搜索不工作**：检查搜索引擎配置
-3. **背景不显示**：检查图片URL是否有效
-4. **移动端显示异常**：清除浏览器缓存
-
-### 调试模式
-- 打开浏览器开发者工具
-- 查看控制台错误信息
-- 检查网络请求状态
-
-## 📄 许可证
-
-MIT License
+### 其他平台部署
+1. 构建项目：`npm run build`
+2. 将 `dist` 目录内容上传到服务器
+3. 配置 Web 服务器指向 `dist` 目录
 
 ## 🤝 贡献指南
 
-1. Fork 项目
-2. 创建功能分支
-3. 提交更改
-4. 推送到分支
-5. 创建Pull Request
+1. Fork 本仓库
+2. 创建功能分支：`git checkout -b feature/AmazingFeature`
+3. 提交更改：`git commit -m 'Add some AmazingFeature'`
+4. 推送到分支：`git push origin feature/AmazingFeature`
+5. 创建 Pull Request
 
-## 📞 支持
+## 📄 许可证
 
-如有问题或建议，请：
-- 提交Issue
-- 发送邮件
-- 参与讨论
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+
+## 🙏 致谢
+
+- [Vue.js](https://vuejs.org/) - 渐进式 JavaScript 框架
+- [Vite](https://vitejs.dev/) - 下一代前端构建工具
+- [TypeScript](https://www.typescriptlang.org/) - JavaScript 的超集
+- [xicons](https://xicons.org/) - Vue 图标库
+- [Font Awesome](https://fontawesome.com/) - 图标库
+
+## 📞 联系方式
+
+如有问题或建议，请通过以下方式联系：
+
+- GitHub Issues: [创建 Issue](https://github.com/your-username/website-panel/issues)
+- Email: your-email@example.com
 
 ---
 
-**Website Panel** - 让网站导航更简单、更美观、更高效！
+⭐ 如果这个项目对你有帮助，请给它一个星标！

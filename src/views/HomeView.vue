@@ -2,11 +2,14 @@
   <div class="app-container">
     <header class="app-header">
       <div class="header-content">
-        <div class="quote-section">
+        <div class="quote-section" :class="{ 'centered': !appConfigRef.timeDate?.enabled }">
           <h1 class="main-quote">{{ appConfigRef.pageQuote }}</h1>
-          <div class="time-section">
+          <div v-if="appConfigRef.timeDate?.enabled" class="time-section">
             <div class="current-time">{{ currentTime }}</div>
-            <div class="current-date">{{ currentDate }}</div>
+            <div class="current-date">
+              <span class="date-numbers">{{ dateNumbers }}</span>
+              <span class="date-chinese"> {{ dateChinese }}</span>
+            </div>
           </div>
         </div>
         <div class="search-section">
@@ -85,9 +88,9 @@
     <footer class="app-footer">
       <div class="footer-content">
         Copyright © {{ copyrightYear }} 
-        <a :href="appConfigRef.footer.websiteUrl" target="_blank" class="footer-link">{{ appConfigRef.footer.websiteText }}</a> 
+        <a :href="appConfigRef.footer?.websiteUrl" target="_blank" class="footer-link">{{ appConfigRef.footer?.websiteText }}</a> 
         • Powered by 
-        <a :href="appConfigRef.footer.authorUrl" target="_blank" class="footer-link">{{ appConfigRef.footer.authorText }}</a>
+        <a :href="appConfigRef.footer?.authorUrl" target="_blank" class="footer-link">{{ appConfigRef.footer?.authorText }}</a>
       </div>
     </footer>
     
@@ -98,7 +101,7 @@
 import { ref, onMounted, computed, onUnmounted } from 'vue'
 import { config, type Category } from '@/config'
 import { useThemeStore } from '@/stores/theme'
-import { loadConfig, applyBackgroundConfig, applyPageTitle, applyFaviconConfig, applyColorsConfig, appConfig, formatCopyrightYear } from '@/config/generated'
+import { loadConfig, applyBackgroundConfig, applyPageTitle, applyFaviconConfig, applyColorsConfig, applyFontsConfig, appConfig, formatCopyrightYear } from '@/config/generated'
 import CategorySection from '@/components/CategorySection.vue'
 import { searchEngines, getSearchEngine, performSearch, type SearchEngine } from '@/utils/searchEngines'
 
@@ -115,11 +118,24 @@ const appConfigRef = computed(() => appConfig)
 
 // 版权年份
 const copyrightYear = computed(() => {
-  return formatCopyrightYear(appConfig.copyright)
+  return appConfig.copyright ? formatCopyrightYear(appConfig.copyright) : new Date().getFullYear().toString()
 })
 const filteredCategories = ref<Category[]>([])
 const currentTime = ref('')
 const currentDate = ref('')
+
+// 拆分日期为数字和汉字部分
+const dateNumbers = computed(() => {
+  const date = currentDate.value
+  const match = date.match(/^(\d+-\d+)/)
+  return match ? match[1] : ''
+})
+
+const dateChinese = computed(() => {
+  const date = currentDate.value
+  const match = date.match(/\s(.+)$/)
+  return match ? match[1] : ''
+})
 
 // 当前搜索引擎
 const currentSearchEngine = computed(() => {
@@ -132,18 +148,29 @@ const updateTime = () => {
   const now = new Date()
   
   // 使用浏览器本地时区
-  currentTime.value = now.toLocaleTimeString('zh-CN', { 
+  const timeString = now.toLocaleTimeString('zh-CN', { 
     hour12: false,
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit'
   })
   
+  // 直接更新DOM，避免Vue响应式更新
+  const timeElement = document.querySelector('.current-time')
+  if (timeElement) {
+    timeElement.textContent = timeString
+  }
+  
+  // 日期只在日期变化时更新
   const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
   const month = now.getMonth() + 1
   const day = now.getDate()
   const weekday = weekdays[now.getDay()]
-  currentDate.value = `${month}-${day} ${weekday}`
+  const dateString = `${month}-${day} ${weekday}`
+  
+  if (currentDate.value !== dateString) {
+    currentDate.value = dateString
+  }
 }
 
 // 处理搜索
@@ -229,13 +256,26 @@ const handleClickOutside = (event: Event) => {
 onMounted(async () => {
   themeStore.initTheme()
   await loadConfig()
-  applyPageTitle(appConfig.pageTitle)
-  applyFaviconConfig(appConfig.favicon)
-  applyColorsConfig(appConfig.colors)
+  if (appConfig.pageTitle) {
+    applyPageTitle(appConfig.pageTitle)
+  }
+  if (appConfig.favicon) {
+    applyFaviconConfig(appConfig.favicon)
+  }
+  if (appConfig.colors) {
+    applyColorsConfig(appConfig.colors)
+  }
+  
+  // 应用字体配置
+  if (appConfig.fonts) {
+    await applyFontsConfig(appConfig.fonts)
+  }
   
   // 延迟应用背景，确保DOM完全加载
   setTimeout(async () => {
-    await applyBackgroundConfig(appConfig.background)
+    if (appConfig.background) {
+      await applyBackgroundConfig(appConfig.background)
+    }
   }, 100)
   
   filteredCategories.value = config
@@ -289,9 +329,15 @@ onUnmounted(() => {
   justify-content: center;
 }
 
+.quote-section.centered {
+  flex-direction: column;
+  gap: 0;
+}
+
 .main-quote {
-  font-size: 4rem;
-  font-weight: 700;
+  font-family: var(--header-font-family, inherit);
+  font-size: var(--header-font-size, 4rem);
+  font-weight: var(--header-font-weight, 700);
   color: var(--header-color, #000000);
   margin: 0;
   text-align: center;
@@ -307,20 +353,42 @@ onUnmounted(() => {
 }
 
 .current-time {
-  font-size: 1.8rem;
-  font-weight: 600;
+  font-family: var(--header-font-b-family, inherit);
+  font-size: var(--header-font-size, 1.8rem);
+  font-weight: var(--header-font-weight, 600);
   color: var(--header-color, #000000);
   margin: 0;
   text-shadow: none;
+  width: 80px;
+  text-align: center;
+  font-family: "brand", system-ui, sans-serif;
 }
 
 .current-date {
-  font-size: 1rem;
-  font-weight: 400;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: var(--header-font-size, 1rem);
   color: var(--header-color, #000000);
   margin: 0;
   opacity: 0.8;
   text-shadow: none;
+  position: relative;
+}
+
+.date-numbers {
+  font-family: "brand", system-ui, sans-serif;
+  font-weight: var(--header-font-weight, 400);
+  margin-right: 70px;
+}
+
+.date-chinese {
+  font-family: "AnJingChenXinShouJinTi", "SanJiZhengYaHei-Cu", system-ui, sans-serif;
+  font-weight: var(--header-font-weight, 400);
+  position: absolute;
+  right: 0;
+  width: 60px;
+  text-align: right;
 }
 
 .search-section {
@@ -634,6 +702,9 @@ onUnmounted(() => {
 }
 
 .footer-content {
+  font-family: var(--footer-font-family, inherit);
+  font-size: var(--footer-font-size, inherit);
+  font-weight: var(--footer-font-weight, inherit);
   max-width: 80vw;
   margin: 0 auto;
   padding: 0 24px;
@@ -643,6 +714,9 @@ onUnmounted(() => {
 }
 
 .footer-link {
+  font-family: var(--footer-font-family, inherit);
+  font-size: var(--footer-font-size, inherit);
+  font-weight: var(--footer-font-weight, inherit);
   color: var(--footer-color, #000000);
   text-decoration: none;
   position: relative;

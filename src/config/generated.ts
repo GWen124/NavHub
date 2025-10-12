@@ -11,7 +11,10 @@ export const appConfig = reactive<AppConfig>({
   "favicon": {
     "icon": "https://image.gw124.top/Avatar/imgbin_a1bee513649d120523b69c8584c25695.png"
   },
-  "pageQuote": "Website Panel",
+  "pageQuote": "人生寂寞，知己难求。",
+  "timeDate": {
+    "enabled": true
+  },
   "footer": {
     "websiteText": "WEBSITE.GW124.TOP",
     "websiteUrl": "https://gw124.top"
@@ -31,6 +34,34 @@ export const appConfig = reactive<AppConfig>({
       "header": "#000000",
       "cardTitle": "#000000",
       "footer": "#000000"
+    }
+  },
+  "fonts": {
+    "header": {
+      "fontA": "fonts/AnJingChenXinShouJinTi.ttf",
+      "fontB": "fonts/brand.ttf",
+      "size": "",
+      "weight": ""
+    },
+    "content": {
+      "category": {
+        "fontA": "fonts/SanJiZhengYaHei-ZhongCu.ttf",
+        "fontB": "",
+        "size": "",
+        "weight": ""
+      },
+      "site": {
+        "fontA": "fonts/SanJiZhengYaHei-Xi.ttf",
+        "fontB": "",
+        "size": "",
+        "weight": ""
+      }
+    },
+    "footer": {
+      "fontA": "https://raw.githubusercontent.com/GWen124/HomePage/main/public/fonts/brand.ttf",
+      "fontB": "",
+      "size": "",
+      "weight": ""
     }
   },
   "autoIcon": {
@@ -54,4 +85,4 @@ export async function loadConfig(): Promise<void> {
 }
 
 // 导出其他函数（保持兼容性）
-export { applyBackgroundConfig, applyPageTitle, applyFaviconConfig, applyColorsConfig, formatCopyrightYear } from './configLoader'
+export { applyBackgroundConfig, applyPageTitle, applyFaviconConfig, applyColorsConfig, applyFontsConfig, formatCopyrightYear } from './configLoader'
