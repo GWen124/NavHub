@@ -1,17 +1,18 @@
 # Website Panel
 
-一个现代化的网站导航面板，基于 Vue 3 + TypeScript 构建，支持动态背景、智能颜色适配和高度自定义。
+一个现代化的网站导航面板，基于 Vue 3 + TypeScript 构建，支持动态背景、智能颜色适配、搜索引擎集成和高度自定义。
 
 ## ✨ 特性
 
 ### 🎨 视觉设计
 - **现代化 UI**：简洁的黑白设计风格，灵感来源于 Sun Panel
-- **响应式布局**：完美适配桌面和移动设备
+- **响应式布局**：完美适配桌面、平板和移动设备
 - **动态背景**：支持 Bing 每日图片轮播和自定义图片/视频背景
 - **智能颜色适配**：根据背景亮度自动切换文字颜色
 
 ### 🔧 功能特性
-- **实时搜索**：快速查找网站和分类
+- **实时搜索**：快速查找网站和分类，支持搜索引擎搜索
+- **搜索引擎集成**：内置8个主流搜索引擎（Google、百度、Bing、DuckDuckGo、GitHub、Stack Overflow、YouTube、知乎）
 - **分类管理**：支持多级分类和自定义图标
 - **智能图标系统**：支持自动获取网站图标、Xicons、Font Awesome、Emoji、外部图片等多种图标类型
 - **自动图标获取**：智能匹配网站图标，支持多种服务商和回退机制
@@ -61,7 +62,7 @@ npm run build
 pageTitle: "Website Panel"
 
 # 页面主标题文字
-pageQuote: "人生寂寞，知己难求。"
+pageQuote: "Website Panel"
 
 # 标签页图标
 favicon:
@@ -82,16 +83,20 @@ copyright:
   # 版权开始日期，格式：YYYY-MM-DD
   startDate: "2025-10-01"
   # 是否自动计算年份范围
-  autoRange: true
+  autoRange: false
 ```
 
 #### 背景配置
 ```yaml
 background:
   # Bing 轮播背景开关
-  bingWallpaper: true
+  bingWallpaper: false
   # 自定义背景图片/视频
   image: "https://example.com/background.mp4"
+  # Bing轮播模式选择
+  # "localFirst": 先显示本地背景，30秒后切换到Bing轮播
+  # "direct": 直接显示Bing轮播，不显示本地背景
+  bingMode: "localFirst"
 ```
 
 #### 颜色配置
@@ -109,19 +114,11 @@ colors:
 #### 自动图标配置
 ```yaml
 autoIcon:
-  # 自动图标模式
-  mode: 4  # 1: 强制所有网站自动获取, 2: 图标为空时自动获取, 3: 非链接或本地图标自动获取, 4: 智能回退模式
-  # 图标服务商优先级
-  services: ['clearbit', 'google', 'duckduckgo', 'iconhorse', 'simple', 'iconify', 'iconfont', 'direct']
-  # 图标配置
-  icon:
-    size: 64                    # 图标大小
-    shapePriority: ['square', 'round', 'any']  # 形状优先级
-    qualityPriority: ['hd', 'normal', 'any']   # 质量优先级
-  # 调试配置
-  debug:
-    enableLogging: false        # 启用日志
-    showLoadingState: true      # 显示加载状态
+  # 自动图标模式选择
+  # 1: 强制所有网站自动获取图标（忽略自定义图标）
+  # 2: 网站图标为空时自动获取（保留自定义图标）
+  # 3: 非本地或链接图标一律自动获取（智能回退：服务商 → xicon → Font Awesome → 文字图标）
+  mode: 3
 ```
 
 ### 网站配置
@@ -143,7 +140,7 @@ export interface Category {
 
 export const config: Category[] = [
   {
-    name: "工作工具",
+    name: "Favorites - 常用网站",
     sites: [
       {
         name: "GitHub",
@@ -168,21 +165,20 @@ export const config: Category[] = [
 项目支持智能自动获取网站图标，通过多种服务商和回退机制确保图标显示：
 
 #### 自动图标模式
-- **模式 1**：强制所有网站自动获取图标
-- **模式 2**：仅当网站图标为空时自动获取
-- **模式 3**：非链接或本地图标自动获取（替换第三方图标）
-- **模式 4**：智能回退模式（推荐）
+- **模式 1**：强制所有网站自动获取图标（忽略自定义图标）
+- **模式 2**：仅当网站图标为空时自动获取（保留自定义图标）
+- **模式 3**：非本地或链接图标自动获取（智能回退模式，推荐）
 
 #### 图标服务商优先级
-1. **Clearbit** - 高质量品牌图标
-2. **Icon Horse** - 通用网站图标
-3. **DuckDuckGo** - 搜索引擎图标
-4. **Favicon.io** - 标准网站图标
-5. **Simple Icons** - 开源项目图标
-6. **Iconify** - 图标库
-7. **Iconfont** - 阿里巴巴图标库
-8. **Google** - Google 图标服务
-9. **网站直接获取** - 从网站获取 favicon
+1. **直接获取** - 从网站获取 favicon
+2. **Clearbit** - 高质量品牌图标
+3. **Icon Horse** - 通用网站图标
+4. **DuckDuckGo** - 搜索引擎图标
+5. **Favicon.io** - 标准网站图标
+6. **Simple Icons** - 开源项目图标
+7. **Iconify** - 图标库
+8. **Iconfont** - 阿里巴巴图标库
+9. **Google** - Google 图标服务
 
 #### 回退机制
 当所有服务商都无法获取图标时，系统会按以下顺序回退：
@@ -227,12 +223,22 @@ icon: "T"                   // 显示字母 T
 - **缓存位置**：浏览器 localStorage
 - **缓存管理**：支持手动清除缓存
 
-### 添加新图标
+## 🔍 搜索引擎功能
 
-1. **Xicons 图标**：在 `src/utils/icons.ts` 中添加映射
-2. **Font Awesome 图标**：直接使用类名
-3. **自定义图标**：使用外部图片链接
-4. **自动图标**：设置 `icon: ""` 和 `autoIcon: true`
+### 支持的搜索引擎
+- **Google** - 全球最大的搜索引擎
+- **百度** - 中国最大的搜索引擎
+- **Bing** - 微软搜索引擎
+- **DuckDuckGo** - 隐私保护搜索引擎
+- **GitHub** - 代码搜索
+- **Stack Overflow** - 技术问答搜索
+- **YouTube** - 视频搜索
+- **知乎** - 中文问答社区
+
+### 使用方法
+1. 在搜索框中输入关键词
+2. 点击左侧搜索引擎图标选择搜索引擎
+3. 点击右侧搜索按钮或按回车键执行搜索
 
 ## 🔧 开发指南
 
@@ -243,7 +249,8 @@ src/
 │   ├── SiteCard.vue     # 网站卡片组件
 │   ├── CategorySection.vue # 分类区域组件
 │   ├── AutoIcon.vue    # 自动图标组件
-│   └── AutoIconConfigPanel.vue # 自动图标配置面板
+│   ├── AutoIconConfigPanel.vue # 自动图标配置面板
+│   └── SearchEngineSelector.vue # 搜索引擎选择器
 ├── views/               # 页面视图
 │   └── HomeView.vue    # 主页视图
 ├── stores/              # Pinia 状态管理
@@ -280,7 +287,12 @@ src/
 - 图标缓存和性能优化
 - 并发控制和错误处理
 
-#### 4. 搜索功能
+#### 4. 搜索引擎功能
+- 集成8个主流搜索引擎
+- 支持搜索框内切换搜索引擎
+- 搜索历史记录和快速访问
+
+#### 5. 搜索功能
 - 实时搜索网站和分类
 - 支持模糊匹配
 - 集成在 HomeView.vue 中
@@ -301,7 +313,12 @@ src/
 #### 添加新的图标服务商
 1. 在 `iconUtils.ts` 中添加服务商函数
 2. 在 `getSmartFavicon` 中添加服务商逻辑
-3. 更新 `config.yml` 中的服务商列表
+3. 更新服务商优先级列表
+
+#### 添加新的搜索引擎
+1. 在 `SearchEngineSelector.vue` 中添加搜索引擎配置
+2. 更新搜索引擎列表
+3. 实现搜索逻辑
 
 ## 🚀 部署指南
 
@@ -356,12 +373,24 @@ npm run build
 - 确认背景图片加载成功
 - 查看控制台错误信息
 
-#### 4. 部署失败
+#### 4. 搜索引擎不工作
+- 检查搜索引擎配置
+- 确认网络连接
+- 查看控制台错误信息
+
+#### 5. 部署失败
 - 检查 GitHub Actions 日志
 - 确认 Node.js 版本兼容性
 - 检查构建错误
 
 ## 📝 更新日志
+
+### v2.1.0 (2025-01-XX)
+- 🔍 新增搜索引擎集成功能
+- 🎯 支持8个主流搜索引擎
+- 🎨 优化搜索界面设计
+- ⚡ 提升搜索性能和用户体验
+- 🛠️ 完善搜索功能配置
 
 ### v2.0.0 (2025-01-XX)
 - 🎯 智能自动图标获取系统

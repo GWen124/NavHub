@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 
 // 配置接口定义
 export interface AutoIconConfig {
-  mode: 1 | 2 | 3 | 4
+  mode: 1 | 2 | 3
   services: string[]
   customSources: string[] // 自定义图标源
   icon: {
@@ -101,8 +101,8 @@ const loadConfigFromYaml = async (): Promise<Partial<AutoIconConfig>> => {
         const parts = trimmedLine.split(':')
         if (parts.length > 1 && parts[1]) {
           const modeValue = parseInt(parts[1].trim())
-          if (modeValue >= 1 && modeValue <= 4) {
-            mode = modeValue as 1 | 2 | 3 | 4
+          if (modeValue >= 1 && modeValue <= 3) {
+            mode = modeValue as 1 | 2 | 3
           }
         }
         continue
@@ -115,7 +115,7 @@ const loadConfigFromYaml = async (): Promise<Partial<AutoIconConfig>> => {
     }
     
     return {
-      mode: mode as 1 | 2 | 3 | 4,
+      mode: mode as 1 | 2 | 3,
       services: ['clearbit', 'google', 'duckduckgo', 'iconhorse', 'simple', 'iconify', 'iconfont', 'direct'],
       customSources: defaultConfig.customSources,
       icon: {
@@ -188,11 +188,7 @@ export const shouldUseAutoIcon = (site: { icon: string; autoIcon?: boolean }): b
       const isEmpty = !site.icon || site.icon.trim() === ''
       return isEmpty
       
-    case 3: // 非链接或本地图标自动获取
-      const shouldReplace = !isValidIconUrl(site.icon)
-      return shouldReplace
-      
-    case 4: // 非本地或链接图标一律自动获取（智能回退）
+    case 3: // 非本地或链接图标一律自动获取（智能回退：服务商 → xicon → Font Awesome → 文字图标）
       const isNotLocalOrLink = !isValidIconUrl(site.icon)
       return isNotLocalOrLink
       

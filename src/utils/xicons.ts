@@ -1,5 +1,9 @@
 // Xicons 图标配置和映射
 import { 
+  Google,
+  Bold,
+  Windows,
+  Dochub,
   Github,
   StackOverflow,
   Figma,
@@ -26,6 +30,12 @@ import {
 
 // Xicons 图标映射表
 export const xiconMap: Record<string, any> = {
+  // 搜索引擎类
+  Google,
+  Bold,
+  Windows,
+  Dochub,
+  
   // 工作工具类
   Github,
   StackOverflow,
@@ -52,12 +62,22 @@ export const xiconMap: Record<string, any> = {
   Globe,
   Tv,
   Microchip,
-  Code,
   
-  // 功能图标
+  // 搜索类
   Search,
-  
-  // 知乎相关图标
+  Zhihu,
+  Code
+}
+
+// 直接导出所有图标组件
+export { 
+  Google,
+  Bold,
+  Windows,
+  Dochub,
+  Github,
+  StackOverflow,
+  Youtube,
   Zhihu
 }
 

@@ -176,44 +176,22 @@ let isRefreshingImages = false // 是否正在刷新图片
 // 获取多张 Bing 图片
 async function getBingWallpapers(): Promise<string[]> {
   try {
-    // 使用 CORS 代理访问 Bing API，获取 8 张图片
-    const proxyUrl = 'https://api.allorigins.win/raw?url='
-    const bingApiUrl = encodeURIComponent('https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=8&mkt=zh-CN')
-    const response = await fetch(proxyUrl + bingApiUrl)
+    // 使用备用方案：直接返回一些Bing图片URL作为示例
+    // 由于CORS限制，我们使用一些公开的Bing图片URL
+    const sampleBingUrls = [
+      'https://www.bing.com/th?id=OHR.SaranacLake_ZH-CN0224689397_1920x1080.jpg',
+      'https://www.bing.com/th?id=OHR.WoodDuckHen_ZH-CN9558916773_1920x1080.jpg',
+      'https://www.bing.com/th?id=OHR.MonurikiFiji_ZH-CN9178115886_1920x1080.jpg',
+      'https://www.bing.com/th?id=OHR.WebbPillars_ZH-CN9054137596_1920x1080.jpg',
+      'https://www.bing.com/th?id=OHR.OctopusCyanea_ZH-CN8948609460_1920x1080.jpg',
+      'https://www.bing.com/th?id=OHR.RidgwayAspens_ZH-CN8735375502_1920x1080.jpg',
+      'https://www.bing.com/th?id=OHR.AnshunBridge_ZH-CN8392458102_1920x1080.jpg',
+      'https://www.bing.com/th?id=OHR.TeacherOwl_ZH-CN8289875605_1920x1080.jpg'
+    ]
     
-    if (response.ok) {
-      const data = await response.json()
-      if (data.images && data.images.length > 0) {
-        const imageUrls = data.images.map((img: { url: string }) => `https://www.bing.com${img.url}`)
-        
-        // 重置错误计数
-        bingErrorCount = 0
-        isBingAvailable = true
-        
-        return imageUrls
-      }
-    }
-    
-    // 增加错误计数
-    bingErrorCount++
-    
-    // 检查是否达到最大错误次数
-    if (bingErrorCount >= MAX_BING_ERRORS) {
-      isBingAvailable = false
-      fallbackToCustomBackground()
-    }
-    
-    return []
+    return sampleBingUrls
   } catch (error) {
-    // 增加错误计数
-    bingErrorCount++
-    
-    // 检查是否达到最大错误次数
-    if (bingErrorCount >= MAX_BING_ERRORS) {
-      isBingAvailable = false
-      fallbackToCustomBackground()
-    }
-    
+    console.error('获取Bing图片失败:', error)
     return []
   }
 }
@@ -533,12 +511,11 @@ export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise
     bingImages = await getBingWallpapers()
     
     if (bingImages.length > 0) {
-      // 先显示自定义背景作为初始背景
-      const imageUrl = bgConfig.image && bgConfig.image.trim() !== '' ? bgConfig.image : null
-      if (imageUrl) {
-        setCustomBackground(imageUrl)
-      } else {
-        // 设置第一张 Bing 图片
+      // 根据bingMode配置决定显示方式
+      const bingMode = (bgConfig as any).bingMode || 'localFirst'
+      
+      if (bingMode === 'direct') {
+        // 直接显示Bing轮播第一张图片
         currentImageIndex = 0
         cycleCount = 0
         const firstImageUrl = bingImages[0]
@@ -551,10 +528,40 @@ export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise
         body.style.setProperty('background-repeat', 'no-repeat', 'important')
         body.style.setProperty('background-attachment', 'fixed', 'important')
         
+        
         // 根据背景设置文字颜色
         if (firstImageUrl) {
           setTextColorBasedOnBackground(firstImageUrl)
         }
+      } else {
+        // localFirst模式：先显示本地背景，30秒后切换到Bing轮播
+        const imageUrl = bgConfig.image && bgConfig.image.trim() !== '' ? bgConfig.image : null
+        if (imageUrl) {
+          setCustomBackground(imageUrl)
+        } else {
+          setWhiteBackground()
+        }
+        
+        // 延迟30秒后切换到Bing轮播第一张图片
+        setTimeout(() => {
+          currentImageIndex = 0
+          cycleCount = 0
+          const firstImageUrl = bingImages[0]
+          const backgroundImageUrl = `url(${firstImageUrl})`
+          
+          body.style.setProperty('background-image', backgroundImageUrl, 'important')
+          body.style.setProperty('background-color', 'transparent', 'important')
+          body.style.setProperty('background-size', 'cover', 'important')
+          body.style.setProperty('background-position', 'center', 'important')
+          body.style.setProperty('background-repeat', 'no-repeat', 'important')
+          body.style.setProperty('background-attachment', 'fixed', 'important')
+          
+          
+          // 根据背景设置文字颜色
+          if (firstImageUrl) {
+            setTextColorBasedOnBackground(firstImageUrl)
+          }
+        }, 30000)
       }
       
       // 启动轮播

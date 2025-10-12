@@ -133,7 +133,7 @@ import {
 } from '@/config/autoIconConfigLoader'
 
 // 响应式配置
-const selectedMode = ref<1 | 2 | 3 | 4>(2)
+const selectedMode = ref<1 | 2 | 3>(2)
 const selectedSize = ref<number>(64)
 const enableCache = ref<boolean>(true)
 const showInitials = ref<boolean>(true)

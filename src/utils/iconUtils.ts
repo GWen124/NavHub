@@ -578,11 +578,9 @@ const tryDirectMatch = async (source: string, siteName: string): Promise<string 
       if (isAvailable) {
         // 如果是同一厂家的网站，检查是否已使用过该图标
         if (company && usedIcons.has(iconUrl)) {
-          console.log(`⏭️ 跳过已使用的图标: ${iconUrl} (厂家: ${company})`)
           continue
         }
         
-        console.log('🎯 直接匹配成功:', iconUrl)
         
         // 记录已使用的图标
         if (company) {
@@ -629,7 +627,6 @@ const tryFolderMatch = async (source: string, siteName: string): Promise<string 
           const iconUrl = `${folderUrl}${fileName}`
           const isAvailable = await checkIconAvailability(iconUrl)
           if (isAvailable) {
-            console.log('🎯 文件夹匹配成功:', iconUrl)
             return iconUrl
           }
         }
@@ -680,7 +677,6 @@ const tryDomainBasedMatch = async (source: string, siteName: string): Promise<st
           const iconUrl = `${folderUrl}${fileName}`
           const isAvailable = await checkIconAvailability(iconUrl)
           if (isAvailable) {
-            console.log('🎯 域名匹配成功:', iconUrl)
             return iconUrl
           }
         }
@@ -721,7 +717,6 @@ const listFolderContents = async (folderUrl: string): Promise<string[]> => {
         const isAvailable = await checkIconAvailability(fileUrl)
         if (isAvailable) {
           availableFiles.push(fileName)
-          console.log(`✅ 找到图标文件: ${fileUrl}`)
         }
       }
     }
@@ -805,7 +800,6 @@ export const getXiconFallback = async (siteName: string): Promise<string | null>
   try {
     // 这里可以根据网站名称映射到对应的 xicon 图标
     // 暂时返回 null，让系统继续到下一个回退选项
-    console.log(`🔄 尝试 xicon 回退: ${siteName}`)
     return null
   } catch (error) {
     console.warn('⚠️ xicon 回退失败:', error)
@@ -822,7 +816,6 @@ export const getFontAwesomeFallback = async (siteName: string): Promise<string |
   try {
     // 这里可以根据网站名称映射到对应的 Font Awesome 图标
     // 暂时返回 null，让系统继续到下一个回退选项
-    console.log(`🔄 尝试 Font Awesome 回退: ${siteName}`)
     return null
   } catch (error) {
     console.warn('⚠️ Font Awesome 回退失败:', error)
@@ -1095,7 +1088,6 @@ export const setIconCache = (url: string, iconUrl: string): void => {
     localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData))
     localStorage.setItem(CACHE_EXPIRY_KEY, expiryTime.toString())
     
-    console.log(`💾 图标已缓存: ${url} -> ${iconUrl}`)
   } catch (error) {
     console.warn('保存图标缓存失败:', error)
   }
@@ -1108,7 +1100,6 @@ export const clearIconCache = (): void => {
   try {
     localStorage.removeItem(CACHE_KEY)
     localStorage.removeItem(CACHE_EXPIRY_KEY)
-    console.log('🗑️ 图标缓存已清除')
   } catch (error) {
     console.warn('清除图标缓存失败:', error)
   }

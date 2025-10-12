@@ -43,6 +43,10 @@ background:
   # 网络视频示例: https://example.com/video.mp4
   # 支持的视频格式: mp4, webm, ogg, avi, mov, wmv, flv, mkv
   image: "https://image.gw124.top/Video/1.mp4"
+  # Bing轮播模式选择
+  # "localFirst": 先显示本地背景，30秒后切换到Bing轮播
+  # "direct": 直接显示Bing轮播，不显示本地背景
+  bingMode: "localFirst"
 
 # 字体颜色配置
 colors:
@@ -64,7 +68,6 @@ autoIcon:
   # 自动图标模式选择
   # 1: 强制所有网站自动获取图标（忽略自定义图标）
   # 2: 网站图标为空时自动获取（保留自定义图标）
-  # 3: 非链接或本地图标自动获取（替换 xicon 等第三方图标）
-  # 4: 非本地或链接图标一律自动获取（智能回退：服务商 → xicon → Font Awesome → 文字图标）
-  mode: 4
+  # 3: 非本地或链接图标一律自动获取（智能回退：服务商 → xicon → Font Awesome → 文字图标）
+  mode: 3
   

@@ -22,7 +22,8 @@ export const appConfig = reactive<AppConfig>({
   },
   "background": {
     "bingWallpaper": false,
-    "image": "https://image.gw124.top/Video/1.mp4"
+    "image": "https://image.gw124.top/Video/1.mp4",
+    "bingMode": "localFirst"
   },
   "colors": {
     "autoColor": true,
@@ -33,7 +34,7 @@ export const appConfig = reactive<AppConfig>({
     }
   },
   "autoIcon": {
-    "mode": 4
+    "mode": 3
   }
 },
   footer: {
