@@ -80,7 +80,15 @@ const props = defineProps<Props>()
   }
   
   .sites-grid {
+    display: flex;
+    flex-wrap: wrap;
     gap: 12px;
+    justify-content: space-between;
+  }
+  
+  .sites-grid .site-card {
+    flex: 0 0 calc(33.333% - 8px);
+    max-width: calc(33.333% - 8px);
   }
   
   .category-title {
