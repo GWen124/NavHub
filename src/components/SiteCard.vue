@@ -126,7 +126,8 @@ const xiconComponent = computed(() => {
   transition: all 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  height: 40px;
+  min-height: 40px;
+  height: 100%;
   justify-content: flex-start;
   gap: 10px;
   backdrop-filter: blur(10px);
@@ -218,7 +219,8 @@ const xiconComponent = computed(() => {
 @media (max-width: 1024px) {
   .site-card {
     padding: 8px 16px;
-    height: 56px;
+    min-height: 56px;
+    height: 100%;
     gap: 12px;
   }
   
@@ -258,7 +260,8 @@ const xiconComponent = computed(() => {
 @media (max-width: 768px) {
   .site-card {
     padding: 6px 12px;
-    height: 48px;
+    min-height: 48px;
+    height: 100%;
     gap: 10px;
   }
   
@@ -298,7 +301,8 @@ const xiconComponent = computed(() => {
 @media (max-width: 480px) {
   .site-card {
     padding: 5px 10px;
-    height: 44px;
+    min-height: 44px;
+    height: 100%;
     gap: 8px;
   }
   
