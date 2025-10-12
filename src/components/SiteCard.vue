@@ -212,11 +212,51 @@ const xiconComponent = computed(() => {
 
 
 /* 响应式设计 */
+@media (max-width: 1024px) {
+  .site-card {
+    padding: 8px 16px;
+    min-height: 56px;
+    gap: 12px;
+  }
+  
+  .site-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+  
+  .site-icon img {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .site-icon :deep(svg) {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .emoji-icon {
+    font-size: 32px;
+  }
+  
+  .text-icon {
+    font-size: 22px;
+    width: 48px;
+    height: 48px;
+    color: #000000;
+  }
+  
+  .site-name {
+    font-size: 0.85rem;
+    line-height: 1.3;
+  }
+}
+
 @media (max-width: 768px) {
   .site-card {
-    padding: 3px 8px;
-    min-height: 36px;
-    gap: 6px;
+    padding: 6px 12px;
+    min-height: 48px;
+    gap: 10px;
   }
   
   .site-icon {
@@ -247,16 +287,16 @@ const xiconComponent = computed(() => {
   }
   
   .site-name {
-    font-size: 0.75rem;
-    line-height: 1.2;
+    font-size: 0.8rem;
+    line-height: 1.25;
   }
 }
 
 @media (max-width: 480px) {
   .site-card {
-    padding: 2px 6px;
-    min-height: 32px;
-    gap: 4px;
+    padding: 5px 10px;
+    min-height: 44px;
+    gap: 8px;
   }
   
   .site-icon {
@@ -286,8 +326,8 @@ const xiconComponent = computed(() => {
   }
   
   .site-name {
-    font-size: 0.7rem;
-    line-height: 1.1;
+    font-size: 0.75rem;
+    line-height: 1.2;
   }
 }
 </style>

@@ -69,18 +69,36 @@ const props = defineProps<Props>()
   }
 }
 
+@media (max-width: 1024px) {
+  .category-section {
+    margin-bottom: 28px;
+  }
+  
+  .category-header {
+    margin-bottom: 16px;
+  }
+  
+  .sites-grid {
+    gap: 12px;
+  }
+  
+  .category-title {
+    font-size: 1.05rem;
+  }
+}
+
 @media (max-width: 768px) {
   .category-section {
     margin-bottom: 24px;
   }
   
   .category-header {
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
   
   .sites-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+    gap: 10px;
   }
   
   .category-title {
@@ -91,7 +109,7 @@ const props = defineProps<Props>()
 @media (max-width: 480px) {
   .sites-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 6px;
+    gap: 8px;
   }
   
   .category-title {
@@ -100,6 +118,7 @@ const props = defineProps<Props>()
   
   .category-header {
     width: 95%;
+    margin-bottom: 12px;
   }
   
   .sites-grid {
