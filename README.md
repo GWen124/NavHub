@@ -1,438 +1,256 @@
 # Website Panel
 
-一个现代化的网站导航面板，基于 Vue 3 + TypeScript 构建，支持动态背景、智能颜色适配、搜索引擎集成和高度自定义。
+一个现代化的网站导航面板，支持自定义网站、自动图标获取、搜索引擎集成等功能。
 
-## ✨ 特性
+## ✨ 功能特性
 
-### 🎨 视觉设计
-- **现代化 UI**：简洁的黑白设计风格，灵感来源于 Sun Panel
-- **响应式布局**：完美适配桌面、平板和移动设备
-- **动态背景**：支持 Bing 每日图片轮播和自定义图片/视频背景
-- **智能颜色适配**：根据背景亮度自动切换文字颜色
+### 🎨 界面设计
+- **响应式设计**：完美适配桌面端、平板端、移动端
+- **现代化UI**：简洁美观的卡片式布局
+- **自适应布局**：智能调整卡片大小和排列
+- **深色/浅色主题**：自动根据背景亮度切换文字颜色
 
-### 🔧 功能特性
-- **实时搜索**：快速查找网站和分类，支持搜索引擎搜索
-- **搜索引擎集成**：内置8个主流搜索引擎（Google、百度、Bing、DuckDuckGo、GitHub、Stack Overflow、YouTube、知乎）
-- **分类管理**：支持多级分类和自定义图标
-- **智能图标系统**：支持自动获取网站图标、Xicons、Font Awesome、Emoji、外部图片等多种图标类型
-- **自动图标获取**：智能匹配网站图标，支持多种服务商和回退机制
-- **颜色配置**：支持自动变色和手动颜色设置
-- **版权信息**：自动计算版权年份范围
+### 🔍 搜索引擎集成
+- **多引擎支持**：Google、百度、必应、DuckDuckGo、GitHub、Stack Overflow、YouTube、知乎
+- **智能搜索**：支持本地网站搜索和搜索引擎搜索
+- **搜索历史**：自动保存搜索记录
+- **快捷键支持**：Enter键快速搜索
 
-### 🚀 技术特性
-- **Vue 3**：使用 Composition API 和 TypeScript
-- **Vite**：快速的构建工具和开发服务器
-- **Pinia**：现代化的状态管理
-- **GitHub Actions**：自动化部署到 GitHub Pages
+### 🎯 自动图标系统
+- **智能获取**：自动从多个服务商获取高质量图标
+- **多种模式**：
+  - 模式1：强制所有网站自动获取图标
+  - 模式2：网站图标为空时自动获取
+  - 模式3：非本地或链接图标自动获取（智能回退）
+- **图标缓存**：永久缓存获取的图标，提升加载速度
+- **质量优先**：优先选择高清、方形图标
 
-## 📦 安装和运行
+### 🌅 背景系统
+- **自定义背景**：支持图片和视频背景
+- **Bing轮播**：每日自动更新Bing精美图片
+- **智能切换**：根据背景亮度自动调整文字颜色
+- **性能优化**：智能缓存和懒加载
+
+### 📱 移动端优化
+- **触摸友好**：优化的触摸交互体验
+- **手势支持**：支持滑动和点击操作
+- **性能优化**：针对移动设备的性能优化
+
+## 🚀 快速开始
 
 ### 环境要求
-- Node.js >= 20.19.0
-- npm >= 10.0.0
+- Node.js 16.0+
+- npm 或 yarn
 
-### 本地开发
+### 安装依赖
 ```bash
-# 克隆项目
-git clone https://github.com/GWen124/Website-Panel.git
-cd Website-Panel
-
-# 安装依赖
 npm install
+```
 
-# 启动开发服务器
+### 开发模式
+```bash
 npm run dev
+```
 
-# 构建生产版本
+### 构建生产版本
+```bash
 npm run build
 ```
 
-### 部署到 GitHub Pages
-项目已配置 GitHub Actions，推送到 `main` 分支后会自动部署到 `Web` 分支。
+### 预览生产版本
+```bash
+npm run preview
+```
 
 ## ⚙️ 配置说明
 
-### config.yml 配置文件
+### 基础配置 (config.yml)
 
-项目使用 `config.yml` 文件进行配置，支持以下设置：
-
-#### 基础配置
 ```yaml
-# 网页标题
+# 页面标题
 pageTitle: "Website Panel"
 
-# 页面主标题文字
-pageQuote: "Website Panel"
-
-# 标签页图标
+# 页面图标
 favicon:
   icon: "https://example.com/favicon.ico"
-```
 
-#### Footer 配置
-```yaml
+# 页面引用
+pageQuote: "Website Panel"
+
+# 页脚配置
 footer:
   websiteText: "WEBSITE.GW124.TOP"
   websiteUrl: "https://gw124.top"
-  # 注意：作者信息不可配置，始终保持默认值
-```
+  authorText: "Wen"
+  authorUrl: "https://github.com/GWen124"
 
-#### 版权信息配置
-```yaml
+# 版权信息
 copyright:
-  # 版权开始日期，格式：YYYY-MM-DD
   startDate: "2025-10-01"
-  # 是否自动计算年份范围
   autoRange: false
-```
 
-#### 背景配置
-```yaml
+# 背景配置
 background:
-  # Bing 轮播背景开关
+  # Bing轮播背景开关
   bingWallpaper: false
   # 自定义背景图片/视频
-  image: "https://example.com/background.mp4"
-  # Bing轮播模式选择
-  # "localFirst": 先显示本地背景，30秒后切换到Bing轮播
-  # "direct": 直接显示Bing轮播，不显示本地背景
-  bingMode: "localFirst"
-```
+  image: "https://example.com/background.jpg"
+  # Bing轮播模式
+  bingMode: "localFirst" # "localFirst" | "direct"
 
-#### 颜色配置
-```yaml
+# 颜色配置
 colors:
-  # 自动变色开关
+  # 自动颜色切换
   autoColor: true
-  # 手动颜色设置（仅在 autoColor: false 时生效）
+  # 手动颜色设置
   manual:
-    header: "#000000"      # 头部文字颜色
-    cardTitle: "#000000"   # 网站卡片标题颜色
-    footer: "#000000"      # Footer文字颜色
-```
+    header: "#000000"
+    cardTitle: "#000000"
+    footer: "#000000"
 
-#### 自动图标配置
-```yaml
+# 自动图标配置
 autoIcon:
-  # 自动图标模式选择
-  # 1: 强制所有网站自动获取图标（忽略自定义图标）
-  # 2: 网站图标为空时自动获取（保留自定义图标）
-  # 3: 非本地或链接图标一律自动获取（智能回退：服务商 → xicon → Font Awesome → 文字图标）
-  mode: 3
+  # 自动图标模式
+  mode: 3 # 1 | 2 | 3
 ```
 
-### 网站配置
-
-网站数据在 `src/config.ts` 中配置：
+### 网站配置 (src/config.ts)
 
 ```typescript
-export interface Site {
-  name: string
-  url: string
-  icon: string
-  autoIcon?: boolean  // 可选：是否使用自动图标
-}
-
-export interface Category {
-  name: string
-  sites: Site[]
-}
-
-export const config: Category[] = [
+export default [
   {
     name: "Favorites - 常用网站",
     sites: [
       {
-        name: "GitHub",
-        url: "https://github.com",
-        icon: "xicon:github"  // 手动指定图标
-      },
-      {
         name: "Google",
-        url: "https://google.com",
-        icon: "",  // 空图标，将自动获取
-        autoIcon: true  // 明确启用自动图标
+        url: "https://www.google.com",
+        icon: "" // 留空自动获取
       }
     ]
   }
 ]
 ```
 
-## 🎨 图标系统
+## 🎨 自定义主题
 
-### 自动图标获取
+### 颜色配置
+- **自动模式**：根据背景亮度自动切换文字颜色
+- **手动模式**：自定义标题、卡片、页脚颜色
 
-项目支持智能自动获取网站图标，通过多种服务商和回退机制确保图标显示：
+### 背景配置
+- **图片背景**：支持本地和网络图片
+- **视频背景**：支持MP4格式视频
+- **Bing轮播**：每日自动更新精美图片
 
-#### 自动图标模式
-- **模式 1**：强制所有网站自动获取图标（忽略自定义图标）
-- **模式 2**：仅当网站图标为空时自动获取（保留自定义图标）
-- **模式 3**：非本地或链接图标自动获取（智能回退模式，推荐）
+## 🔧 高级功能
 
-#### 图标服务商优先级
-1. **直接获取** - 从网站获取 favicon
-2. **Clearbit** - 高质量品牌图标
-3. **Icon Horse** - 通用网站图标
-4. **DuckDuckGo** - 搜索引擎图标
-5. **Favicon.io** - 标准网站图标
-6. **Simple Icons** - 开源项目图标
-7. **Iconify** - 图标库
-8. **Iconfont** - 阿里巴巴图标库
-9. **Google** - Google 图标服务
+### 自动图标系统
+支持多种图标获取方式：
+1. **直接获取**：从网站直接获取favicon
+2. **服务商获取**：从Clearbit、Google、DuckDuckGo等服务商获取
+3. **图标库获取**：从xicons、Font Awesome等图标库获取
+4. **文字图标**：自动生成文字图标作为备选
 
-#### 回退机制
-当所有服务商都无法获取图标时，系统会按以下顺序回退：
-1. **Xicons** - 开源图标库
-2. **Font Awesome** - 字体图标
-3. **文字图标** - 使用网站名称首字母
+### 搜索引擎集成
+- **本地搜索**：搜索网站名称和分类
+- **网络搜索**：集成8个主流搜索引擎
+- **搜索历史**：自动保存和显示搜索记录
 
-### 手动图标类型
+### 响应式设计
+- **桌面端**：多列网格布局，最佳浏览体验
+- **平板端**：自适应列数，触摸友好
+- **移动端**：单列布局，优化触摸操作
 
-#### 1. Xicons (推荐)
-```typescript
-icon: "xicon:github"        // GitHub 图标
-icon: "xicon:stack-overflow" // Stack Overflow 图标
-```
+## 📱 移动端特性
 
-#### 2. Font Awesome
-```typescript
-icon: "fas fa-code"         // 代码图标
-icon: "fab fa-github"       // GitHub 品牌图标
-```
+### 触摸优化
+- **大按钮设计**：适合手指点击
+- **滑动支持**：支持上下滑动浏览
+- **手势识别**：智能识别触摸操作
 
-#### 3. Emoji
-```typescript
-icon: "💬"                 // 聊天表情
-icon: "🚀"                 // 火箭表情
-```
+### 性能优化
+- **懒加载**：按需加载图片和资源
+- **缓存机制**：智能缓存提升加载速度
+- **压缩优化**：自动压缩和优化资源
 
-#### 4. 外部图片
-```typescript
-icon: "https://example.com/icon.png"
-```
-
-#### 5. 文字图标
-```typescript
-icon: "T"                   // 显示字母 T
-```
-
-### 图标缓存
-
-系统会自动缓存获取的图标，提高加载速度：
-- **缓存时间**：24小时
-- **缓存位置**：浏览器 localStorage
-- **缓存管理**：支持手动清除缓存
-
-## 🔍 搜索引擎功能
-
-### 支持的搜索引擎
-- **Google** - 全球最大的搜索引擎
-- **百度** - 中国最大的搜索引擎
-- **Bing** - 微软搜索引擎
-- **DuckDuckGo** - 隐私保护搜索引擎
-- **GitHub** - 代码搜索
-- **Stack Overflow** - 技术问答搜索
-- **YouTube** - 视频搜索
-- **知乎** - 中文问答社区
-
-### 使用方法
-1. 在搜索框中输入关键词
-2. 点击左侧搜索引擎图标选择搜索引擎
-3. 点击右侧搜索按钮或按回车键执行搜索
-
-## 🔧 开发指南
+## 🛠️ 开发指南
 
 ### 项目结构
 ```
 src/
-├── components/          # Vue 组件
-│   ├── SiteCard.vue     # 网站卡片组件
-│   ├── CategorySection.vue # 分类区域组件
+├── components/          # Vue组件
 │   ├── AutoIcon.vue    # 自动图标组件
-│   ├── AutoIconConfigPanel.vue # 自动图标配置面板
-│   └── SearchEngineSelector.vue # 搜索引擎选择器
-├── views/               # 页面视图
-│   └── HomeView.vue    # 主页视图
-├── stores/              # Pinia 状态管理
-│   ├── theme.ts        # 主题状态
-│   └── search.ts       # 搜索状态
-├── utils/               # 工具函数
+│   ├── SiteCard.vue    # 网站卡片组件
+│   └── ...
+├── config/             # 配置文件
 │   ├── configLoader.ts # 配置加载器
-│   ├── icons.ts        # 图标管理
-│   ├── iconUtils.ts    # 自动图标工具
-│   └── xicons.ts       # Xicons 图标库
-├── config/              # 配置文件
-│   ├── autoIconConfig.ts # 自动图标配置
-│   ├── autoIconConfigLoader.ts # 自动图标配置加载器
-│   └── generated.ts    # 生成的配置
-└── config.ts           # 网站配置数据
+│   └── generated.ts   # 生成的配置
+├── utils/              # 工具函数
+├── views/              # 页面视图
+└── main.ts            # 入口文件
 ```
 
-### 核心功能
+### 添加新网站
+1. 编辑 `src/config.ts`
+2. 在对应分类下添加网站信息
+3. 图标字段留空自动获取
 
-#### 1. 配置加载 (`configLoader.ts`)
-- 加载和解析 `config.yml` 文件
-- 应用页面标题、favicon、背景等配置
-- 处理 Bing 轮播和自定义背景
-- 智能颜色适配
-
-#### 2. 图标管理 (`icons.ts`)
-- 统一管理所有图标类型
-- 支持动态添加新图标
-- 提供图标组件获取函数
-
-#### 3. 自动图标系统 (`iconUtils.ts`)
-- 智能图标获取和匹配
-- 多服务商支持和回退机制
-- 图标缓存和性能优化
-- 并发控制和错误处理
-
-#### 4. 搜索引擎功能
-- 集成8个主流搜索引擎
-- 支持搜索框内切换搜索引擎
-- 搜索历史记录和快速访问
-
-#### 5. 搜索功能
-- 实时搜索网站和分类
-- 支持模糊匹配
-- 集成在 HomeView.vue 中
-
-### 自定义开发
-
-#### 添加新的配置项
-1. 在 `configLoader.ts` 中定义接口
-2. 更新 `defaultConfig` 默认值
-3. 在 `parseYaml` 函数中添加解析逻辑
-4. 创建应用函数并调用
-
-#### 添加新的图标类型
-1. 在 `icons.ts` 中添加识别逻辑
-2. 实现渲染函数
-3. 更新 `getIconComponent` 函数
-
-#### 添加新的图标服务商
-1. 在 `iconUtils.ts` 中添加服务商函数
-2. 在 `getSmartFavicon` 中添加服务商逻辑
-3. 更新服务商优先级列表
-
-#### 添加新的搜索引擎
-1. 在 `SearchEngineSelector.vue` 中添加搜索引擎配置
-2. 更新搜索引擎列表
-3. 实现搜索逻辑
+### 自定义样式
+- 修改 `src/assets/styles/` 下的CSS文件
+- 使用CSS变量进行主题定制
+- 支持响应式断点自定义
 
 ## 🚀 部署指南
 
-### GitHub Pages 部署
+### GitHub Pages
+1. 构建项目：`npm run build`
+2. 推送dist目录到gh-pages分支
+3. 在GitHub仓库设置中启用Pages
 
-1. **配置 GitHub Actions**
-   - 项目已包含 `.github/workflows/deploy.yml`
-   - 自动构建并部署到 `Web` 分支
+### Vercel部署
+1. 连接GitHub仓库
+2. 设置构建命令：`npm run build`
+3. 设置输出目录：`dist`
+4. 自动部署
 
-2. **设置自定义域名**
-   - 在 GitHub Pages 设置中添加自定义域名
-   - 项目会自动创建 `CNAME` 文件
-
-3. **环境变量**
-   - 无需额外配置，使用 GitHub 默认的 `GITHUB_TOKEN`
-
-### 其他部署方式
-
-#### Vercel 部署
-```bash
-# 安装 Vercel CLI
-npm i -g vercel
-
-# 部署
-vercel --prod
-```
-
-#### Netlify 部署
-```bash
-# 构建项目
-npm run build
-
-# 上传 dist 目录到 Netlify
-```
+### Netlify部署
+1. 连接GitHub仓库
+2. 设置构建命令：`npm run build`
+3. 设置发布目录：`dist`
+4. 自动部署
 
 ## 🔍 故障排除
 
 ### 常见问题
+1. **图标不显示**：检查网络连接，尝试刷新页面
+2. **搜索不工作**：检查搜索引擎配置
+3. **背景不显示**：检查图片URL是否有效
+4. **移动端显示异常**：清除浏览器缓存
 
-#### 1. 背景图片不显示
-- 检查图片 URL 是否可访问
-- 确认 CORS 设置
-- 检查网络连接
-
-#### 2. 图标不显示
-- 确认图标名称正确
-- 检查图标类型前缀
-- 查看浏览器控制台错误
-
-#### 3. 颜色适配不工作
-- 检查 `autoColor` 设置
-- 确认背景图片加载成功
+### 调试模式
+- 打开浏览器开发者工具
 - 查看控制台错误信息
+- 检查网络请求状态
 
-#### 4. 搜索引擎不工作
-- 检查搜索引擎配置
-- 确认网络连接
-- 查看控制台错误信息
+## 📄 许可证
 
-#### 5. 部署失败
-- 检查 GitHub Actions 日志
-- 确认 Node.js 版本兼容性
-- 检查构建错误
-
-## 📝 更新日志
-
-### v2.1.0 (2025-01-XX)
-- 🔍 新增搜索引擎集成功能
-- 🎯 支持8个主流搜索引擎
-- 🎨 优化搜索界面设计
-- ⚡ 提升搜索性能和用户体验
-- 🛠️ 完善搜索功能配置
-
-### v2.0.0 (2025-01-XX)
-- 🎯 智能自动图标获取系统
-- 🔄 多服务商图标匹配和回退机制
-- ⚡ 图标缓存和性能优化
-- 🛠️ 自动图标配置面板
-- 🎨 增强的图标系统支持
-- 🚀 并发控制和错误处理优化
-
-### v1.0.0 (2025-10-11)
-- ✨ 初始版本发布
-- 🎨 现代化 UI 设计
-- 🔄 Bing 轮播背景支持
-- 🎯 智能颜色适配
-- ⚙️ 完整的配置系统
-- 🚀 GitHub Actions 自动部署
+MIT License
 
 ## 🤝 贡献指南
 
 1. Fork 项目
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 打开 Pull Request
+2. 创建功能分支
+3. 提交更改
+4. 推送到分支
+5. 创建Pull Request
 
-## 📄 许可证
+## 📞 支持
 
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
-
-## 🙏 致谢
-
-- [Vue.js](https://vuejs.org/) - 渐进式 JavaScript 框架
-- [Vite](https://vitejs.dev/) - 下一代前端构建工具
-- [Xicons](https://www.xicons.org/) - 丰富的图标库
-- [Bing](https://www.bing.com/) - 每日图片 API
-
-## 📞 联系方式
-
-- 项目链接：[https://github.com/GWen124/Website-Panel](https://github.com/GWen124/Website-Panel)
-- 在线演示：[https://website.gw124.top](https://website.gw124.top)
-- 作者：Wen ([@GWen124](https://github.com/GWen124))
+如有问题或建议，请：
+- 提交Issue
+- 发送邮件
+- 参与讨论
 
 ---
 
-⭐ 如果这个项目对你有帮助，请给它一个星标！
+**Website Panel** - 让网站导航更简单、更美观、更高效！

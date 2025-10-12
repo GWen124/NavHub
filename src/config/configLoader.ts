@@ -177,17 +177,21 @@ let isRefreshingImages = false // 是否正在刷新图片
 // 获取多张 Bing 图片
 async function getBingWallpapers(): Promise<string[]> {
   try {
-    // 尝试直接获取 Bing 每日图片API
-    const bingApiUrl = 'https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=8&mkt=zh-CN'
     
-    // 使用 fetch 直接请求，现代浏览器支持 CORS
-    const response = await fetch(bingApiUrl, {
+    // 直接使用 CORS 代理获取 Bing 每日图片API
+    // 获取更多天的图片，增加多样性
+    const bingApiUrl = 'https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=16&mkt=zh-CN'
+    const proxyUrl = 'https://api.allorigins.win/raw?url='
+    const fullUrl = proxyUrl + encodeURIComponent(bingApiUrl)
+    
+    
+    const response = await fetch(fullUrl, {
       method: 'GET',
-      mode: 'cors',
       headers: {
         'Accept': 'application/json',
       }
     })
+    
     
     if (response.ok) {
       const data = await response.json()
@@ -199,28 +203,48 @@ async function getBingWallpapers(): Promise<string[]> {
       }
     }
     
-    // 如果直接请求失败，尝试使用 CORS 代理
-    const proxyUrl = 'https://api.allorigins.win/raw?url='
+    // 如果代理失败，尝试其他代理
+    const alternativeProxies = [
+      'https://cors-anywhere.herokuapp.com/',
+      'https://api.codetabs.com/v1/proxy?quest='
+    ]
     
-    const proxyResponse = await fetch(proxyUrl + encodeURIComponent(bingApiUrl), {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      }
-    })
-    
-    if (proxyResponse.ok) {
-      const data = await proxyResponse.json()
-      if (data.images && Array.isArray(data.images)) {
-        const imageUrls = data.images.map((image: any) => {
-          return `https://www.bing.com${image.url}`
+    for (const proxy of alternativeProxies) {
+      try {
+        const proxyResponse = await fetch(proxy + bingApiUrl, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+          }
         })
-        return imageUrls
+        
+        
+        if (proxyResponse.ok) {
+          const data = await proxyResponse.json()
+          if (data.images && Array.isArray(data.images)) {
+            const imageUrls = data.images.map((image: any) => {
+              return `https://www.bing.com${image.url}`
+            })
+            return imageUrls
+          }
+        }
+      } catch (proxyError) {
+        continue // 尝试下一个代理
       }
     }
     
-    // 如果所有方法都失败，返回空数组
-    return []
+    // 如果所有代理都失败，使用备用方案
+    const fallbackImages = [
+      'https://www.bing.com/th?id=OHR.SaranacLake_ZH-CN0224689397_1920x1080.jpg',
+      'https://www.bing.com/th?id=OHR.WoodDuckHen_ZH-CN9558916773_1920x1080.jpg',
+      'https://www.bing.com/th?id=OHR.MonurikiFiji_ZH-CN9178115886_1920x1080.jpg',
+      'https://www.bing.com/th?id=OHR.WebbPillars_ZH-CN9054137596_1920x1080.jpg',
+      'https://www.bing.com/th?id=OHR.OctopusCyanea_ZH-CN8948609460_1920x1080.jpg',
+      'https://www.bing.com/th?id=OHR.RidgwayAspens_ZH-CN8735375502_1920x1080.jpg',
+      'https://www.bing.com/th?id=OHR.AnshunBridge_ZH-CN8392458102_1920x1080.jpg',
+      'https://www.bing.com/th?id=OHR.TeacherOwl_ZH-CN8289875605_1920x1080.jpg'
+    ]
+    return fallbackImages
   } catch (error) {
     console.error('获取Bing图片失败:', error)
     return []
@@ -244,13 +268,7 @@ async function refreshBingImages(): Promise<void> {
       
       // 立即应用第一张新图片
       const firstImageUrl = bingImages[0]
-      const backgroundImageUrl = `url(${firstImageUrl})`
-      const body = document.body
-      body.style.setProperty('background-image', backgroundImageUrl, 'important')
-      body.style.setProperty('background-size', 'cover', 'important')
-      body.style.setProperty('background-position', 'center', 'important')
-      body.style.setProperty('background-repeat', 'no-repeat', 'important')
-      body.style.setProperty('background-attachment', 'fixed', 'important')
+      setBackgroundImage(firstImageUrl)
       
       // 根据新背景设置文字颜色
       if (firstImageUrl) {
@@ -364,7 +382,13 @@ function startBingCarousel(): void {
   // 每 30 秒切换一次背景
   carouselInterval = setInterval(() => {
     if (bingImages.length > 0) {
-      currentImageIndex = (currentImageIndex + 1) % bingImages.length
+      // 随机选择下一张图片，增加多样性
+      let nextIndex
+      do {
+        nextIndex = Math.floor(Math.random() * bingImages.length)
+      } while (nextIndex === currentImageIndex && bingImages.length > 1)
+      
+      currentImageIndex = nextIndex
       const imageUrl = bingImages[currentImageIndex]
       
       // 检查是否完成一轮循环
@@ -378,13 +402,8 @@ function startBingCarousel(): void {
       }
       
       // 应用背景
-      const body = document.body
-      const backgroundImageUrl = `url(${imageUrl})`
-      body.style.setProperty('background-image', backgroundImageUrl, 'important')
-      body.style.setProperty('background-size', 'cover', 'important')
-      body.style.setProperty('background-position', 'center', 'important')
-      body.style.setProperty('background-repeat', 'no-repeat', 'important')
-      body.style.setProperty('background-attachment', 'fixed', 'important')
+      setBackgroundImage(imageUrl)
+      
       
       // 根据新背景设置文字颜色
       if (imageUrl) {
@@ -477,17 +496,19 @@ function setCustomBackground(mediaUrl: string): void {
     // 设置图片背景
     const backgroundImageUrl = `url(${mediaUrl})`
     
-    body.style.setProperty('background-image', backgroundImageUrl, 'important')
-    body.style.setProperty('background-color', 'transparent', 'important')
-    body.style.setProperty('background-size', 'cover', 'important')
-    body.style.setProperty('background-position', 'center', 'important')
-    body.style.setProperty('background-repeat', 'no-repeat', 'important')
-    body.style.setProperty('background-attachment', 'fixed', 'important')
+      setBackgroundImage(imageUrl)
     
     // 根据自定义背景设置文字颜色
     setTextColorBasedOnBackground(mediaUrl)
     
   }
+}
+
+// 设置背景图片的通用函数
+function setBackgroundImage(imageUrl: string): void {
+  const body = document.body
+  const backgroundImageUrl = `url(${imageUrl})`
+      setBackgroundImage(imageUrl)
 }
 
 // 设置白色背景
@@ -521,12 +542,7 @@ function startBingRetry(): void {
           const backgroundImageUrl = `url(${firstImageUrl})`
           
           const body = document.body
-          body.style.setProperty('background-image', backgroundImageUrl, 'important')
-          body.style.setProperty('background-color', 'transparent', 'important')
-          body.style.setProperty('background-size', 'cover', 'important')
-          body.style.setProperty('background-position', 'center', 'important')
-          body.style.setProperty('background-repeat', 'no-repeat', 'important')
-          body.style.setProperty('background-attachment', 'fixed', 'important')
+      setBackgroundImage(imageUrl)
           
           // 重新启动轮播
           startBingCarousel()
@@ -560,16 +576,10 @@ export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise
   
   // 检查是否启用 Bing 轮播背景
   if (bgConfig.bingWallpaper) {
-    // 检查是否需要刷新Bing图片（每天刷新一次）
-    if (shouldRefreshBingImages()) {
-      // 获取多张 Bing 图片
-      bingImages = await getBingWallpapers()
-      // 设置最后刷新时间
-      setLastRefreshTime()
-    } else {
-      // 使用缓存的图片
-      bingImages = bingImages.length > 0 ? bingImages : await getBingWallpapers()
-    }
+    // 强制获取新的Bing图片（临时调试用）
+    bingImages = await getBingWallpapers()
+    // 设置最后刷新时间
+    setLastRefreshTime()
     
     if (bingImages.length > 0) {
       // 根据bingMode配置决定显示方式
@@ -582,12 +592,7 @@ export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise
         const firstImageUrl = bingImages[0]
         const backgroundImageUrl = `url(${firstImageUrl})`
         
-        body.style.setProperty('background-image', backgroundImageUrl, 'important')
-        body.style.setProperty('background-color', 'transparent', 'important')
-        body.style.setProperty('background-size', 'cover', 'important')
-        body.style.setProperty('background-position', 'center', 'important')
-        body.style.setProperty('background-repeat', 'no-repeat', 'important')
-        body.style.setProperty('background-attachment', 'fixed', 'important')
+      setBackgroundImage(imageUrl)
         
         
         // 根据背景设置文字颜色
@@ -610,19 +615,24 @@ export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise
           const firstImageUrl = bingImages[0]
           const backgroundImageUrl = `url(${firstImageUrl})`
           
-          body.style.setProperty('background-image', backgroundImageUrl, 'important')
-          body.style.setProperty('background-color', 'transparent', 'important')
-          body.style.setProperty('background-size', 'cover', 'important')
-          body.style.setProperty('background-position', 'center', 'important')
-          body.style.setProperty('background-repeat', 'no-repeat', 'important')
-          body.style.setProperty('background-attachment', 'fixed', 'important')
+          // 先移除视频背景
+          const existingVideo = document.getElementById('background-video')
+          if (existingVideo) {
+            existingVideo.remove()
+          }
           
+          // 设置Bing图片背景，使用更强的优先级
+      setBackgroundImage(imageUrl)
+          
+          // 强制移除可能冲突的样式
+          body.style.removeProperty('background-image')
+          body.style.setProperty('background-image', backgroundImageUrl, 'important')
           
           // 根据背景设置文字颜色
           if (firstImageUrl) {
             setTextColorBasedOnBackground(firstImageUrl)
           }
-        }, 30000)
+          
       }
       
       // 启动轮播
