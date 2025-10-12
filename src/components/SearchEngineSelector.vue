@@ -1,7 +1,7 @@
 <template>
   <div class="search-engine-selector">
     <div class="current-engine" @click="toggleDropdown">
-      <component :is="currentEngine.icon" class="engine-icon" />
+      <component v-if="currentEngine" :is="currentEngine.icon" class="engine-icon" />
     </div>
     
     

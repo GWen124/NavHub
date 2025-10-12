@@ -138,7 +138,7 @@ const loadConfigFromYaml = async (): Promise<Partial<AutoIconConfig>> => {
   } catch (error) {
     // 返回默认配置
     return {
-      mode: 4,
+      mode: 3,
       services: ['clearbit', 'google', 'duckduckgo', 'simple', 'iconify', 'iconfont', 'direct'],
       icon: {
         size: 64,

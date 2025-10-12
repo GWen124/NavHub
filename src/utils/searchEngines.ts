@@ -84,7 +84,7 @@ export const getSearchEngine = (id: string): SearchEngine | undefined => {
 
 // 获取默认搜索引擎
 export const getDefaultSearchEngine = (): SearchEngine => {
-  return searchEngines[0] // Google
+  return searchEngines[0] || searchEngines.find(engine => engine.id === 'google')! // Google
 }
 
 // 执行搜索

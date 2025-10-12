@@ -4,6 +4,7 @@ import { ref, reactive } from 'vue'
 export interface BackgroundConfig {
   bingWallpaper: boolean
   image: string
+  bingMode?: string
 }
 
 export interface FooterConfig {

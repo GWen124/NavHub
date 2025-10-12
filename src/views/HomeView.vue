@@ -15,7 +15,7 @@
               <!-- 搜索引擎选择器在搜索框左侧 -->
               <div class="search-engine-selector-left">
                 <div class="current-engine" @click.stop="toggleDropdown">
-                  <component :is="currentSearchEngine.icon" class="engine-icon" />
+                  <component v-if="currentSearchEngine" :is="currentSearchEngine.icon" class="engine-icon" />
                 </div>
               </div>
               
@@ -26,7 +26,7 @@
                   @input="handleSearch"
                   @keydown.enter="handleSearchSubmit"
                   type="text"
-                  :placeholder="showDropdown ? '' : currentSearchEngine.placeholder"
+                  :placeholder="showDropdown ? '' : (currentSearchEngine?.placeholder || '搜索...')"
                   class="search-input"
                   :class="{ 'hide-text': showDropdown }"
                 >
