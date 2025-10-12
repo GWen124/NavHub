@@ -57,18 +57,35 @@ const props = defineProps<Props>()
 }
 
 .sites-grid .site-card {
-  flex: 0 0 calc(20% - 9.6px);
-  max-width: calc(20% - 9.6px);
+  flex: 0 0 calc(50% - 6px);
+  max-width: calc(50% - 6px);
   margin-right: 12px;
   margin-bottom: 12px;
 }
 
-.sites-grid .site-card:nth-child(5n) {
+.sites-grid .site-card:nth-child(2n) {
   margin-right: 0;
 }
 
-/* 响应式设计 */
-@media (max-width: 1200px) {
+/* 响应式设计 - 从大屏幕到小屏幕 */
+@media (min-width: 1201px) {
+  .sites-grid .site-card {
+    flex: 0 0 calc(20% - 9.6px);
+    max-width: calc(20% - 9.6px);
+    margin-right: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .sites-grid .site-card:nth-child(2n) {
+    margin-right: 12px;
+  }
+  
+  .sites-grid .site-card:nth-child(5n) {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 1200px) and (min-width: 993px) {
   .sites-grid .site-card {
     flex: 0 0 calc(25% - 9px);
     max-width: calc(25% - 9px);
@@ -76,7 +93,7 @@ const props = defineProps<Props>()
     margin-bottom: 12px;
   }
   
-  .sites-grid .site-card:nth-child(5n) {
+  .sites-grid .site-card:nth-child(2n) {
     margin-right: 12px;
   }
   
@@ -85,7 +102,7 @@ const props = defineProps<Props>()
   }
 }
 
-@media (max-width: 992px) {
+@media (max-width: 992px) and (min-width: 769px) {
   .sites-grid .site-card {
     flex: 0 0 calc(33.333% - 8px);
     max-width: calc(33.333% - 8px);
@@ -93,59 +110,11 @@ const props = defineProps<Props>()
     margin-bottom: 12px;
   }
   
-  .sites-grid .site-card:nth-child(4n) {
+  .sites-grid .site-card:nth-child(2n) {
     margin-right: 12px;
   }
   
   .sites-grid .site-card:nth-child(3n) {
-    margin-right: 0;
-  }
-}
-
-@media (max-width: 1024px) {
-  .category-section {
-    margin-bottom: 28px;
-  }
-  
-  .category-header {
-    margin-bottom: 16px;
-  }
-  
-  .sites-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-  }
-  
-  .sites-grid .site-card {
-    flex: 0 0 calc(25% - 9px);
-    max-width: calc(25% - 9px);
-    margin-right: 12px;
-    margin-bottom: 12px;
-  }
-  
-  .sites-grid .site-card:nth-child(4n) {
-    margin-right: 0;
-  }
-  
-  .category-title {
-    font-size: 1.05rem;
-  }
-}
-
-@media (max-width: 820px) {
-  .sites-grid .site-card {
-    flex: 0 0 calc(50% - 6px);
-    max-width: calc(50% - 6px);
-    margin-right: 12px;
-    margin-bottom: 12px;
-  }
-  
-  .sites-grid .site-card:nth-child(4n) {
-    margin-right: 12px;
-  }
-  
-  .sites-grid .site-card:nth-child(2n) {
     margin-right: 0;
   }
 }
