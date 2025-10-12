@@ -79,10 +79,12 @@ export const loadAutoIconConfig = async (): Promise<AutoIconConfig> => {
  * 从 YAML 文件加载配置（模拟实现）
  */
 const loadConfigFromYaml = async (): Promise<Partial<AutoIconConfig>> => {
-  // 从 config.yml 文件加载配置
-  try {
-    const response = await fetch('/config.yml')
-    const yamlText = await response.text()
+  // 在生产环境中，配置已经通过 generated.ts 嵌入，无需加载
+  // 在开发环境中，从 config.yml 文件加载配置
+  if (import.meta.env.DEV) {
+    try {
+      const response = await fetch('/config.yml')
+      const yamlText = await response.text()
     
     // 简单的 YAML 解析（仅解析 mode 配置）
     const lines = yamlText.split('\n')
@@ -135,27 +137,50 @@ const loadConfigFromYaml = async (): Promise<Partial<AutoIconConfig>> => {
         showLoadingState: true
       }
     }
-  } catch (error) {
-    // 返回默认配置
-    return {
-      mode: 3,
-      services: ['clearbit', 'google', 'duckduckgo', 'simple', 'iconify', 'iconfont', 'direct'],
-      icon: {
-        size: 64,
-        shapePriority: ['square', 'round', 'any'],
-        qualityPriority: ['hd', 'normal', 'any'],
-        cache: true,
-        cacheExpiry: 24
-      },
-      fallback: {
-        showInitials: true,
-        backgroundColor: '',
-        textColor: '#ffffff'
-      },
-      debug: {
-        enableLogging: false,
-        showLoadingState: true
+    } catch (error) {
+      // 返回默认配置
+      return {
+        mode: 3,
+        services: ['clearbit', 'google', 'duckduckgo', 'simple', 'iconify', 'iconfont', 'direct'],
+        icon: {
+          size: 64,
+          shapePriority: ['square', 'round', 'any'],
+          qualityPriority: ['hd', 'normal', 'any'],
+          cache: true,
+          cacheExpiry: 24
+        },
+        fallback: {
+          showInitials: true,
+          backgroundColor: '',
+          textColor: '#ffffff'
+        },
+        debug: {
+          enableLogging: false,
+          showLoadingState: true
+        }
       }
+    }
+  }
+  
+  // 生产环境中，返回默认配置
+  return {
+    mode: 3,
+    services: ['clearbit', 'google', 'duckduckgo', 'simple', 'iconify', 'iconfont', 'direct'],
+    icon: {
+      size: 64,
+      shapePriority: ['square', 'round', 'any'],
+      qualityPriority: ['hd', 'normal', 'any'],
+      cache: true,
+      cacheExpiry: 24
+    },
+    fallback: {
+      showInitials: true,
+      backgroundColor: '',
+      textColor: '#ffffff'
+    },
+    debug: {
+      enableLogging: false,
+      showLoadingState: true
     }
   }
 }
