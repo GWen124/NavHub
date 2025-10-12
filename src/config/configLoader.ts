@@ -177,7 +177,6 @@ let isRefreshingImages = false // 是否正在刷新图片
 // 获取多张 Bing 图片
 async function getBingWallpapers(): Promise<string[]> {
   try {
-    
     // 直接使用 CORS 代理获取 Bing 每日图片API
     // 获取更多天的图片，增加多样性
     const bingApiUrl = 'https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=16&mkt=zh-CN'
@@ -510,7 +509,12 @@ function setCustomBackground(mediaUrl: string): void {
 function setBackgroundImage(imageUrl: string): void {
   const body = document.body
   const backgroundImageUrl = `url(${imageUrl})`
-      setBackgroundImage(imageUrl)
+  body.style.setProperty('background-image', backgroundImageUrl, 'important')
+  body.style.setProperty('background-color', 'transparent', 'important')
+  body.style.setProperty('background-size', 'cover', 'important')
+  body.style.setProperty('background-position', 'center', 'important')
+  body.style.setProperty('background-repeat', 'no-repeat', 'important')
+  body.style.setProperty('background-attachment', 'fixed', 'important')
 }
 
 // 设置白色背景
@@ -579,7 +583,7 @@ export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise
   
   // 检查是否启用 Bing 轮播背景
   if (bgConfig.bingWallpaper) {
-    // 强制获取新的Bing图片（临时调试用）
+    // 强制获取新的Bing图片
     bingImages = await getBingWallpapers()
     // 设置最后刷新时间
     setLastRefreshTime()

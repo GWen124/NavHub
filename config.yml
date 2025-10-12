@@ -35,7 +35,7 @@ background:
   # Bing 轮播背景开关
   # true: 启用 Bing 每日图片轮播背景（优先级高于自定义背景）
   # false: 使用自定义背景图片
-  bingWallpaper: false
+  bingWallpaper: true
   # 图片或视频路径/URL，留空表示无背景
   # 本地图片示例: bg.jpg 或 images/background.png
   # 网络图片示例: https://example.com/image.jpg
