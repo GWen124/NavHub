@@ -80,34 +80,39 @@ export const appConfig = reactive<AppConfig>({ ...defaultConfig })
 
 // 加载配置（从config.yml文件）
 export async function loadConfig(): Promise<void> {
-  try {
-    const response = await fetch('/config.yml')
-    
-    if (response.ok) {
-      const yamlText = await response.text()
-      const parsedConfig = parseYaml(yamlText)
+  // 在生产环境中，配置已经通过 generated.ts 嵌入，无需加载
+  // 在开发环境中，尝试从 config.yml 加载配置
+  if (import.meta.env.DEV) {
+    try {
+      const response = await fetch('/config.yml')
       
-      // 合并配置
-      Object.assign(appConfig, {
-        ...defaultConfig,
-        ...parsedConfig,
-        footer: { 
-          ...defaultConfig.footer, 
-          ...parsedConfig.footer,
-          // 强制保持作者信息为默认值
-          authorText: defaultConfig.footer.authorText,
-          authorUrl: defaultConfig.footer.authorUrl
-        },
-        background: { ...defaultConfig.background, ...parsedConfig.background },
-        favicon: { ...defaultConfig.favicon, ...parsedConfig.favicon },
-        copyright: { ...defaultConfig.copyright, ...parsedConfig.copyright }
-      })
-    } else {
-      console.warn('config.yml not found, using default config')
+      if (response.ok) {
+        const yamlText = await response.text()
+        const parsedConfig = parseYaml(yamlText)
+        
+        // 合并配置
+        Object.assign(appConfig, {
+          ...defaultConfig,
+          ...parsedConfig,
+          footer: { 
+            ...defaultConfig.footer, 
+            ...parsedConfig.footer,
+            // 强制保持作者信息为默认值
+            authorText: defaultConfig.footer.authorText,
+            authorUrl: defaultConfig.footer.authorUrl
+          },
+          background: { ...defaultConfig.background, ...parsedConfig.background },
+          favicon: { ...defaultConfig.favicon, ...parsedConfig.favicon },
+          copyright: { ...defaultConfig.copyright, ...parsedConfig.copyright }
+        })
+      } else {
+        console.warn('config.yml not found, using default config')
+      }
+    } catch (error) {
+      console.warn('配置加载失败，使用默认配置:', error)
     }
-  } catch (error) {
-    console.warn('配置加载失败，使用默认配置:', error)
   }
+  // 生产环境中，配置已通过 generated.ts 嵌入，无需额外处理
 }
 
 // 简单的 YAML 解析器
