@@ -85,8 +85,8 @@ const loadConfigFromYaml = async (): Promise<Partial<AutoIconConfig>> => {
     try {
       const response = await fetch('/config.yml')
       const yamlText = await response.text()
-    
-    // 简单的 YAML 解析（仅解析 mode 配置）
+      
+      // 简单的 YAML 解析（仅解析 mode 配置）
     const lines = yamlText.split('\n')
     let inAutoIconSection = false
     let mode = 4

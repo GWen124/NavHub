@@ -161,7 +161,8 @@
 
 <script setup lang="ts">
 import { ref, reactive, watch } from 'vue'
-import { appConfig, applyBackgroundConfig, applyPageTitle, applyFaviconConfig, type AppConfig } from '@/config/generated'
+import { appConfig, applyBackgroundConfig, applyPageTitle, applyFaviconConfig } from '@/config/generated'
+import type { AppConfig } from '@/config/configLoader'
 
 // 面板显示状态
 const isVisible = ref(false)
