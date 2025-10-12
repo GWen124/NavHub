@@ -35,7 +35,6 @@ export const appConfig = reactive<AppConfig>({
 // 导出配置加载函数（保持兼容性）
 export async function loadConfig(): Promise<void> {
   // 配置已嵌入，无需加载
-  console.log('✅ 配置已嵌入构建产物')
 }
 
 // 导出其他函数（保持兼容性）
