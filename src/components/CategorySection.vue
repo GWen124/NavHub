@@ -54,7 +54,7 @@ const props = defineProps<Props>()
   gap: 12px;
   width: 85%;
   margin: 0 auto;
-  align-items: stretch;
+  align-items: center;
 }
 
 /* 响应式设计 */

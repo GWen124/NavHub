@@ -126,12 +126,10 @@ const xiconComponent = computed(() => {
   transition: all 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  min-height: 40px;
+  height: 40px;
   justify-content: flex-start;
   gap: 10px;
   backdrop-filter: blur(10px);
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .site-card:hover {
@@ -205,12 +203,14 @@ const xiconComponent = computed(() => {
   font-weight: 700;
   color: var(--card-title-color, #000000);
   text-align: left;
-  line-height: 1.3;
+  line-height: 1.2;
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  min-width: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 
@@ -218,7 +218,7 @@ const xiconComponent = computed(() => {
 @media (max-width: 1024px) {
   .site-card {
     padding: 8px 16px;
-    min-height: 56px;
+    height: 56px;
     gap: 12px;
   }
   
@@ -258,7 +258,7 @@ const xiconComponent = computed(() => {
 @media (max-width: 768px) {
   .site-card {
     padding: 6px 12px;
-    min-height: 48px;
+    height: 48px;
     gap: 10px;
   }
   
@@ -298,7 +298,7 @@ const xiconComponent = computed(() => {
 @media (max-width: 480px) {
   .site-card {
     padding: 5px 10px;
-    min-height: 44px;
+    height: 44px;
     gap: 8px;
   }
   
