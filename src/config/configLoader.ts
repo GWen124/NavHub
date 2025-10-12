@@ -177,20 +177,50 @@ let isRefreshingImages = false // 是否正在刷新图片
 // 获取多张 Bing 图片
 async function getBingWallpapers(): Promise<string[]> {
   try {
-    // 使用备用方案：直接返回一些Bing图片URL作为示例
-    // 由于CORS限制，我们使用一些公开的Bing图片URL
-    const sampleBingUrls = [
-      'https://www.bing.com/th?id=OHR.SaranacLake_ZH-CN0224689397_1920x1080.jpg',
-      'https://www.bing.com/th?id=OHR.WoodDuckHen_ZH-CN9558916773_1920x1080.jpg',
-      'https://www.bing.com/th?id=OHR.MonurikiFiji_ZH-CN9178115886_1920x1080.jpg',
-      'https://www.bing.com/th?id=OHR.WebbPillars_ZH-CN9054137596_1920x1080.jpg',
-      'https://www.bing.com/th?id=OHR.OctopusCyanea_ZH-CN8948609460_1920x1080.jpg',
-      'https://www.bing.com/th?id=OHR.RidgwayAspens_ZH-CN8735375502_1920x1080.jpg',
-      'https://www.bing.com/th?id=OHR.AnshunBridge_ZH-CN8392458102_1920x1080.jpg',
-      'https://www.bing.com/th?id=OHR.TeacherOwl_ZH-CN8289875605_1920x1080.jpg'
-    ]
+    // 尝试直接获取 Bing 每日图片API
+    const bingApiUrl = 'https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=8&mkt=zh-CN'
     
-    return sampleBingUrls
+    // 使用 fetch 直接请求，现代浏览器支持 CORS
+    const response = await fetch(bingApiUrl, {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Accept': 'application/json',
+      }
+    })
+    
+    if (response.ok) {
+      const data = await response.json()
+      if (data.images && Array.isArray(data.images)) {
+        const imageUrls = data.images.map((image: any) => {
+          return `https://www.bing.com${image.url}`
+        })
+        return imageUrls
+      }
+    }
+    
+    // 如果直接请求失败，尝试使用 CORS 代理
+    const proxyUrl = 'https://api.allorigins.win/raw?url='
+    
+    const proxyResponse = await fetch(proxyUrl + encodeURIComponent(bingApiUrl), {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      }
+    })
+    
+    if (proxyResponse.ok) {
+      const data = await proxyResponse.json()
+      if (data.images && Array.isArray(data.images)) {
+        const imageUrls = data.images.map((image: any) => {
+          return `https://www.bing.com${image.url}`
+        })
+        return imageUrls
+      }
+    }
+    
+    // 如果所有方法都失败，返回空数组
+    return []
   } catch (error) {
     console.error('获取Bing图片失败:', error)
     return []
@@ -232,6 +262,28 @@ async function refreshBingImages(): Promise<void> {
   } finally {
     isRefreshingImages = false
   }
+}
+
+// 检查是否需要刷新Bing图片（每天刷新一次）
+function shouldRefreshBingImages(): boolean {
+  const lastRefreshKey = 'bing_last_refresh'
+  const lastRefresh = localStorage.getItem(lastRefreshKey)
+  
+  if (!lastRefresh) {
+    return true
+  }
+  
+  const lastRefreshTime = parseInt(lastRefresh)
+  const now = Date.now()
+  const oneDay = 24 * 60 * 60 * 1000 // 24小时
+  
+  return (now - lastRefreshTime) > oneDay
+}
+
+// 设置最后刷新时间
+function setLastRefreshTime(): void {
+  const lastRefreshKey = 'bing_last_refresh'
+  localStorage.setItem(lastRefreshKey, Date.now().toString())
 }
 
 // 常量定义
@@ -508,8 +560,16 @@ export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise
   
   // 检查是否启用 Bing 轮播背景
   if (bgConfig.bingWallpaper) {
-    // 获取多张 Bing 图片
-    bingImages = await getBingWallpapers()
+    // 检查是否需要刷新Bing图片（每天刷新一次）
+    if (shouldRefreshBingImages()) {
+      // 获取多张 Bing 图片
+      bingImages = await getBingWallpapers()
+      // 设置最后刷新时间
+      setLastRefreshTime()
+    } else {
+      // 使用缓存的图片
+      bingImages = bingImages.length > 0 ? bingImages : await getBingWallpapers()
+    }
     
     if (bingImages.length > 0) {
       // 根据bingMode配置决定显示方式
