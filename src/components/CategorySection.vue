@@ -111,6 +111,12 @@ const props = defineProps<Props>()
     margin-bottom: 16px;
   }
   
+  .sites-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  
   .sites-grid .site-card {
     flex: 0 0 calc(25% - 9px);
     max-width: calc(25% - 9px);
@@ -124,6 +130,23 @@ const props = defineProps<Props>()
   
   .category-title {
     font-size: 1.05rem;
+  }
+}
+
+@media (max-width: 820px) {
+  .sites-grid .site-card {
+    flex: 0 0 calc(50% - 6px);
+    max-width: calc(50% - 6px);
+    margin-right: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .sites-grid .site-card:nth-child(4n) {
+    margin-right: 12px;
+  }
+  
+  .sites-grid .site-card:nth-child(2n) {
+    margin-right: 0;
   }
 }
 
