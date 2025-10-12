@@ -51,7 +51,6 @@ const props = defineProps<Props>()
 .sites-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
   width: 85%;
   margin: 0 auto;
   justify-content: flex-start;
@@ -61,6 +60,7 @@ const props = defineProps<Props>()
   flex: 0 0 calc(20% - 9.6px);
   max-width: calc(20% - 9.6px);
   margin-right: 12px;
+  margin-bottom: 12px;
 }
 
 .sites-grid .site-card:nth-child(5n) {
@@ -73,6 +73,7 @@ const props = defineProps<Props>()
     flex: 0 0 calc(25% - 9px);
     max-width: calc(25% - 9px);
     margin-right: 12px;
+    margin-bottom: 12px;
   }
   
   .sites-grid .site-card:nth-child(5n) {
@@ -89,6 +90,7 @@ const props = defineProps<Props>()
     flex: 0 0 calc(33.333% - 8px);
     max-width: calc(33.333% - 8px);
     margin-right: 12px;
+    margin-bottom: 12px;
   }
   
   .sites-grid .site-card:nth-child(4n) {
@@ -109,14 +111,11 @@ const props = defineProps<Props>()
     margin-bottom: 16px;
   }
   
-  .sites-grid {
-    gap: 12px;
-  }
-  
   .sites-grid .site-card {
     flex: 0 0 calc(25% - 9px);
     max-width: calc(25% - 9px);
     margin-right: 12px;
+    margin-bottom: 12px;
   }
   
   .sites-grid .site-card:nth-child(4n) {
@@ -140,7 +139,6 @@ const props = defineProps<Props>()
   .sites-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
     justify-content: flex-start;
   }
   
@@ -148,6 +146,7 @@ const props = defineProps<Props>()
     flex: 0 0 calc(50% - 5px);
     max-width: calc(50% - 5px);
     margin-right: 10px;
+    margin-bottom: 10px;
   }
   
   .sites-grid .site-card:nth-child(2n) {
@@ -163,7 +162,6 @@ const props = defineProps<Props>()
   .sites-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
     justify-content: flex-start;
   }
   
@@ -171,6 +169,7 @@ const props = defineProps<Props>()
     flex: 0 0 calc(50% - 4px);
     max-width: calc(50% - 4px);
     margin-right: 8px;
+    margin-bottom: 8px;
   }
   
   .sites-grid .site-card:nth-child(2n) {
