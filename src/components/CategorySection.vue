@@ -54,12 +54,17 @@ const props = defineProps<Props>()
   gap: 12px;
   width: 85%;
   margin: 0 auto;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .sites-grid .site-card {
   flex: 0 0 calc(20% - 9.6px);
   max-width: calc(20% - 9.6px);
+  margin-right: 12px;
+}
+
+.sites-grid .site-card:nth-child(5n) {
+  margin-right: 0;
 }
 
 /* 响应式设计 */
@@ -67,6 +72,15 @@ const props = defineProps<Props>()
   .sites-grid .site-card {
     flex: 0 0 calc(25% - 9px);
     max-width: calc(25% - 9px);
+    margin-right: 12px;
+  }
+  
+  .sites-grid .site-card:nth-child(5n) {
+    margin-right: 12px;
+  }
+  
+  .sites-grid .site-card:nth-child(4n) {
+    margin-right: 0;
   }
 }
 
@@ -74,6 +88,15 @@ const props = defineProps<Props>()
   .sites-grid .site-card {
     flex: 0 0 calc(33.333% - 8px);
     max-width: calc(33.333% - 8px);
+    margin-right: 12px;
+  }
+  
+  .sites-grid .site-card:nth-child(4n) {
+    margin-right: 12px;
+  }
+  
+  .sites-grid .site-card:nth-child(3n) {
+    margin-right: 0;
   }
 }
 
@@ -93,6 +116,11 @@ const props = defineProps<Props>()
   .sites-grid .site-card {
     flex: 0 0 calc(25% - 9px);
     max-width: calc(25% - 9px);
+    margin-right: 12px;
+  }
+  
+  .sites-grid .site-card:nth-child(4n) {
+    margin-right: 0;
   }
   
   .category-title {
@@ -113,12 +141,17 @@ const props = defineProps<Props>()
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
   
   .sites-grid .site-card {
     flex: 0 0 calc(50% - 5px);
     max-width: calc(50% - 5px);
+    margin-right: 10px;
+  }
+  
+  .sites-grid .site-card:nth-child(2n) {
+    margin-right: 0;
   }
   
   .category-title {
@@ -131,12 +164,17 @@ const props = defineProps<Props>()
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
   
   .sites-grid .site-card {
     flex: 0 0 calc(50% - 4px);
     max-width: calc(50% - 4px);
+    margin-right: 8px;
+  }
+  
+  .sites-grid .site-card:nth-child(2n) {
+    margin-right: 0;
   }
   
   .category-title {
