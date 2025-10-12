@@ -613,50 +613,14 @@ export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> 
       font-style: normal;
     }
     @font-face {
-      font-family: 'SanJiZhengYaHei-Cu';
-      src: url('/fonts/SanJiZhengYaHei-Cu.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'SanJiZhengYaHei-XianXi';
-      src: url('/fonts/SanJiZhengYaHei-XianXi.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'SanJiZhengYaHei-Xi-2';
-      src: url('/fonts/SanJiZhengYaHei-Xi-2.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'SanJiZhengYaHei-XianXi-2';
-      src: url('/fonts/SanJiZhengYaHei-XianXi-2.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
       font-family: 'brand';
       src: url('/fonts/brand.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
     }
     @font-face {
-      font-family: 'Brand';
-      src: url('/fonts/brand.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'BRAND';
-      src: url('/fonts/brand.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'BrandFont';
-      src: url('/fonts/brand.ttf') format('truetype');
+      font-family: 'SanJiZhengYaHei-Cu';
+      src: url('/fonts/SanJiZhengYaHei-Cu.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
     }
