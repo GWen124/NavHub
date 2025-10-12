@@ -151,12 +151,12 @@ export async function loadConfig(): Promise<void> {
   try {
     if (import.meta.env.DEV) {
       // 开发环境：从 config.yml 加载
-      const response = await fetch('/config.yml')
+    const response = await fetch('/config.yml')
       if (!response.ok) {
         console.warn('无法加载 config.yml，使用默认配置')
         return
       }
-      
+    
       const yamlText = await response.text()
       const config = parseYamlConfig(yamlText)
       
@@ -198,23 +198,23 @@ function parseYamlConfig(yamlText: string): any {
     } else if (value.startsWith("'") && value.endsWith("'")) {
       value = value.slice(1, -1)
     }
-    
-    // 处理布尔值
+
+      // 处理布尔值
     if (value === 'true') {
       value = true as any
     } else if (value === 'false') {
       value = false as any
-    }
-    
-    // 处理嵌套对象
-    if (key === 'footer' || key === 'background' || key === 'favicon' || key === 'copyright' || key === 'colors' || key === 'fonts') {
-      if (!result[key]) {
-        result[key] = {}
       }
-      currentSection = result[key]
-    } else if (currentSection) {
+      
+      // 处理嵌套对象
+    if (key === 'footer' || key === 'background' || key === 'favicon' || key === 'copyright' || key === 'colors' || key === 'fonts' || key === 'timeDate') {
+        if (!result[key]) {
+          result[key] = {}
+        }
+        currentSection = result[key]
+      } else if (currentSection) {
       (currentSection as any)[key] = value
-    } else {
+      } else {
       result[key] = value
     }
   }
@@ -226,12 +226,6 @@ function parseYamlConfig(yamlText: string): any {
 let bingImages: string[] = []
 let currentImageIndex = 0
 let carouselInterval: number | null = null
-let bingErrorCount = 0
-let bingRetryInterval: number | null = null
-let isBingAvailable = true
-let currentConfig: BackgroundConfig | null = null
-let cycleCount = 0
-let isRefreshingImages = false
 
 // 获取多张 Bing 图片
 async function getBingWallpapers(): Promise<string[]> {
@@ -273,15 +267,43 @@ async function getBingWallpapers(): Promise<string[]> {
 
 // 设置背景图片
 function setBackgroundImage(imageUrl: string): void {
-  document.body.style.backgroundImage = `url("${imageUrl}")`
-  document.body.style.backgroundSize = 'cover'
-  document.body.style.backgroundPosition = 'center'
-  document.body.style.backgroundRepeat = 'no-repeat'
-  document.body.style.backgroundAttachment = 'fixed'
+  // 创建或更新背景元素
+  let bgElement = document.getElementById('dynamic-background')
+  if (!bgElement) {
+    bgElement = document.createElement('div')
+    bgElement.id = 'dynamic-background'
+    bgElement.style.position = 'fixed'
+    bgElement.style.top = '0'
+    bgElement.style.left = '0'
+    bgElement.style.width = '100%'
+    bgElement.style.height = '100%'
+    bgElement.style.backgroundImage = `url("${imageUrl}")`
+    bgElement.style.backgroundSize = 'cover'
+    bgElement.style.backgroundPosition = 'center'
+    bgElement.style.backgroundRepeat = 'no-repeat'
+    bgElement.style.backgroundAttachment = 'fixed'
+    bgElement.style.zIndex = '-1'
+    document.body.appendChild(bgElement)
+  } else {
+    bgElement.style.backgroundImage = `url("${imageUrl}")`
+  }
 }
 
 // 设置白色背景
 function setWhiteBackground(): void {
+  // 移除动态背景元素
+  const bgElement = document.getElementById('dynamic-background')
+  if (bgElement) {
+    bgElement.remove()
+  }
+  
+  // 移除视频元素
+  const videoElement = document.querySelector('video')
+  if (videoElement) {
+    videoElement.remove()
+  }
+  
+  // 设置body背景
   document.body.style.backgroundImage = 'none'
   document.body.style.backgroundColor = '#ffffff'
 }
@@ -303,13 +325,21 @@ function setCustomBackground(imageUrl: string): void {
     video.style.objectFit = 'cover'
     video.style.zIndex = '-1'
     
-    // 移除旧的视频元素
+    // 移除旧的视频元素和背景元素
     const oldVideo = document.querySelector('video')
     if (oldVideo) {
       oldVideo.remove()
     }
+    const bgElement = document.getElementById('dynamic-background')
+    if (bgElement) {
+      bgElement.remove()
+    }
     
     document.body.appendChild(video)
+    
+    // 确保body背景透明，让视频显示
+    document.body.style.backgroundColor = 'transparent'
+    document.body.style.backgroundImage = 'none'
   } else {
     // 图片背景
     setBackgroundImage(imageUrl)
@@ -339,19 +369,17 @@ function startBingCarousel(): void {
 
 // 应用背景配置
 export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise<void> {
-  currentConfig = bgConfig
-  
   if (bgConfig.bingWallpaper) {
     try {
-      bingImages = await getBingWallpapers()
-      
-      if (bingImages.length > 0) {
+    bingImages = await getBingWallpapers()
+    
+    if (bingImages.length > 0) {
         if (bgConfig.bingMode === 'direct') {
           // 直接显示Bing图片
-      const firstImageUrl = bingImages[0]
-      if (firstImageUrl) {
-        setBackgroundImage(firstImageUrl)
-      }
+          const firstImageUrl = bingImages[0]
+          if (firstImageUrl) {
+            setBackgroundImage(firstImageUrl)
+          }
           startBingCarousel()
         } else {
           // 先显示本地背景，然后切换到Bing
@@ -364,10 +392,10 @@ export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise
           // 30秒后切换到第一张Bing图片
           setTimeout(() => {
             if (bingImages.length > 0) {
-      const firstImageUrl = bingImages[0]
-      if (firstImageUrl) {
-        setBackgroundImage(firstImageUrl)
-      }
+              const firstImageUrl = bingImages[0]
+              if (firstImageUrl) {
+                setBackgroundImage(firstImageUrl)
+              }
               currentImageIndex = 0
               startBingCarousel()
             }
@@ -413,7 +441,7 @@ export function formatCopyrightYear(copyrightConfig: CopyrightConfig): string {
     return currentYear.toString()
   } else if (configYear < currentYear) {
     return `${configYear}-${currentYear}`
-  } else {
+    } else {
     return configYear.toString()
   }
 }
@@ -422,17 +450,18 @@ export function formatCopyrightYear(copyrightConfig: CopyrightConfig): string {
 export function applyColorsConfig(colorsConfig: ColorsConfig): void {
   const root = document.documentElement
   
-  if (colorsConfig.auto) {
-    // 自动颜色模式
-    root.style.setProperty('--primary-color', '')
-    root.style.setProperty('--secondary-color', '')
-    root.style.setProperty('--accent-color', '')
+  if (colorsConfig.autoColor) {
+    // 自动颜色模式：根据背景亮度自动切换黑白文字
+    // 设置为黑色，theme.ts 会根据背景亮度动态调整
+    root.style.setProperty('--header-color', '#000000')
+    root.style.setProperty('--card-title-color', '#000000')
+    root.style.setProperty('--footer-color', '#000000')
   } else if (colorsConfig.manual) {
     // 手动颜色模式
-    const { primary, secondary, accent } = colorsConfig.manual
-    if (primary) root.style.setProperty('--primary-color', primary)
-    if (secondary) root.style.setProperty('--secondary-color', secondary)
-    if (accent) root.style.setProperty('--accent-color', accent)
+    const { header, cardTitle, footer } = colorsConfig.manual
+    if (header) root.style.setProperty('--header-color', header)
+    if (cardTitle) root.style.setProperty('--card-title-color', cardTitle)
+    if (footer) root.style.setProperty('--footer-color', footer)
   }
 }
 
@@ -440,7 +469,7 @@ export function applyColorsConfig(colorsConfig: ColorsConfig): void {
 export function applyFaviconConfig(faviconConfig: FaviconConfig): void {
   if (!faviconConfig.enabled) return
   
-  const faviconUrl = faviconConfig.url || '/favicon.ico'
+  const faviconUrl = faviconConfig.url || faviconConfig.icon || '/favicon.ico'
   const existingLink = document.querySelector("link[rel*='icon']") as HTMLLinkElement
   const link = existingLink || document.createElement('link')
   link.type = 'image/x-icon'
@@ -536,7 +565,7 @@ export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> 
         const dateText = element.textContent || ''
         if (/[\u4e00-\u9fff]/.test(dateText)) {
           element.style.fontFamily = 'var(--header-font-family)'
-        } else {
+  } else {
           element.style.fontFamily = 'var(--header-font-b-family)'
         }
       })
@@ -717,9 +746,3 @@ export async function applyAllConfigs(): Promise<void> {
     await applyFontsConfig(appConfig.fonts)
   }
 }
-
-
-
-
-
-

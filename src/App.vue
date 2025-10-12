@@ -34,6 +34,9 @@ body {
 
 #app {
   min-height: 100vh;
+  background: transparent;
+  position: relative;
+  z-index: 1;
 }
 
 

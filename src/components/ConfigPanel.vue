@@ -390,3 +390,87 @@ const saveConfig = async () => {
   border-color: #0056b3;
 }
 </style>
+
+.config-btn-secondary {
+  background: #6c757d;
+  color: #ffffff;
+}
+
+.config-btn-secondary:hover {
+  background: #545b62;
+}
+
+/* 深色模式 */
+:global(.dark-mode) .config-panel {
+  background: #2a2a2a;
+  color: #ffffff;
+}
+
+:global(.dark-mode) .config-header {
+  border-bottom-color: #404040;
+}
+
+:global(.dark-mode) .config-header h3 {
+  color: #ffffff;
+}
+
+:global(.dark-mode) .close-btn {
+  color: #cccccc;
+}
+
+:global(.dark-mode) .close-btn:hover {
+  background: #404040;
+  color: #ffffff;
+}
+
+:global(.dark-mode) .config-subtitle {
+  color: #ffffff;
+  border-bottom-color: #404040;
+}
+
+:global(.dark-mode) .config-label {
+  color: #cccccc;
+}
+
+:global(.dark-mode) .config-input,
+:global(.dark-mode) .config-select {
+  background: #404040;
+  border-color: #606060;
+  color: #ffffff;
+}
+
+:global(.dark-mode) .config-input:focus,
+:global(.dark-mode) .config-select:focus {
+  border-color: #007bff;
+}
+
+:global(.dark-mode) .config-hint {
+  background: #404040;
+  color: #cccccc;
+}
+
+:global(.dark-mode) .config-footer {
+  background: #333333;
+  border-top-color: #404040;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .config-panel {
+    width: 95%;
+    margin: 20px;
+  }
+  
+  .config-content {
+    padding: 20px;
+  }
+  
+  .config-header {
+    padding: 16px 20px;
+  }
+  
+  .config-footer {
+    padding: 16px 20px;
+  }
+}
+</style>

@@ -20,19 +20,32 @@
                 <div class="current-engine" @click.stop="toggleDropdown">
                   <component v-if="currentSearchEngine" :is="currentSearchEngine.icon" class="engine-icon" />
                 </div>
-              </div>
+      </div>
               
               <!-- 搜索框主体，包含输入框和内部展开的下拉菜单 -->
               <div class="search-main-area">
-                <input
-                  v-model="searchQuery"
-                  @input="handleSearch"
+        <input
+          v-model="searchQuery"
+          @input="handleSearch"
                   @keydown.enter="handleSearchSubmit"
-                  type="text"
+          type="text"
                   :placeholder="showDropdown ? '' : (currentSearchEngine?.placeholder || '搜索...')"
                   class="search-input"
                   :class="{ 'hide-text': showDropdown }"
                 >
+                
+                <!-- 清除按钮 -->
+                <button
+                  v-if="searchQuery && !showDropdown"
+                  @click="clearSearch"
+                  class="clear-button"
+                  title="清除"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
                 
                 <!-- 在搜索框内部从左到右展开的下拉菜单 -->
                 <div 
@@ -89,7 +102,7 @@
       <div class="footer-content">
         Copyright © {{ copyrightYear }} 
         <a :href="appConfigRef.footer?.websiteUrl" target="_blank" class="footer-link">{{ appConfigRef.footer?.websiteText }}</a> 
-        • Powered by 
+      • Powered by 
         <a :href="appConfigRef.footer?.authorUrl" target="_blank" class="footer-link">{{ appConfigRef.footer?.authorText }}</a>
       </div>
     </footer>
@@ -217,6 +230,12 @@ const handleSearchSubmit = () => {
   }
 }
 
+// 清除搜索
+const clearSearch = () => {
+  searchQuery.value = ''
+  filteredCategories.value = config
+}
+
 // 搜索引擎选择器相关函数
 const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value
@@ -251,6 +270,98 @@ const handleClickOutside = (event: Event) => {
   }
 }
 
+// 检测背景亮度并自动切换文字颜色
+const detectBackgroundBrightness = () => {
+  if (!appConfig.colors?.autoColor) return
+  
+  // 获取背景元素
+  const bgElement = document.getElementById('dynamic-background') || document.querySelector('video')
+  if (!bgElement) {
+    // 如果没有背景元素，默认使用黑色文字
+    const root = document.documentElement
+    root.style.setProperty('--header-color', '#000000')
+    root.style.setProperty('--card-title-color', '#000000')
+    root.style.setProperty('--footer-color', '#000000')
+    return
+  }
+  
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d', { willReadFrequently: true })
+  if (!ctx) return
+  
+  const analyzeImage = (source: HTMLImageElement | HTMLVideoElement) => {
+    try {
+      // 设置较小的canvas尺寸以提高性能
+      canvas.width = 50
+      canvas.height = 50
+      
+      // 绘制图像
+      ctx.drawImage(source, 0, 0, 50, 50)
+      
+      // 获取图像数据
+      const imageData = ctx.getImageData(0, 0, 50, 50)
+      const data = imageData.data
+      let totalBrightness = 0
+      
+      // 计算平均亮度（采样方式，提高性能）
+      for (let i = 0; i < data.length; i += 16) { // 每隔4个像素采样一次
+        const r = data[i]
+        const g = data[i + 1]
+        const b = data[i + 2]
+        // 使用感知亮度公式
+        totalBrightness += (r * 0.299 + g * 0.587 + b * 0.114)
+      }
+      
+      const avgBrightness = totalBrightness / (data.length / 16)
+      
+      // 根据亮度设置文字颜色（添加平滑过渡）
+      const root = document.documentElement
+      const textColor = avgBrightness > 128 ? '#000000' : '#ffffff'
+      
+      // 添加过渡效果
+      root.style.transition = 'color 0.3s ease'
+      root.style.setProperty('--header-color', textColor)
+      root.style.setProperty('--card-title-color', textColor)
+      root.style.setProperty('--footer-color', textColor)
+    } catch (error) {
+      // 如果分析失败，默认使用黑色
+      const root = document.documentElement
+      root.style.setProperty('--header-color', '#000000')
+      root.style.setProperty('--card-title-color', '#000000')
+      root.style.setProperty('--footer-color', '#000000')
+    }
+  }
+  
+  if (bgElement.tagName === 'VIDEO') {
+    const video = bgElement as HTMLVideoElement
+    // 视频：直接分析当前帧
+    if (video.readyState >= 2) {
+      analyzeImage(video)
+    } else {
+      video.addEventListener('loadeddata', () => analyzeImage(video), { once: true })
+    }
+  } else {
+    // 图片背景：从背景样式中提取
+    const bgStyle = window.getComputedStyle(bgElement)
+    const bgImage = bgStyle.backgroundImage
+    if (bgImage && bgImage !== 'none') {
+      const urlMatch = bgImage.match(/url\(['"]?([^'"]+)['"]?\)/)
+      if (urlMatch) {
+        const img = new Image()
+        img.crossOrigin = 'anonymous'
+        img.onload = () => analyzeImage(img)
+        img.onerror = () => {
+          // 加载失败，使用黑色
+          const root = document.documentElement
+          root.style.setProperty('--header-color', '#000000')
+          root.style.setProperty('--card-title-color', '#000000')
+          root.style.setProperty('--footer-color', '#000000')
+        }
+        img.src = urlMatch[1]
+      }
+    }
+  }
+}
 
 // 初始化
 onMounted(async () => {
@@ -275,6 +386,12 @@ onMounted(async () => {
   setTimeout(async () => {
     if (appConfig.background) {
       await applyBackgroundConfig(appConfig.background)
+      // 背景加载后立即检测亮度
+      setTimeout(() => {
+        detectBackgroundBrightness()
+        // 每3秒检测一次背景亮度（应对Bing壁纸切换）
+        setInterval(detectBackgroundBrightness, 3000)
+      }, 500)
     }
   }, 100)
   
@@ -347,9 +464,11 @@ onUnmounted(() => {
 .time-section {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   padding-left: 20px;
   border-left: 2px solid var(--header-color, #000000);
+  width: 180px;
+  flex-shrink: 0;
 }
 
 .current-time {
@@ -359,36 +478,34 @@ onUnmounted(() => {
   color: var(--header-color, #000000);
   margin: 0;
   text-shadow: none;
-  width: 80px;
   text-align: center;
   font-family: "brand", system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
 }
 
 .current-date {
   display: flex;
   align-items: center;
-  width: 100%;
+  justify-content: center;
+  gap: 8px;
   font-size: var(--header-font-size, 1rem);
   color: var(--header-color, #000000);
   margin: 0;
+  margin-top: 4px;
   opacity: 0.8;
   text-shadow: none;
-  position: relative;
 }
 
 .date-numbers {
   font-family: "brand", system-ui, sans-serif;
   font-weight: var(--header-font-weight, 400);
-  margin-right: 70px;
+  font-variant-numeric: tabular-nums;
 }
 
 .date-chinese {
   font-family: "AnJingChenXinShouJinTi", "SanJiZhengYaHei-Cu", system-ui, sans-serif;
   font-weight: var(--header-font-weight, 400);
-  position: absolute;
-  right: 0;
-  width: 60px;
-  text-align: right;
+  white-space: nowrap;
 }
 
 .search-section {
@@ -429,14 +546,16 @@ onUnmounted(() => {
   flex: 1;
   border: none;
   background: transparent;
-  font-size: 1rem;
+  font-size: var(--header-font-size, 1rem);
   outline: none;
-  color: #ffffff;
-  font-weight: 400;
+  color: var(--header-color, #ffffff);
+  font-family: var(--header-font-family);
+  font-weight: var(--header-font-weight, 400);
 }
 
 .search-input::placeholder {
-  color: #999999;
+  color: rgba(128, 128, 128, 0.6);
+  font-family: var(--header-font-family);
 }
 
 .search-input.hide-text {
@@ -478,6 +597,37 @@ onUnmounted(() => {
   filter: brightness(1.2);
 }
 
+/* 清除按钮样式 */
+.clear-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  color: var(--header-color, #000000);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+}
+
+.clear-button:hover {
+  transform: translateY(-2px) scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.clear-button svg {
+  width: 16px;
+  height: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.clear-button:hover svg {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+}
 
 .search-engine-selector-left {
   position: relative;

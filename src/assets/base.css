@@ -54,10 +54,14 @@
   font-weight: normal;
 }
 
+html {
+  background-color: transparent;
+}
+
 body {
   min-height: 100vh;
   color: var(--color-text);
-  background-color: #ffffff;
+  background-color: transparent;
   transition:
     color 0.5s,
     background-color 0.5s;
