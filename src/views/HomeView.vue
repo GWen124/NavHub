@@ -305,9 +305,9 @@ const detectBackgroundBrightness = () => {
       
       // 计算平均亮度（采样方式，提高性能）
       for (let i = 0; i < data.length; i += 16) { // 每隔4个像素采样一次
-        const r = data[i]
-        const g = data[i + 1]
-        const b = data[i + 2]
+        const r = data[i] ?? 0
+        const g = data[i + 1] ?? 0
+        const b = data[i + 2] ?? 0
         // 使用感知亮度公式
         totalBrightness += (r * 0.299 + g * 0.587 + b * 0.114)
       }
@@ -357,7 +357,7 @@ const detectBackgroundBrightness = () => {
           root.style.setProperty('--card-title-color', '#000000')
           root.style.setProperty('--footer-color', '#000000')
         }
-        img.src = urlMatch[1]
+        img.src = urlMatch[1] || ''
       }
     }
   }
