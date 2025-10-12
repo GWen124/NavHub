@@ -128,6 +128,7 @@ const xiconComponent = computed(() => {
   cursor: pointer;
   min-height: 40px;
   height: 100%;
+  width: 100%;
   justify-content: flex-start;
   gap: 10px;
   backdrop-filter: blur(10px);

@@ -100,6 +100,7 @@ const props = defineProps<Props>()
   .sites-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+    align-items: stretch;
   }
   
   .category-title {
@@ -111,6 +112,7 @@ const props = defineProps<Props>()
   .sites-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
+    align-items: stretch;
   }
   
   .category-title {
