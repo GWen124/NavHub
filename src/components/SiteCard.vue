@@ -213,6 +213,7 @@ const xiconComponent = computed(() => {
   display: flex;
   align-items: center;
   height: 100%;
+  min-width: 0;
 }
 
 

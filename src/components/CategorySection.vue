@@ -98,9 +98,15 @@ const props = defineProps<Props>()
   }
   
   .sites-grid {
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
-    align-items: stretch;
+    justify-content: space-between;
+  }
+  
+  .sites-grid .site-card {
+    flex: 0 0 calc(50% - 5px);
+    max-width: calc(50% - 5px);
   }
   
   .category-title {
@@ -110,9 +116,15 @@ const props = defineProps<Props>()
 
 @media (max-width: 480px) {
   .sites-grid {
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: 8px;
-    align-items: stretch;
+    justify-content: space-between;
+  }
+  
+  .sites-grid .site-card {
+    flex: 0 0 calc(50% - 4px);
+    max-width: calc(50% - 4px);
   }
   
   .category-title {
