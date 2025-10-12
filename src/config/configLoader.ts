@@ -622,21 +622,16 @@ export async function applyBackgroundConfig(bgConfig: BackgroundConfig): Promise
           }
           
           // 设置Bing图片背景，使用更强的优先级
-      setBackgroundImage(imageUrl)
-          
-          // 强制移除可能冲突的样式
-          body.style.removeProperty('background-image')
-          body.style.setProperty('background-image', backgroundImageUrl, 'important')
+          setBackgroundImage(firstImageUrl)
           
           // 根据背景设置文字颜色
           if (firstImageUrl) {
             setTextColorBasedOnBackground(firstImageUrl)
           }
-          
-      }
-      
-      // 启动轮播
-      startBingCarousel()
+        }, 30000) // 30秒延迟
+        
+        // 启动轮播
+        startBingCarousel()
       
     } else {
       // 先显示自定义背景作为初始背景
