@@ -5,7 +5,7 @@
     <header class="app-header">
       <div class="header-content">
         <div class="quote-section" :class="{ 'centered': !appConfigRef.timeDate?.enabled }">
-          <h1 class="main-quote">{{ appConfigRef.pageQuote }}</h1>
+          <h1 v-if="appConfigRef.pageTitleConfig?.hideQuote" class="main-quote">{{ appConfigRef.pageQuote }}</h1>
           <div v-if="appConfigRef.timeDate?.enabled" class="time-section">
             <div class="current-time">{{ currentTime }}</div>
             <div class="current-date">

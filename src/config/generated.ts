@@ -15,6 +15,9 @@ export const appConfig = reactive<AppConfig>({
     "icon": "https://image.gw124.top/Avatar/A62B54A6-13B8-4BB8-9AAA-75E3342388BB_1_105_c.jpeg"
   },
   "pageQuote": "人生寂寞，知己难求。",
+  "pageTitleConfig": {
+    "hideQuote": false
+  },
   "timeDate": {
     "enabled": true
   },
@@ -84,7 +87,7 @@ export const appConfig = reactive<AppConfig>({
     ]
   },
   "siteSorting": {
-    "mode": 3
+    "mode": 2
   },
   "externalConfig": {
     "enabled": false,

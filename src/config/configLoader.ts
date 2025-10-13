@@ -28,6 +28,10 @@ export interface TimeDateConfig {
   enabled?: boolean
 }
 
+export interface PageTitleConfig {
+  hideQuote?: boolean
+}
+
 export interface CopyrightConfig {
   year?: number
   text?: string
@@ -86,6 +90,7 @@ export interface SiteSortingConfig {
 export interface AppConfig {
   pageTitle?: string
   pageQuote?: string
+  pageTitleConfig?: PageTitleConfig
   background?: BackgroundConfig
   footer?: FooterConfig
   favicon?: FaviconConfig

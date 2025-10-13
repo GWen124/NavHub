@@ -22,12 +22,19 @@ favicon:
 # 页面主标题文字
 pageQuote: "人生寂寞，知己难求。"
 
+# 页面标题显示配置
+pageTitleConfig:
+  # 是否显示页面主标题
+  # true: 显示页面主标题
+  # false: 隐藏页面主标题
+  hideQuote: false
+
 # 时间日期模块配置
 timeDate:
   # 是否显示时间日期模块
   # true: 显示时间日期模块
   # false: 隐藏时间日期模块，标题居中显示
-  enabled: true
+  enabled: false
 
 # Footer 信息配置
 footer:
