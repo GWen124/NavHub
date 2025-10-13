@@ -27,7 +27,7 @@ pageTitleConfig:
   # 是否显示页面主标题
   # true: 显示页面主标题
   # false: 隐藏页面主标题
-  hideQuote: false
+  hideQuote: true
 
 # 时间日期模块配置
 timeDate:
