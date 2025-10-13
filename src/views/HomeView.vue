@@ -148,6 +148,26 @@ const hoveredEngine = ref<string | null>(null)
 // 应用配置
 const appConfigRef = computed(() => appConfig)
 
+// 动态加载 footer 链接配置
+const loadFooterLinks = async () => {
+  if (appConfig.footer?.secondLine?.configUrl) {
+    try {
+      const response = await fetch(appConfig.footer.secondLine.configUrl)
+      if (response.ok) {
+        const data = await response.json()
+        if (appConfig.footer.secondLine) {
+          appConfig.footer.secondLine.links = data.links
+        }
+        console.log('✅ Footer 链接配置加载成功')
+      } else {
+        console.warn('⚠️ Footer 链接配置加载失败')
+      }
+    } catch (error) {
+      console.error('❌ 加载 footer 链接配置时出错:', error)
+    }
+  }
+}
+
 // 版权年份
 const copyrightYear = computed(() => {
   return appConfig.copyright ? formatCopyrightYear(appConfig.copyright) : new Date().getFullYear().toString()
@@ -386,6 +406,10 @@ const detectBackgroundBrightness = () => {
 onMounted(async () => {
   themeStore.initTheme()
   await loadConfig()
+  
+  // 动态加载 footer 链接配置
+  await loadFooterLinks()
+  
   if (appConfig.pageTitle) {
     applyPageTitle(appConfig.pageTitle)
   }

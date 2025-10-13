@@ -39,24 +39,7 @@ const configContent = fs.readFileSync(configPath, 'utf8')
 // 解析 YAML
 const config = yaml.load(configContent)
 
-// 处理 footer 第二行链接配置
-if (config.footer?.secondLine?.configFile) {
-  try {
-    const footerLinksPath = path.join(__dirname, '..', config.footer.secondLine.configFile)
-    if (fs.existsSync(footerLinksPath)) {
-      const footerLinksContent = fs.readFileSync(footerLinksPath, 'utf8')
-      const footerLinksData = JSON.parse(footerLinksContent)
-      config.footer.secondLine.links = footerLinksData.links
-      console.log(`✅ 已从 ${config.footer.secondLine.configFile} 加载 footer 链接配置`)
-    } else {
-      console.error(`❌ footer 链接配置文件不存在: ${footerLinksPath}`)
-      throw new Error(`配置文件不存在: ${config.footer.secondLine.configFile}`)
-    }
-  } catch (error) {
-    console.error(`❌ 加载 footer 链接配置失败:`, error.message)
-    process.exit(1) // 配置文件必须存在，否则构建失败
-  }
-}
+// footer 链接配置将在运行时动态加载，这里不做处理
 
 // 处理外部配置
 let sitesConfigCode = ''

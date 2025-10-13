@@ -46,10 +46,11 @@ footer:
   secondLine:
     # 是否显示第二行
     enabled: true
-    # 链接配置来源
-    # 使用独立的 footer-links.json 文件管理链接配置
-    # 这样可以避免构建时被错误替换
-    configFile: "footer-links.json"
+    # 独立配置文件 URL（运行时动态加载）
+    # 可以是本地路径或远程 URL
+    # 本地示例: ./footer-links.json
+    # 远程示例: https://raw.githubusercontent.com/GWen124/Script/refs/heads/master/Web/footer-links.json
+    configUrl: "./footer-links.json"
 
 # 版权信息配置
 copyright:

@@ -26,29 +26,7 @@ export const appConfig = reactive<AppConfig>({
     "websiteUrl": "https://website.gw124.top/",
     "secondLine": {
       "enabled": true,
-      "configFile": "footer-links.json",
-      "links": [
-        {
-          "name": "Github",
-          "icon": "fa-github",
-          "url": "https://github.com/GWen124"
-        },
-        {
-          "name": "Blog",
-          "icon": "fa-rss",
-          "url": "https://blog.gw124.top/"
-        },
-        {
-          "name": "Email",
-          "icon": "fa-envelope",
-          "url": "mailto:9708281@gmail.com"
-        },
-        {
-          "name": "Telegram",
-          "icon": "fa-paper-plane",
-          "url": "https://t.me/WenGe124_Bot"
-        }
-      ]
+      "configUrl": "./footer-links.json"
     }
   },
   "copyright": {
@@ -136,29 +114,7 @@ export const appConfig = reactive<AppConfig>({
   "websiteUrl": "https://website.gw124.top/",
   "secondLine": {
     "enabled": true,
-    "configFile": "footer-links.json",
-    "links": [
-      {
-        "name": "Github",
-        "icon": "fa-github",
-        "url": "https://github.com/GWen124"
-      },
-      {
-        "name": "Blog",
-        "icon": "fa-rss",
-        "url": "https://blog.gw124.top/"
-      },
-      {
-        "name": "Email",
-        "icon": "fa-envelope",
-        "url": "mailto:9708281@gmail.com"
-      },
-      {
-        "name": "Telegram",
-        "icon": "fa-paper-plane",
-        "url": "https://t.me/WenGe124_Bot"
-      }
-    ]
+    "configUrl": "./footer-links.json"
   }
 },
     authorText: "Wen",
