@@ -57,6 +57,10 @@ export interface FontConfig {
   weight?: string
 }
 
+export interface SidebarConfig extends FontConfig {
+  width?: string
+}
+
 export interface ContentFontConfig {
   category?: FontConfig
   site?: FontConfig
@@ -66,7 +70,7 @@ export interface FontsConfig {
   header?: FontConfig
   content?: ContentFontConfig
   footer?: FontConfig
-  sidebar?: FontConfig
+  sidebar?: SidebarConfig
 }
 
 export interface CategorySortingConfig {
