@@ -163,6 +163,14 @@ categorySorting:
   bottomCategories:
     - "Other - 其他"
 
+# 网站排序配置
+siteSorting:
+  # 网站排序模式
+  # 1: 自动按首字母排序（中英文混合排序）
+  # 2: 中文网站在前，英文网站在后，分别按首字母排序
+  # 3: 按配置文件中的网站排序（不使用自动排序）
+  mode: 2
+
 # 外部网站配置
 externalConfig:
   # 是否启用外部配置

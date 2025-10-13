@@ -124,7 +124,7 @@ const xiconComponent = computed(() => {
   text-decoration: none;
   color: var(--card-title-color, #000000);
   transition: all 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  border: none;
   cursor: pointer;
   min-height: 40px;
   height: 100%;
@@ -136,7 +136,7 @@ const xiconComponent = computed(() => {
 
 .site-card:hover {
   background: rgba(0, 0, 0, 0.5);
-  border-color: rgba(0, 0, 0, 0.5);
+  border-color: transparent;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transform: translateY(-2px);
 }

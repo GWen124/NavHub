@@ -79,6 +79,10 @@ export interface CategorySortingConfig {
   bottomCategories?: string[]
 }
 
+export interface SiteSortingConfig {
+  mode?: number
+}
+
 export interface AppConfig {
   pageTitle?: string
   pageQuote?: string
@@ -90,6 +94,7 @@ export interface AppConfig {
   colors?: ColorsConfig
   fonts?: FontsConfig
   categorySorting?: CategorySortingConfig
+  siteSorting?: SiteSortingConfig
 }
 
 // 默认配置

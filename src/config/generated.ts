@@ -83,6 +83,9 @@ export const appConfig = reactive<AppConfig>({
       "Other - 其他"
     ]
   },
+  "siteSorting": {
+    "mode": 3
+  },
   "externalConfig": {
     "enabled": false,
     "url": ""
