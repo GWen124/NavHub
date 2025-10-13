@@ -477,7 +477,7 @@ onUnmounted(() => {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 2px;
+  width: 1px;
   height: 60%;
   background: linear-gradient(to bottom, transparent 0%, var(--header-color, #000000) 20%, var(--header-color, #000000) 80%, transparent 100%);
 }
@@ -934,7 +934,7 @@ onUnmounted(() => {
     top: 0;
     transform: translateX(-50%);
     width: 80%;
-    height: 2px;
+    height: 1px;
     background: linear-gradient(to right, transparent 0%, var(--header-color, #000000) 20%, var(--header-color, #000000) 80%, transparent 100%);
   }
   
