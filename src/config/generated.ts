@@ -26,6 +26,7 @@ export const appConfig = reactive<AppConfig>({
     "websiteUrl": "https://website.gw124.top/",
     "secondLine": {
       "enabled": true,
+      "configFile": "footer-links.json",
       "links": [
         {
           "name": "Github",
@@ -135,6 +136,7 @@ export const appConfig = reactive<AppConfig>({
   "websiteUrl": "https://website.gw124.top/",
   "secondLine": {
     "enabled": true,
+    "configFile": "footer-links.json",
     "links": [
       {
         "name": "Github",
