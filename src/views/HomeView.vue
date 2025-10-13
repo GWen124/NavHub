@@ -466,9 +466,20 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   padding-left: 20px;
-  border-left: 2px solid var(--header-color, #000000);
   width: 180px;
   flex-shrink: 0;
+  position: relative;
+}
+
+.time-section::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 60%;
+  background: linear-gradient(to bottom, transparent 0%, var(--header-color, #000000) 20%, var(--header-color, #000000) 80%, transparent 100%);
 }
 
 .current-time {
@@ -914,10 +925,17 @@ onUnmounted(() => {
   
   .time-section {
     padding-left: 0;
-    border-left: none;
-    border-top: 2px solid #333333;
     padding-top: 15px;
     align-items: center;
+  }
+  
+  .time-section::before {
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(to right, transparent 0%, var(--header-color, #000000) 20%, var(--header-color, #000000) 80%, transparent 100%);
   }
   
   .current-time {
