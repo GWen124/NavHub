@@ -47,13 +47,13 @@ jobs:
       id: config
       run: |
         # 读取自定义域名配置
-        CUSTOM_DOMAIN=$(grep -A 2 "deployment:" config.yml | grep "customDomain:" | sed 's/.*customDomain: *"\(.*\)".*/\1/')
+        CUSTOM_DOMAIN=$(grep -A 10 "deployment:" config.yml | grep "customDomain:" | sed 's/.*customDomain: *"\(.*\)".*/\1/')
         echo "custom_domain=$CUSTOM_DOMAIN" >> $GITHUB_OUTPUT
         echo "📝 读取到自定义域名: $CUSTOM_DOMAIN"
         
         # 读取外部配置 URL（如果 config.yml 中启用了）
-        EXTERNAL_ENABLED=$(grep -A 3 "externalConfig:" config.yml | grep "enabled:" | sed 's/.*enabled: *\(.*\)/\1/')
-        EXTERNAL_URL=$(grep -A 3 "externalConfig:" config.yml | grep "url:" | sed 's/.*url: *"\(.*\)".*/\1/')
+        EXTERNAL_ENABLED=$(grep -A 5 "externalConfig:" config.yml | grep "enabled:" | sed 's/.*enabled: *\(.*\)/\1/')
+        EXTERNAL_URL=$(grep -A 5 "externalConfig:" config.yml | grep "url:" | sed 's/.*url: *"\(.*\)".*/\1/')
         echo "external_enabled=$EXTERNAL_ENABLED" >> $GITHUB_OUTPUT
         echo "external_url=$EXTERNAL_URL" >> $GITHUB_OUTPUT
         echo "⚙️ 外部配置启用: $EXTERNAL_ENABLED"
