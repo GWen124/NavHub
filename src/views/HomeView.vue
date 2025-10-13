@@ -401,15 +401,32 @@ onMounted(async () => {
   
   // 添加点击外部关闭下拉菜单的事件监听
   document.addEventListener('click', handleClickOutside)
+  
+  // 禁用全站选中和右键（搜索输入框除外）
+  document.addEventListener('selectstart', disableSelectAndContextMenu)
+  document.addEventListener('contextmenu', disableSelectAndContextMenu)
 })
 
-// 清理定时器
+// 禁用选中和右键的函数（搜索输入框除外）
+const disableSelectAndContextMenu = (e: Event) => {
+  const target = e.target as HTMLElement
+  // 允许搜索输入框的选中和右键
+  if (target.classList.contains('search-input')) {
+    return
+  }
+  e.preventDefault()
+  return false
+}
+
+// 清理定时器和事件监听器
 onUnmounted(() => {
   if (timeInterval.value) {
     clearInterval(timeInterval.value)
   }
   // 清理事件监听器
   document.removeEventListener('click', handleClickOutside)
+  document.removeEventListener('selectstart', disableSelectAndContextMenu)
+  document.removeEventListener('contextmenu', disableSelectAndContextMenu)
 })
 </script>
 
