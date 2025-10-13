@@ -20,8 +20,7 @@ export interface FooterSecondLineFont {
 
 export interface FooterSecondLine {
   enabled?: boolean
-  configUrl?: string  // 运行时动态加载配置的 URL
-  links?: FooterLink[]
+  links?: FooterLink[]  // 从 public/footer-links.json 加载
   font?: FooterSecondLineFont
 }
 

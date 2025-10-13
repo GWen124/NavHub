@@ -39,7 +39,29 @@ const configContent = fs.readFileSync(configPath, 'utf8')
 // 解析 YAML
 const config = yaml.load(configContent)
 
-// footer 链接配置将在运行时动态加载，这里不做处理
+// 处理 footer 链接配置
+// 统一从 public/footer-links.json 读取，构建时嵌入配置
+if (config.footer?.secondLine?.enabled) {
+  try {
+    const footerLinksPath = path.join(__dirname, '../public/footer-links.json')
+    if (fs.existsSync(footerLinksPath)) {
+      const footerLinksContent = fs.readFileSync(footerLinksPath, 'utf8')
+      const footerLinksData = JSON.parse(footerLinksContent)
+      // 将链接数据嵌入到配置中
+      if (!config.footer.secondLine) {
+        config.footer.secondLine = {}
+      }
+      config.footer.secondLine.links = footerLinksData.links
+      console.log('✅ 已从 public/footer-links.json 加载 footer 链接配置')
+    } else {
+      console.error('❌ footer 链接配置文件不存在: public/footer-links.json')
+      process.exit(1)
+    }
+  } catch (error) {
+    console.error('❌ 加载 footer 链接配置失败:', error.message)
+    process.exit(1)
+  }
+}
 
 // 处理外部配置
 let sitesConfigCode = ''
