@@ -34,7 +34,7 @@ timeDate:
   # 是否显示时间日期模块
   # true: 显示时间日期模块
   # false: 隐藏时间日期模块，标题居中显示
-  enabled: false
+  enabled: true
 
 # Footer 信息配置
 footer:
@@ -94,14 +94,16 @@ fonts:
     # 远程URL示例: https://github.com/GWen124/HomePage/blob/main/public/fonts/brand.ttf
     # 留空使用系统默认字体
     fontA: "fonts/AnJingChenXinShouJinTi.ttf"
+ 
+
     # B字体：英文和数字优先级高（英文、数字、符号等）
     # 留空则只使用A字体
     # 示例：使用Google Fonts的Roboto字体
     fontB: "fonts/brand.ttf"
     # 字体大小（可选，留空使用默认大小）
-    size: ""
+    #size: ""
     # 字体粗细（可选，留空使用默认粗细）
-    weight: ""
+    #weight: ""
   
   # 中部区域字体（网站分类标题、网站卡片标题）
   content:

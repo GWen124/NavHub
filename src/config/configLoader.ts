@@ -631,26 +631,24 @@ export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> 
   root.style.setProperty('--header-font-b-family', headerBFontFamily)
   
   // 等待字体加载完成后应用
-  if (header.fontB && header.fontB.trim() !== '') {
-    document.fonts.ready.then(() => {
-      const timeElements = document.querySelectorAll('.current-time')
-      timeElements.forEach((el) => {
-        const element = el as HTMLElement
-        element.style.fontFamily = 'var(--header-font-b-family)'
-      })
-      
-      const dateElements = document.querySelectorAll('.current-date')
-      dateElements.forEach((el) => {
-        const element = el as HTMLElement
-        const dateText = element.textContent || ''
-        if (/[\u4e00-\u9fff]/.test(dateText)) {
-          element.style.fontFamily = 'var(--header-font-family)'
-  } else {
-          element.style.fontFamily = 'var(--header-font-b-family)'
-        }
-      })
+  document.fonts.ready.then(() => {
+    const timeElements = document.querySelectorAll('.current-time')
+    timeElements.forEach((el) => {
+      const element = el as HTMLElement
+      element.style.fontFamily = 'var(--header-font-b-family)'
     })
-  }
+    
+    const dateElements = document.querySelectorAll('.current-date')
+    dateElements.forEach((el) => {
+      const element = el as HTMLElement
+      const dateText = element.textContent || ''
+      if (/[\u4e00-\u9fff]/.test(dateText)) {
+        element.style.fontFamily = 'var(--header-font-family)'
+      } else {
+        element.style.fontFamily = 'var(--header-font-b-family)'
+      }
+    })
+  })
 
   // 智能字体选择函数
   function createSmartFontFamily(fontA: string, fontB: string, region: string): string {
@@ -689,8 +687,8 @@ export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> 
     if (sidebar.width) root.style.setProperty('--sidebar-width', sidebar.width)
   }
   
-  // 设置body默认字体
-  document.body.style.fontFamily = 'var(--site-font-family)'
+  // 设置body默认字体为系统默认字体，不强制使用任何特定字体
+  document.body.style.fontFamily = 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
   
   // 应用字体到所有元素
   setTimeout(() => {
@@ -702,13 +700,13 @@ export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> 
     const dateNumbersElements = document.querySelectorAll('.date-numbers')
     dateNumbersElements.forEach((el) => {
       const element = el as HTMLElement
-      element.style.fontFamily = '"brand", system-ui, sans-serif'
+      element.style.fontFamily = 'var(--header-font-b-family)'
     })
     
     const dateChineseElements = document.querySelectorAll('.date-chinese')
     dateChineseElements.forEach((el) => {
       const element = el as HTMLElement
-      element.style.fontFamily = '"AnJingChenXinShouJinTi", "SanJiZhengYaHei-Cu", system-ui, sans-serif'
+      element.style.fontFamily = 'var(--header-font-family)'
       element.style.fontWeight = 'bold'
     })
     

@@ -16,10 +16,10 @@ export const appConfig = reactive<AppConfig>({
   },
   "pageQuote": "人生寂寞，知己难求。",
   "pageTitleConfig": {
-    "hideQuote": false
+    "hideQuote": true
   },
   "timeDate": {
-    "enabled": false
+    "enabled": true
   },
   "footer": {
     "websiteText": "WEBSITE.GW124.TOP",
@@ -45,9 +45,7 @@ export const appConfig = reactive<AppConfig>({
   "fonts": {
     "header": {
       "fontA": "fonts/AnJingChenXinShouJinTi.ttf",
-      "fontB": "fonts/brand.ttf",
-      "size": "",
-      "weight": ""
+      "fontB": "fonts/brand.ttf"
     },
     "content": {
       "category": {

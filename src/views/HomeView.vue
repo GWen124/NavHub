@@ -466,7 +466,7 @@ onUnmounted(() => {
 .quote-section {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 0px;
   width: 100%;
   justify-content: center;
 }
@@ -533,13 +533,13 @@ onUnmounted(() => {
 }
 
 .date-numbers {
-  font-family: "brand", system-ui, sans-serif;
+  font-family: var(--header-font-b-family, "brand", system-ui, sans-serif);
   font-weight: var(--header-font-weight, 400);
   font-variant-numeric: tabular-nums;
 }
 
 .date-chinese {
-  font-family: "AnJingChenXinShouJinTi", "SanJiZhengYaHei-Cu", system-ui, sans-serif;
+  font-family: var(--header-font-family, "AnJingChenXinShouJinTi", "SanJiZhengYaHei-Cu", system-ui, sans-serif);
   font-weight: var(--header-font-weight, 400);
   white-space: nowrap;
 }
@@ -563,7 +563,7 @@ onUnmounted(() => {
 
 .search-container {
   position: relative;
-  width: 700px;
+  width: 600px;
   display: flex;
   align-items: center;
   background: rgba(0, 0, 0, 0.5);
