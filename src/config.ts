@@ -18,7 +18,7 @@ export const config: Category[] = [
       {
         name: "Home Page",
         url: "https://gw124.top",
-        icon: "https://image.gw124.top/Avatar/imgbin_a1bee513649d120523b69c8584c25695.png"
+        icon: "https://image.gw124.top/Avatar/A62B54A6-13B8-4BB8-9AAA-75E3342388BB_1_105_c.jpeg"
       },
       {
         name: "Google",
