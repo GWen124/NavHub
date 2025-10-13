@@ -892,7 +892,7 @@ onUnmounted(() => {
 
 .app-footer {
   background: transparent;
-  padding: 10px 0 10px 0;
+  padding: 8px 0 8px 0;
   margin-top: auto;
   position: relative;
 }
@@ -921,7 +921,7 @@ onUnmounted(() => {
 }
 
 .footer-first-line {
-  margin-bottom: 5px;
+  margin-bottom: 1px;
 }
 
 .footer-second-line {
