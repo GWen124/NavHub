@@ -142,11 +142,11 @@ externalConfig:
   # 是否启用外部配置
   # true: 构建时从外部 URL 拉取网站配置（会覆盖 config.ts 中的配置）
   # false: 使用本地 config.ts 中的配置
-  enabled: false
+  enabled: true
   # 外部配置文件的 URL（需要返回 JSON 格式的网站配置）
   # 示例：https://example.com/sites-config.json
   # 示例：https://gist.githubusercontent.com/username/xxx/raw/sites.json
-  url: ""
+  url: "https://raw.githubusercontent.com/GWen124/Script/refs/heads/master/Web/MD/Website%20Panel/WebsiteConfig.json"
   # 回退策略：当外部配置不可用时，自动使用本地 config.ts
   # 注意：外部配置拉取失败时，构建过程会自动回退到本地配置，无需手动干预
   
