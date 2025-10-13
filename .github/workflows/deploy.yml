@@ -6,6 +6,17 @@ on:
   pull_request:
     branches: [ main, master ]
   workflow_dispatch: # 允许手动触发
+    inputs:
+      external_config_url:
+        description: '外部配置 URL（留空则使用 config.yml 设置）'
+        required: false
+        type: string
+        default: ''
+      update_reason:
+        description: '更新原因（可选）'
+        required: false
+        type: string
+        default: '手动触发更新'
 
 permissions:
   contents: write
@@ -32,11 +43,47 @@ jobs:
     - name: Install dependencies
       run: npm ci
       
+    - name: Read config.yml settings
+      id: config
+      run: |
+        # 读取自定义域名配置
+        CUSTOM_DOMAIN=$(grep -A 2 "deployment:" config.yml | grep "customDomain:" | sed 's/.*customDomain: *"\(.*\)".*/\1/')
+        echo "custom_domain=$CUSTOM_DOMAIN" >> $GITHUB_OUTPUT
+        echo "📝 读取到自定义域名: $CUSTOM_DOMAIN"
+        
+        # 读取外部配置 URL（如果 config.yml 中启用了）
+        EXTERNAL_ENABLED=$(grep -A 3 "externalConfig:" config.yml | grep "enabled:" | sed 's/.*enabled: *\(.*\)/\1/')
+        EXTERNAL_URL=$(grep -A 3 "externalConfig:" config.yml | grep "url:" | sed 's/.*url: *"\(.*\)".*/\1/')
+        echo "external_enabled=$EXTERNAL_ENABLED" >> $GITHUB_OUTPUT
+        echo "external_url=$EXTERNAL_URL" >> $GITHUB_OUTPUT
+        echo "⚙️ 外部配置启用: $EXTERNAL_ENABLED"
+        if [ -n "$EXTERNAL_URL" ]; then
+          echo "🔗 外部配置 URL: $EXTERNAL_URL"
+        fi
+      
+    - name: Configure external config (if provided)
+      if: github.event.inputs.external_config_url != ''
+      run: |
+        echo "🔄 使用外部配置..."
+        echo "📝 更新原因: ${{ github.event.inputs.update_reason }}"
+        echo "🔗 配置 URL: ${{ github.event.inputs.external_config_url }}"
+        # 临时修改 config.yml 以启用外部配置
+        sed -i 's/enabled: false/enabled: true/' config.yml
+        sed -i 's/enabled: true/enabled: true/' config.yml
+        # 替换 URL（处理各种格式）
+        sed -i "s|url: \".*\"|url: \"${{ github.event.inputs.external_config_url }}\"|" config.yml
+        echo "✅ 外部配置已设置"
+        echo "📄 当前配置:"
+        grep -A 2 "externalConfig:" config.yml
+      
     - name: Build
       run: npm run build
       
-    - name: Create CNAME file
-      run: echo "website.gw124.top" > dist/CNAME
+    - name: Create CNAME file (if custom domain is set)
+      if: steps.config.outputs.custom_domain != ''
+      run: |
+        echo "🌐 创建 CNAME 文件: ${{ steps.config.outputs.custom_domain }}"
+        echo "${{ steps.config.outputs.custom_domain }}" > dist/CNAME
       
     - name: Deploy to Web branch
       uses: peaceiris/actions-gh-pages@v3
@@ -63,9 +110,23 @@ jobs:
     - name: Notify Pages deployment
       run: |
         echo "✅ Pages deployment completed successfully!"
-        echo "🌐 Site URL: https://website.gw124.top"
+        if [ -n "${{ steps.config.outputs.custom_domain }}" ]; then
+          echo "🌐 Site URL: https://${{ steps.config.outputs.custom_domain }}"
+        else
+          echo "🌐 Site URL: ${{ steps.deployment.outputs.page_url }}"
+        fi
         echo "📅 Deployment time: $(date)"
         echo "🔄 Build ID: ${{ github.run_id }}"
+        if [ -n "${{ github.event.inputs.external_config_url }}" ]; then
+          echo "⚙️ 配置模式: 外部配置（手动指定）"
+          echo "🔗 配置 URL: ${{ github.event.inputs.external_config_url }}"
+          echo "📝 更新原因: ${{ github.event.inputs.update_reason }}"
+        elif [ "${{ steps.config.outputs.external_enabled }}" == "true" ]; then
+          echo "⚙️ 配置模式: 外部配置（config.yml）"
+          echo "🔗 配置 URL: ${{ steps.config.outputs.external_url }}"
+        else
+          echo "⚙️ 配置模式: 本地配置"
+        fi
         
     - name: Trigger Pages rebuild
       if: always()

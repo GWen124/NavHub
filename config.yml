@@ -1,6 +1,14 @@
 # Website Panel 配置文件
 # 修改此文件来自定义网站设置
 
+# 部署配置
+deployment:
+  # 自定义域名（用于 GitHub Pages CNAME 文件）
+  # 填写域名: 部署时自动创建 CNAME 文件，使用指定的自定义域名
+  # 留空 (""): 不创建 CNAME 文件，保留 GitHub Pages 中手动配置的域名设置
+  # 注意：如果留空但 GitHub Pages 中也没有配置域名，则使用默认域名 (username.github.io/repo-name)
+  customDomain: "website.gw124.top"
+
 # 网页标题
 pageTitle: "Website Panel"
 
