@@ -431,11 +431,24 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* 禁用全站文本选中（搜索输入框除外） */
 .app-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background: transparent;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+
+/* 允许搜索输入框选中 */
+.search-input {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
 }
 
 .app-header {
