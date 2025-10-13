@@ -21,7 +21,7 @@ export const appConfig = reactive<AppConfig>({
   },
   "copyright": {
     "startDate": "2025-10-01",
-    "autoRange": false
+    "autoRange": true
   },
   "background": {
     "bingWallpaper": false,

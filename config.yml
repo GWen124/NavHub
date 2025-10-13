@@ -35,7 +35,7 @@ copyright:
   # 是否自动计算年份范围
   # true: 根据当前日期自动计算显示格式
   # false: 始终显示开始年份
-  autoRange: false
+  autoRange: true
 
 # 背景图片配置
 background:

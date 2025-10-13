@@ -453,14 +453,28 @@ export function applyPageTitle(title: string): void {
 // 格式化版权年份
 export function formatCopyrightYear(copyrightConfig: CopyrightConfig): string {
   const currentYear = new Date().getFullYear()
-  const configYear = copyrightConfig.year || currentYear
   
-  if (configYear === currentYear) {
+  // 从 startDate 中提取年份
+  let startYear = copyrightConfig.year || currentYear
+  if (copyrightConfig.startDate) {
+    const dateMatch = copyrightConfig.startDate.match(/(\d{4})/)
+    if (dateMatch) {
+      startYear = parseInt(dateMatch[1])
+    }
+  }
+  
+  // 根据 autoRange 决定是否显示年份范围
+  if (copyrightConfig.autoRange === false) {
+    return startYear.toString()
+  }
+  
+  // autoRange 为 true 或未设置时，自动计算范围
+  if (startYear === currentYear) {
     return currentYear.toString()
-  } else if (configYear < currentYear) {
-    return `${configYear}-${currentYear}`
-    } else {
-    return configYear.toString()
+  } else if (startYear < currentYear) {
+    return `${startYear}-${currentYear}`
+  } else {
+    return startYear.toString()
   }
 }
 
