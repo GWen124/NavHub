@@ -133,6 +133,11 @@ categorySorting:
   # 置顶分组（始终显示在最前面，按数组顺序排列）
   pinnedCategories:
     - "Favorites - 常用网站"
+    - "AI Tools - AI工具"
+    - "Online Tools - 在线工具"
+    - "Useful Tools - 实用工具"
+    - "Productivity - 生产力工具"
+
   # 末尾分组（始终显示在最后面，按数组顺序排列）
   bottomCategories:
     - "Other - 其他"
@@ -146,7 +151,7 @@ externalConfig:
   # 外部配置文件的 URL（需要返回 JSON 格式的网站配置）
   # 示例：https://example.com/sites-config.json
   # 示例：https://gist.githubusercontent.com/username/xxx/raw/sites.json
-  url: "https://raw.githubusercontent.com/GWen124/Script/refs/heads/master/Web/MD/Website%20Panel/WebsiteConfig.json"
+  url: "https://raw.githubusercontent.com/GWen124/Script/refs/heads/master/Web/Website%20Panel/WebsiteConfig.json"
   # 回退策略：当外部配置不可用时，自动使用本地 config.ts
   # 注意：外部配置拉取失败时，构建过程会自动回退到本地配置，无需手动干预
   
