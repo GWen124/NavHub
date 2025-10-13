@@ -404,6 +404,111 @@ export const config: Category[] = [
       }]
   },
   {
+    name: "Cloud Storage - 云储存",
+    sites: [
+      {
+        name: "Google Drive",
+        url: "https://drive.google.com",
+        icon: ""
+      },
+      {
+        name: "Dropbox",
+        url: "https://dropbox.com",
+        icon: ""
+      },
+      {
+        name: "OneDrive",
+        url: "https://onedrive.live.com",
+        icon: ""
+      },
+      {
+        name: "iCloud",
+        url: "https://icloud.com",
+        icon: ""
+      },
+      {
+        name: "Box",
+        url: "https://box.com",
+        icon: ""
+      },
+      {
+        name: "百度网盘",
+        url: "https://pan.baidu.com",
+        icon: ""
+      },
+      {
+        name: "阿里云盘",
+        url: "https://aliyundrive.com",
+        icon: ""
+      },
+      {
+        name: "天翼云盘",
+        url: "https://cloud.189.cn",
+        icon: ""
+      },
+      {
+        name: "腾讯微云",
+        url: "https://weiyun.com",
+        icon: ""
+      },
+      {
+        name: "坚果云",
+        url: "https://jianguoyun.com",
+        icon: ""
+      },
+      {
+        name: "115网盘",
+        url: "https://115.com",
+        icon: ""
+      },
+      {
+        name: "蓝奏云",
+        url: "https://lanzoui.com",
+        icon: ""
+      },
+      {
+        name: "MEGA",
+        url: "https://mega.nz",
+        icon: ""
+      },
+      {
+        name: "pCloud",
+        url: "https://pcloud.com",
+        icon: ""
+      },
+      {
+        name: "Sync.com",
+        url: "https://sync.com",
+        icon: ""
+      },
+      {
+        name: "MediaFire",
+        url: "https://mediafire.com",
+        icon: ""
+      },
+      {
+        name: "4shared",
+        url: "https://4shared.com",
+        icon: ""
+      },
+      {
+        name: "Degoo",
+        url: "https://degoo.com",
+        icon: ""
+      },
+      {
+        name: "Internxt",
+        url: "https://internxt.com",
+        icon: ""
+      },
+      {
+        name: "Tresorit",
+        url: "https://tresorit.com",
+        icon: ""
+      }
+    ]
+  },
+  {
     name: "Instant Messaging - 即时通讯",
     sites: [
       {
@@ -4264,103 +4369,153 @@ export const config: Category[] = [
     name: "Banking & Finance - 银行金融",
     sites: [
       {
-        name: "JPMorgan Chase",
-        url: "https://jpmorganchase.com",
+        name: "中国工商银行",
+        url: "https://icbc.com.cn",
         icon: ""
       },
       {
-        name: "Bank of America",
-        url: "https://bankofamerica.com",
+        name: "中国建设银行",
+        url: "https://ccb.com",
         icon: ""
       },
       {
-        name: "Wells Fargo",
-        url: "https://wellsfargo.com",
+        name: "中国农业银行",
+        url: "https://abchina.com",
         icon: ""
       },
       {
-        name: "Citigroup",
-        url: "https://citigroup.com",
+        name: "中国银行",
+        url: "https://boc.cn",
         icon: ""
       },
       {
-        name: "Goldman Sachs",
-        url: "https://goldmansachs.com",
+        name: "交通银行",
+        url: "https://bankcomm.com",
         icon: ""
       },
       {
-        name: "Morgan Stanley",
-        url: "https://morganstanley.com",
+        name: "招商银行",
+        url: "https://cmbchina.com",
         icon: ""
       },
       {
-        name: "U.S. Bank",
-        url: "https://usbank.com",
+        name: "中国邮政储蓄银行",
+        url: "https://psbc.com",
         icon: ""
       },
       {
-        name: "PNC Bank",
-        url: "https://pnc.com",
+        name: "中信银行",
+        url: "https://citicbank.com",
         icon: ""
       },
       {
-        name: "Capital One",
-        url: "https://capitalone.com",
+        name: "中国光大银行",
+        url: "https://cebbank.com",
         icon: ""
       },
       {
-        name: "TD Bank",
-        url: "https://td.com",
+        name: "中国民生银行",
+        url: "https://cmbc.com.cn",
         icon: ""
       },
       {
-        name: "HSBC",
-        url: "https://hsbc.com",
+        name: "平安银行",
+        url: "https://bank.pingan.com",
         icon: ""
       },
       {
-        name: "Barclays",
-        url: "https://barclays.com",
+        name: "华夏银行",
+        url: "https://hxb.com.cn",
         icon: ""
       },
       {
-        name: "Deutsche Bank",
-        url: "https://db.com",
+        name: "广发银行",
+        url: "https://cgbchina.com.cn",
         icon: ""
       },
       {
-        name: "BNP Paribas",
-        url: "https://bnpparibas.com",
+        name: "兴业银行",
+        url: "https://cib.com.cn",
         icon: ""
       },
       {
-        name: "Credit Suisse",
-        url: "https://credit-suisse.com",
+        name: "浦发银行",
+        url: "https://spdb.com.cn",
         icon: ""
       },
       {
-        name: "UBS",
-        url: "https://ubs.com",
+        name: "北京银行",
+        url: "https://bankofbeijing.com.cn",
         icon: ""
       },
       {
-        name: "Santander",
-        url: "https://santander.com",
+        name: "上海银行",
+        url: "https://bankofshanghai.com",
         icon: ""
       },
       {
-        name: "ING",
-        url: "https://ing.com",
+        name: "江苏银行",
+        url: "https://jsbchina.cn",
         icon: ""
       },
       {
-        name: "Rabobank",
-        url: "https://rabobank.com",
+        name: "南京银行",
+        url: "https://njcb.com.cn",
         icon: ""
       },
       {
-        name: "Société Générale",
-        url: "https://societegenerale.com",
+        name: "宁波银行",
+        url: "https://nbcb.com.cn",
+        icon: ""
+      },
+      {
+        name: "支付宝",
+        url: "https://alipay.com",
+        icon: ""
+      },
+      {
+        name: "微信支付",
+        url: "https://pay.weixin.qq.com",
+        icon: ""
+      },
+      {
+        name: "网商银行",
+        url: "https://mybank.cn",
+        icon: ""
+      },
+      {
+        name: "微众银行",
+        url: "https://webank.com",
+        icon: ""
+      },
+      {
+        name: "京东钱包",
+        url: "https://jr.jd.com",
+        icon: ""
+      },
+      {
+        name: "云闪付",
+        url: "https://unionpay.com",
+        icon: ""
+      },
+      {
+        name: "度小满金融",
+        url: "https://duxiaoman.com",
+        icon: ""
+      },
+      {
+        name: "蚂蚁财富",
+        url: "https://fund.ant.group",
+        icon: ""
+      },
+      {
+        name: "天弘基金",
+        url: "https://thfund.com.cn",
+        icon: ""
+      },
+      {
+        name: "理财通",
+        url: "https://licaitong.qq.com",
         icon: ""
       }
     ]

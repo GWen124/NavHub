@@ -458,7 +458,7 @@ export function formatCopyrightYear(copyrightConfig: CopyrightConfig): string {
   let startYear = copyrightConfig.year || currentYear
   if (copyrightConfig.startDate) {
     const dateMatch = copyrightConfig.startDate.match(/(\d{4})/)
-    if (dateMatch) {
+    if (dateMatch && dateMatch[1]) {
       startYear = parseInt(dateMatch[1])
     }
   }
