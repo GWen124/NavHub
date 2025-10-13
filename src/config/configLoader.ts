@@ -642,7 +642,11 @@ export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> 
   // 头部字体样式
   const headerFontFamily = generateFontFamily(header.fontA || '', header.fontB || '', 'header')
   root.style.setProperty('--header-font-family', headerFontFamily)
-  if (header.size) root.style.setProperty('--header-font-size', `${header.size}px`)
+  if (header.size) {
+    // 如果size已经包含px，直接使用；否则添加px
+    const sizeValue = header.size.includes('px') ? header.size : `${header.size}px`
+    root.style.setProperty('--header-font-size', sizeValue)
+  }
   if (header.weight) root.style.setProperty('--header-font-weight', header.weight)
 
   // 头部B字体样式（专门用于数字）
@@ -682,13 +686,19 @@ export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> 
   // 分组标题字体样式
   const categoryFontFamily = createSmartFontFamily(content.category?.fontA || '', content.category?.fontB || '', 'category')
   root.style.setProperty('--category-font-family', categoryFontFamily)
-  if (content.category?.size) root.style.setProperty('--category-font-size', `${content.category.size}px`)
+  if (content.category?.size) {
+    const sizeValue = content.category.size.includes('px') ? content.category.size : `${content.category.size}px`
+    root.style.setProperty('--category-font-size', sizeValue)
+  }
   if (content.category?.weight) root.style.setProperty('--category-font-weight', content.category.weight)
 
   // 网站卡片字体样式
   const siteFontFamily = createSmartFontFamily(content.site?.fontA || '', content.site?.fontB || '', 'site')
   root.style.setProperty('--site-font-family', siteFontFamily)
-  if (content.site?.size) root.style.setProperty('--site-font-size', `${content.site.size}px`)
+  if (content.site?.size) {
+    const sizeValue = content.site.size.includes('px') ? content.site.size : `${content.site.size}px`
+    root.style.setProperty('--site-font-size', sizeValue)
+  }
   if (content.site?.weight) root.style.setProperty('--site-font-weight', content.site.weight)
 
   // Footer字体样式

@@ -525,7 +525,7 @@ onUnmounted(() => {
 
 .current-time {
   font-family: var(--header-font-b-family, inherit);
-  font-size: var(--header-font-size, 1.8rem);
+  font-size: 1.8rem;
   font-weight: var(--header-font-weight, 600);
   color: var(--header-color, #000000);
   margin: 0;
@@ -540,7 +540,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-size: var(--header-font-size, 1rem);
+  font-size: 1rem;
   color: var(--header-color, #000000);
   margin: 0;
   margin-top: 4px;
@@ -598,7 +598,7 @@ onUnmounted(() => {
   flex: 1;
   border: none;
   background: transparent;
-  font-size: var(--header-font-size, 1rem);
+  font-size: 1rem;
   outline: none;
   color: var(--header-color, #ffffff);
   font-family: var(--header-font-family);
@@ -995,7 +995,7 @@ onUnmounted(() => {
   }
   
   .main-quote {
-    font-size: 1.8rem;
+    font-size: var(--header-font-size, 1.8rem);
   }
   
   .time-section {
@@ -1049,7 +1049,7 @@ onUnmounted(() => {
 
 @media (max-width: 480px) {
   .main-quote {
-    font-size: 1.5rem;
+    font-size: var(--header-font-size, 1.5rem);
   }
   
   .current-time {

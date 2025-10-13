@@ -71,20 +71,20 @@ export const appConfig = reactive<AppConfig>({
     "header": {
       "fontA": "fonts/AnJingChenXinShouJinTi.ttf",
       "fontB": "fonts/brand.ttf",
-      "size": "4rem",
+      "size": "64px",
       "weight": "700"
     },
     "content": {
       "category": {
         "fontA": "fonts/SanJiZhengYaHei-ZhongCu.ttf",
         "fontB": "Arial, sans-serif",
-        "size": "1.1rem",
+        "size": "18px",
         "weight": "600"
       },
       "site": {
         "fontA": "fonts/SanJiZhengYaHei-Xi.ttf",
         "fontB": "Arial, sans-serif",
-        "size": "0.9rem",
+        "size": "14px",
         "weight": "700"
       }
     },
@@ -160,7 +160,7 @@ export const appConfig = reactive<AppConfig>({
   }
 },
     authorText: "Wen",
-    authorUrl: "https://github.com/GWen124"
+    authorUrl: "https://gw124.top/"
   }
 })
 
