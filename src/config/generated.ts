@@ -9,7 +9,7 @@ export const appConfig = reactive<AppConfig>({
   ...{
   "pageTitle": "Website Panel",
   "favicon": {
-    "icon": "https://image.gw124.top/Avatar/imgbin_a1bee513649d120523b69c8584c25695.png"
+    "icon": "https://image.gw124.top/Avatar/A62B54A6-13B8-4BB8-9AAA-75E3342388BB_1_105_c.jpeg"
   },
   "pageQuote": "人生寂寞，知己难求。",
   "timeDate": {
@@ -66,6 +66,19 @@ export const appConfig = reactive<AppConfig>({
   },
   "autoIcon": {
     "mode": 3
+  },
+  "categorySorting": {
+    "autoSort": true,
+    "pinnedCategories": [
+      "Favorites - 常用网站"
+    ],
+    "bottomCategories": [
+      "Other - 其他"
+    ]
+  },
+  "externalConfig": {
+    "enabled": false,
+    "url": ""
   }
 },
   footer: {

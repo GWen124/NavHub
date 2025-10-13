@@ -112,7 +112,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, onUnmounted } from 'vue'
-import { config, type Category } from '@/config/index'
+import { config, getConfig, type Category } from '@/config/index'
 import { useThemeStore } from '@/stores/theme'
 import { loadConfig, applyBackgroundConfig, applyPageTitle, applyFaviconConfig, applyColorsConfig, applyFontsConfig, appConfig, formatCopyrightYear } from '@/config/generated'
 import CategorySection from '@/components/CategorySection.vue'
