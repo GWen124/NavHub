@@ -19,7 +19,7 @@ export const appConfig = reactive<AppConfig>({
     "hideQuote": false
   },
   "timeDate": {
-    "enabled": true
+    "enabled": false
   },
   "footer": {
     "websiteText": "WEBSITE.GW124.TOP",
