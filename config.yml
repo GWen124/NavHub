@@ -5,8 +5,8 @@
 deployment:
   # 自定义域名（用于 GitHub Pages CNAME 文件）
   # 填写域名: 部署时自动创建 CNAME 文件，使用指定的自定义域名
-  # 留空 (""): 不创建 CNAME 文件，可以在手动触发时指定域名
-  # 注意：如果留空且手动触发时也不指定，则使用 GitHub Pages 中手动配置的域名
+  # 留空 (""): 不创建 CNAME 文件，保留 GitHub Pages 中手动配置的域名设置
+  # 注意：如果留空但 GitHub Pages 中也没有配置域名，则使用默认域名 (username.github.io/repo-name)
   customDomain: ""
 
 # 网页标题
@@ -103,17 +103,17 @@ fonts:
       # A字体：汉字优先级高
       fontA: "fonts/SanJiZhengYaHei-ZhongCu.ttf"
       # B字体：英文和数字优先级高
-      fontB: ""
-      size: ""
-      weight: ""
+      fontB: "Arial, sans-serif"
+      # size: ""
+      # weight: ""
     # 网站卡片标题字体
     site:
       # A字体：汉字优先级高
       fontA: "fonts/SanJiZhengYaHei-Xi.ttf"
       # B字体：英文和数字优先级高
-      fontB: ""
-      size: ""
-      weight: ""
+      fontB: "Arial, sans-serif"
+      # size: ""
+      # weight: ""
   
   # Footer区域字体（版权信息、链接文字）
   footer:
@@ -123,6 +123,19 @@ fonts:
     fontB: ""
     size: ""
     weight: ""
+  
+  # 侧边栏字体（分组名称、网站数量）
+  sidebar:
+    # A字体：汉字优先级高
+    fontA: "fonts/SanJiZhengYaHei-ZhongCu.ttf"
+    # B字体：英文和数字优先级高
+    fontB: ""
+    # 字体大小（可选，留空使用默认大小）
+    # size: "15px"
+    # 字体粗细（可选，留空使用默认粗细）
+    # weight: "400"
+    # 侧边栏宽度（展开时的宽度）
+    # width: "300px"
 
 # 自动图标配置
 autoIcon:

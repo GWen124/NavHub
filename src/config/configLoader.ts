@@ -66,6 +66,7 @@ export interface FontsConfig {
   header?: FontConfig
   content?: ContentFontConfig
   footer?: FontConfig
+  sidebar?: FontConfig
 }
 
 export interface CategorySortingConfig {
@@ -209,7 +210,7 @@ function parseYamlConfig(yamlText: string): any {
       value = value.slice(1, -1)
     }
 
-    // 处理布尔值
+      // 处理布尔值
     if (value === 'true') {
       value = true as any
     } else if (value === 'false') {
@@ -218,10 +219,10 @@ function parseYamlConfig(yamlText: string): any {
       
     // 处理顶级section
     if (key === 'footer' || key === 'background' || key === 'favicon' || key === 'copyright' || key === 'colors' || key === 'fonts' || key === 'timeDate' || key === 'autoIcon') {
-      if (!result[key]) {
-        result[key] = {}
-      }
-      currentSection = result[key]
+        if (!result[key]) {
+          result[key] = {}
+        }
+        currentSection = result[key]
       currentSectionName = key
       currentSubSection = null
       currentSubSectionName = ''
@@ -479,9 +480,9 @@ export function formatCopyrightYear(copyrightConfig: CopyrightConfig): string {
   if (startYear === currentYear) {
     return currentYear.toString()
   } else if (startYear < currentYear) {
-    return `${startYear}-${currentYear}`
-  } else {
-    return startYear.toString()
+      return `${startYear}-${currentYear}`
+    } else {
+      return startYear.toString()
   }
 }
 
@@ -553,7 +554,7 @@ function generateFontFamily(fontA: string, fontB: string, region: string): strin
 
 // 应用字体配置
 export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> {
-  const { header, content, footer } = fontsConfig
+  const { header, content, footer, sidebar } = fontsConfig
   
   if (!header || !content || !footer) {
     console.warn('字体配置不完整，跳过应用')
@@ -664,6 +665,15 @@ export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> 
   root.style.setProperty('--footer-font-family', footerFontFamily)
   if (footer.size) root.style.setProperty('--footer-font-size', `${footer.size}px`)
   if (footer.weight) root.style.setProperty('--footer-font-weight', footer.weight)
+
+  // 侧边栏字体样式
+  if (sidebar) {
+    const sidebarFontFamily = generateFontFamily(sidebar.fontA || '', sidebar.fontB || '', 'sidebar')
+    root.style.setProperty('--sidebar-font-family', sidebarFontFamily)
+    if (sidebar.size) root.style.setProperty('--sidebar-font-size', sidebar.size)
+    if (sidebar.weight) root.style.setProperty('--sidebar-font-weight', sidebar.weight)
+    if (sidebar.width) root.style.setProperty('--sidebar-width', sidebar.width)
+  }
   
   // 设置body默认字体
   document.body.style.fontFamily = 'var(--site-font-family)'

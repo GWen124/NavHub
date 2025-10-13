@@ -1,5 +1,7 @@
 <template>
   <div class="app-container">
+    <!-- 侧边栏 -->
+    <Sidebar :categories="filteredCategories" />
     <header class="app-header">
       <div class="header-content">
         <div class="quote-section" :class="{ 'centered': !appConfigRef.timeDate?.enabled }">
@@ -116,6 +118,7 @@ import { config, type Category } from '@/config/index'
 import { useThemeStore } from '@/stores/theme'
 import { loadConfig, applyBackgroundConfig, applyPageTitle, applyFaviconConfig, applyColorsConfig, applyFontsConfig, appConfig, formatCopyrightYear } from '@/config/generated'
 import CategorySection from '@/components/CategorySection.vue'
+import Sidebar from '@/components/Sidebar.vue'
 import { searchEngines, getSearchEngine, performSearch, type SearchEngine } from '@/utils/searchEngines'
 
 const themeStore = useThemeStore()

@@ -7,6 +7,9 @@ import type { AppConfig } from './configLoader'
 // 从 config.yml 生成的配置
 export const appConfig = reactive<AppConfig>({
   ...{
+  "deployment": {
+    "customDomain": ""
+  },
   "pageTitle": "Website Panel",
   "favicon": {
     "icon": "https://image.gw124.top/Avatar/A62B54A6-13B8-4BB8-9AAA-75E3342388BB_1_105_c.jpeg"
@@ -46,15 +49,11 @@ export const appConfig = reactive<AppConfig>({
     "content": {
       "category": {
         "fontA": "fonts/SanJiZhengYaHei-ZhongCu.ttf",
-        "fontB": "",
-        "size": "",
-        "weight": ""
+        "fontB": "Arial, sans-serif"
       },
       "site": {
         "fontA": "fonts/SanJiZhengYaHei-Xi.ttf",
-        "fontB": "",
-        "size": "",
-        "weight": ""
+        "fontB": "Arial, sans-serif"
       }
     },
     "footer": {
@@ -62,6 +61,10 @@ export const appConfig = reactive<AppConfig>({
       "fontB": "",
       "size": "",
       "weight": ""
+    },
+    "sidebar": {
+      "fontA": "fonts/SanJiZhengYaHei-ZhongCu.ttf",
+      "fontB": ""
     }
   },
   "autoIcon": {
@@ -70,7 +73,11 @@ export const appConfig = reactive<AppConfig>({
   "categorySorting": {
     "autoSort": true,
     "pinnedCategories": [
-      "Favorites - 常用网站"
+      "Favorites - 常用网站",
+      "AI Tools - AI工具",
+      "Online Tools - 在线工具",
+      "Useful Tools - 实用工具",
+      "Productivity - 生产力工具"
     ],
     "bottomCategories": [
       "Other - 其他"
