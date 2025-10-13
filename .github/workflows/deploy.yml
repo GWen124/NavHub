@@ -73,13 +73,13 @@ jobs:
         echo "📝 更新原因: ${{ github.event.inputs.update_reason }}"
         echo "🔗 配置 URL: ${{ github.event.inputs.external_config_url }}"
         # 临时修改 config.yml 以启用外部配置
-        sed -i 's/enabled: false/enabled: true/' config.yml
-        sed -i 's/enabled: true/enabled: true/' config.yml
-        # 替换 URL（处理各种格式）
-        sed -i "s|url: \".*\"|url: \"${{ github.event.inputs.external_config_url }}\"|" config.yml
+        # 使用更精确的 sed 命令，只替换 externalConfig 部分的配置
+        sed -i '/^externalConfig:/,/^[a-zA-Z]/ { s/enabled: false/enabled: true/; }' config.yml
+        # 只替换 externalConfig 部分的 url
+        sed -i '/^externalConfig:/,/^[a-zA-Z]/ { s|url: ".*"|url: "${{ github.event.inputs.external_config_url }}"|; }' config.yml
         echo "✅ 外部配置已设置"
         echo "📄 当前配置:"
-        grep -A 2 "externalConfig:" config.yml
+        grep -A 5 "externalConfig:" config.yml
       
     - name: Build
       run: npm run build

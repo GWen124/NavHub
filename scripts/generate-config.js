@@ -39,6 +39,24 @@ const configContent = fs.readFileSync(configPath, 'utf8')
 // 解析 YAML
 const config = yaml.load(configContent)
 
+// 处理 footer 第二行链接的外部配置
+if (config.footer?.secondLine?.useExternalLinks && config.footer?.secondLine?.externalLinksUrl) {
+  try {
+    const footerLinksPath = path.join(__dirname, '..', config.footer.secondLine.externalLinksUrl)
+    if (fs.existsSync(footerLinksPath)) {
+      const footerLinksContent = fs.readFileSync(footerLinksPath, 'utf8')
+      const footerLinksData = JSON.parse(footerLinksContent)
+      config.footer.secondLine.links = footerLinksData.links
+      console.log(`✅ 已从 ${config.footer.secondLine.externalLinksUrl} 加载 footer 链接配置`)
+    } else {
+      console.warn(`⚠️ footer 链接配置文件不存在: ${footerLinksPath}，使用默认配置`)
+    }
+  } catch (error) {
+    console.error(`❌ 加载 footer 链接配置失败:`, error.message)
+    console.log('💡 将使用 config.yml 中的默认链接配置')
+  }
+}
+
 // 处理外部配置
 let sitesConfigCode = ''
 let usingExternalConfig = false
