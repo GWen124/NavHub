@@ -181,6 +181,9 @@ function parseYamlConfig(yamlText: string): any {
   const result: any = {}
   const lines = yamlText.split('\n')
   let currentSection: any = null
+  let currentSectionName: string = ''
+  let currentSubSection: any = null
+  let currentSubSectionName: string = ''
   
   for (const line of lines) {
     const trimmedLine = line.trim()
@@ -199,22 +202,37 @@ function parseYamlConfig(yamlText: string): any {
       value = value.slice(1, -1)
     }
 
-      // 处理布尔值
+    // 处理布尔值
     if (value === 'true') {
       value = true as any
     } else if (value === 'false') {
       value = false as any
-      }
+    }
       
-      // 处理嵌套对象
-    if (key === 'footer' || key === 'background' || key === 'favicon' || key === 'copyright' || key === 'colors' || key === 'fonts' || key === 'timeDate') {
-        if (!result[key]) {
-          result[key] = {}
-        }
-        currentSection = result[key]
-      } else if (currentSection) {
-      (currentSection as any)[key] = value
-      } else {
+    // 处理顶级section
+    if (key === 'footer' || key === 'background' || key === 'favicon' || key === 'copyright' || key === 'colors' || key === 'fonts' || key === 'timeDate' || key === 'autoIcon') {
+      if (!result[key]) {
+        result[key] = {}
+      }
+      currentSection = result[key]
+      currentSectionName = key
+      currentSubSection = null
+      currentSubSectionName = ''
+    } 
+    // 处理二级section (如 fonts.header, fonts.content, fonts.footer, colors.manual)
+    else if (currentSection && (key === 'header' || key === 'content' || key === 'footer' || key === 'manual' || key === 'category' || key === 'site')) {
+      if (!currentSection[key]) {
+        currentSection[key] = {}
+      }
+      currentSubSection = currentSection[key]
+      currentSubSectionName = key
+    }
+    // 处理值
+    else if (currentSubSection) {
+      currentSubSection[key] = value
+    } else if (currentSection) {
+      currentSection[key] = value
+    } else {
       result[key] = value
     }
   }
@@ -467,14 +485,18 @@ export function applyColorsConfig(colorsConfig: ColorsConfig): void {
 
 // 应用Favicon配置
 export function applyFaviconConfig(faviconConfig: FaviconConfig): void {
-  if (!faviconConfig.enabled) return
-  
   const faviconUrl = faviconConfig.url || faviconConfig.icon || '/favicon.ico'
-  const existingLink = document.querySelector("link[rel*='icon']") as HTMLLinkElement
-  const link = existingLink || document.createElement('link')
+  
+  // 移除所有现有的 favicon 链接
+  const existingLinks = document.querySelectorAll("link[rel*='icon']")
+  existingLinks.forEach(link => link.remove())
+  
+  // 创建新的 favicon 链接
+  const link = document.createElement('link')
   link.type = 'image/x-icon'
-  link.rel = 'shortcut icon'
+  link.rel = 'icon'
   link.href = faviconUrl
+  
   const head = document.getElementsByTagName('head')[0]
   if (head) {
     head.appendChild(link)
