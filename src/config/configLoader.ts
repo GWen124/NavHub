@@ -68,6 +68,12 @@ export interface FontsConfig {
   footer?: FontConfig
 }
 
+export interface CategorySortingConfig {
+  autoSort?: boolean
+  pinnedCategories?: string[]
+  bottomCategories?: string[]
+}
+
 export interface AppConfig {
   pageTitle?: string
   pageQuote?: string
@@ -78,6 +84,7 @@ export interface AppConfig {
   copyright?: CopyrightConfig
   colors?: ColorsConfig
   fonts?: FontsConfig
+  categorySorting?: CategorySortingConfig
 }
 
 // 默认配置

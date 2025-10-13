@@ -52,7 +52,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
-import type { Site } from '@/config'
+import type { Site } from '@/config/index'
 import { isXicon, getIconName, getIconComponent } from '@/utils/icons'
 import AutoIcon from './AutoIcon.vue'
 import { shouldUseAutoIcon, loadAutoIconConfig } from '@/config/autoIconConfigLoader'

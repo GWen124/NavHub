@@ -123,4 +123,17 @@ autoIcon:
   # 2: 网站图标为空时自动获取（保留自定义图标）
   # 3: 非本地或链接图标一律自动获取（智能回退：服务商 → xicon → Font Awesome → 文字图标）
   mode: 3
+
+# 分组排序配置
+categorySorting:
+  # 是否启用自动排序
+  # true: 按首字母自动排序（除了置顶和末尾分组）
+  # false: 使用 config.ts 中的固定顺序
+  autoSort: true
+  # 置顶分组（始终显示在最前面，按数组顺序排列）
+  pinnedCategories:
+    - "Favorites - 常用网站"
+  # 末尾分组（始终显示在最后面，按数组顺序排列）
+  bottomCategories:
+    - "Other - 其他"
   

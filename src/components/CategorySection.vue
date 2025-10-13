@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Category } from '@/config'
+import type { Category } from '@/config/index'
 import SiteCard from './SiteCard.vue'
 
 interface Props {

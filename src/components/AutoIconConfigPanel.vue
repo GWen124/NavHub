@@ -122,7 +122,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { config } from '@/config'
+import { config } from '@/config/index'
 import AutoIcon from './AutoIcon.vue'
 import { 
   getAutoIconConfig, 

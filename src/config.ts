@@ -509,110 +509,6 @@ export const config: Category[] = [
     ]
   },
   {
-    name: "Instant Messaging - 即时通讯",
-    sites: [
-      {
-        name: "WhatsApp",
-        url: "https://web.whatsapp.com",
-        icon: ""
-      },
-      {
-        name: "Telegram",
-        url: "https://web.telegram.org",
-        icon: ""
-      },
-      {
-        name: "Discord",
-        url: "https://discord.com/app",
-        icon: ""
-      },
-      {
-        name: "Slack",
-        url: "https://slack.com",
-        icon: ""
-      },
-      {
-        name: "微信",
-        url: "https://wx.qq.com",
-        icon: ""
-      },
-      {
-        name: "QQ",
-        url: "https://im.qq.com",
-        icon: ""
-      },
-      {
-        name: "Skype",
-        url: "https://web.skype.com",
-        icon: ""
-      },
-      {
-        name: "Teams",
-        url: "https://teams.microsoft.com",
-        icon: ""
-      },
-      {
-        name: "钉钉",
-        url: "https://dingtalk.com",
-        icon: ""
-      },
-      {
-        name: "企业微信",
-        url: "https://work.weixin.qq.com",
-        icon: ""
-      },
-      {
-        name: "飞书",
-        url: "https://feishu.cn",
-        icon: ""
-      },
-      {
-        name: "Zoom",
-        url: "https://zoom.us",
-        icon: ""
-      },
-      {
-        name: "Signal",
-        url: "https://signal.org",
-        icon: ""
-      },
-      {
-        name: "Viber",
-        url: "https://viber.com",
-        icon: ""
-      },
-      {
-        name: "Line",
-        url: "https://line.me",
-        icon: ""
-      },
-      {
-        name: "KakaoTalk",
-        url: "https://www.kakaocorp.com",
-        icon: ""
-      },
-      {
-        name: "WeChat Work",
-        url: "https://work.weixin.qq.com",
-        icon: ""
-      },
-      {
-        name: "Lark",
-        url: "https://larksuite.com",
-        icon: ""
-      },
-      {
-        name: "Google Meet",
-        url: "https://meet.google.com",
-        icon: ""
-      },
-      {
-        name: "Jitsi Meet",
-        url: "https://meet.jit.si",
-        icon: ""
-      }]
-  },
-  {
     name: "E-Commerce - 电商购物",
     sites: [
       {
@@ -638,6 +534,21 @@ export const config: Category[] = [
       {
         name: "拼多多",
         url: "https://pinduoduo.com",
+        icon: ""
+      },
+      {
+        name: "美团",
+        url: "https://meituan.com",
+        icon: ""
+      },
+      {
+        name: "饿了么",
+        url: "https://ele.me",
+        icon: ""
+      },
+      {
+        name: "美团外卖",
+        url: "https://waimai.meituan.com",
         icon: ""
       },
       {
@@ -775,21 +686,16 @@ export const config: Category[] = [
         url: "https://twitter.com",
         icon: ""
       },
-      
       {
         name: "LinkedIn",
         url: "https://linkedin.com",
         icon: ""
       },
-      
       {
         name: "Snapchat",
         url: "https://snapchat.com",
         icon: ""
       },
-      
-      
-      
       {
         name: "Mastodon",
         url: "https://mastodon.social",
@@ -800,7 +706,6 @@ export const config: Category[] = [
         url: "https://weibo.com",
         icon: ""
       },
-      
       {
         name: "豆瓣",
         url: "https://douban.com",
@@ -824,6 +729,106 @@ export const config: Category[] = [
       {
         name: "抖音",
         url: "https://douyin.com",
+        icon: ""
+      },
+      {
+        name: "WhatsApp",
+        url: "https://web.whatsapp.com",
+        icon: ""
+      },
+      {
+        name: "Telegram",
+        url: "https://web.telegram.org",
+        icon: ""
+      },
+      {
+        name: "Discord",
+        url: "https://discord.com/app",
+        icon: ""
+      },
+      {
+        name: "Slack",
+        url: "https://slack.com",
+        icon: ""
+      },
+      {
+        name: "微信",
+        url: "https://wx.qq.com",
+        icon: ""
+      },
+      {
+        name: "QQ",
+        url: "https://im.qq.com",
+        icon: ""
+      },
+      {
+        name: "Skype",
+        url: "https://web.skype.com",
+        icon: ""
+      },
+      {
+        name: "Teams",
+        url: "https://teams.microsoft.com",
+        icon: ""
+      },
+      {
+        name: "钉钉",
+        url: "https://dingtalk.com",
+        icon: ""
+      },
+      {
+        name: "企业微信",
+        url: "https://work.weixin.qq.com",
+        icon: ""
+      },
+      {
+        name: "飞书",
+        url: "https://feishu.cn",
+        icon: ""
+      },
+      {
+        name: "Zoom",
+        url: "https://zoom.us",
+        icon: ""
+      },
+      {
+        name: "Signal",
+        url: "https://signal.org",
+        icon: ""
+      },
+      {
+        name: "Viber",
+        url: "https://viber.com",
+        icon: ""
+      },
+      {
+        name: "Line",
+        url: "https://line.me",
+        icon: ""
+      },
+      {
+        name: "KakaoTalk",
+        url: "https://www.kakaocorp.com",
+        icon: ""
+      },
+      {
+        name: "WeChat Work",
+        url: "https://work.weixin.qq.com",
+        icon: ""
+      },
+      {
+        name: "Lark",
+        url: "https://larksuite.com",
+        icon: ""
+      },
+      {
+        name: "Google Meet",
+        url: "https://meet.google.com",
+        icon: ""
+      },
+      {
+        name: "Jitsi Meet",
+        url: "https://meet.jit.si",
         icon: ""
       }]
   },
@@ -2707,6 +2712,321 @@ export const config: Category[] = [
       }]
   },
   {
+    name: "Online Tools - 在线工具",
+    sites: [
+      {
+        name: "在线转换工具",
+        url: "https://convertio.co",
+        icon: ""
+      },
+      {
+        name: "PDF工具",
+        url: "https://smallpdf.com",
+        icon: ""
+      },
+      {
+        name: "图片压缩",
+        url: "https://tinypng.com",
+        icon: ""
+      },
+      {
+        name: "图片编辑",
+        url: "https://pixlr.com",
+        icon: ""
+      },
+      {
+        name: "在线PS",
+        url: "https://photopea.com",
+        icon: ""
+      },
+      {
+        name: "二维码生成",
+        url: "https://cli.im",
+        icon: ""
+      },
+      {
+        name: "短链接生成",
+        url: "https://bitly.com",
+        icon: ""
+      },
+      {
+        name: "正则表达式测试",
+        url: "https://regex101.com",
+        icon: ""
+      },
+      {
+        name: "JSON格式化",
+        url: "https://jsonformatter.org",
+        icon: ""
+      },
+      {
+        name: "代码美化",
+        url: "https://codebeautify.org",
+        icon: ""
+      },
+      {
+        name: "Markdown编辑器",
+        url: "https://dillinger.io",
+        icon: ""
+      },
+      {
+        name: "文字识别OCR",
+        url: "https://pearocr.com",
+        icon: ""
+      },
+      {
+        name: "在线代码编辑器",
+        url: "https://codesandbox.io",
+        icon: ""
+      },
+      {
+        name: "在线画图",
+        url: "https://draw.io",
+        icon: ""
+      },
+      {
+        name: "临时邮箱",
+        url: "https://temp-mail.org",
+        icon: ""
+      },
+      {
+        name: "文件传输",
+        url: "https://wetransfer.com",
+        icon: ""
+      },
+      {
+        name: "IP查询",
+        url: "https://ip.cn",
+        icon: ""
+      },
+      {
+        name: "网速测试",
+        url: "https://speedtest.net",
+        icon: ""
+      },
+      {
+        name: "时间戳转换",
+        url: "https://tool.lu/timestamp",
+        icon: ""
+      },
+      {
+        name: "颜色选择器",
+        url: "https://colorhunt.co",
+        icon: ""
+      }
+    ]
+  },
+  {
+    name: "Useful Tools - 实用工具",
+    sites: [
+      {
+        name: "翻译工具",
+        url: "https://translate.google.com",
+        icon: ""
+      },
+      {
+        name: "有道翻译",
+        url: "https://fanyi.youdao.com",
+        icon: ""
+      },
+      {
+        name: "百度翻译",
+        url: "https://fanyi.baidu.com",
+        icon: ""
+      },
+      {
+        name: "DeepL翻译",
+        url: "https://deepl.com",
+        icon: ""
+      },
+      {
+        name: "在线词典",
+        url: "https://dict.cn",
+        icon: ""
+      },
+      {
+        name: "汉字转拼音",
+        url: "https://www.chineseconverter.com",
+        icon: ""
+      },
+      {
+        name: "计算器",
+        url: "https://calculator.net",
+        icon: ""
+      },
+      {
+        name: "单位换算",
+        url: "https://convertworld.com",
+        icon: ""
+      },
+      {
+        name: "汇率换算",
+        url: "https://xe.com",
+        icon: ""
+      },
+      {
+        name: "时区转换",
+        url: "https://worldtimebuddy.com",
+        icon: ""
+      },
+      {
+        name: "在线录屏",
+        url: "https://screencast-o-matic.com",
+        icon: ""
+      },
+      {
+        name: "视频下载",
+        url: "https://savefrom.net",
+        icon: ""
+      },
+      {
+        name: "字体下载",
+        url: "https://fonts.google.com",
+        icon: ""
+      },
+      {
+        name: "图标下载",
+        url: "https://iconfont.cn",
+        icon: ""
+      },
+      {
+        name: "免费图片",
+        url: "https://unsplash.com",
+        icon: ""
+      },
+      {
+        name: "Logo生成",
+        url: "https://logomakr.com",
+        icon: ""
+      },
+      {
+        name: "在线抠图",
+        url: "https://remove.bg",
+        icon: ""
+      },
+      {
+        name: "文档协作",
+        url: "https://docs.google.com",
+        icon: ""
+      },
+      {
+        name: "思维导图",
+        url: "https://xmind.net",
+        icon: ""
+      },
+      {
+        name: "在线白板",
+        url: "https://miro.com",
+        icon: ""
+      }
+    ]
+  },
+  {
+    name: "App Hub - 应用中心",
+    sites: [
+      {
+        name: "App Store",
+        url: "https://apps.apple.com",
+        icon: ""
+      },
+      {
+        name: "Google Play",
+        url: "https://play.google.com",
+        icon: ""
+      },
+      {
+        name: "华为应用市场",
+        url: "https://appgallery.huawei.com",
+        icon: ""
+      },
+      {
+        name: "小米应用商店",
+        url: "https://app.mi.com",
+        icon: ""
+      },
+      {
+        name: "OPPO软件商店",
+        url: "https://store.oppomobile.com",
+        icon: ""
+      },
+      {
+        name: "vivo应用商店",
+        url: "https://store.vivo.com.cn",
+        icon: ""
+      },
+      {
+        name: "腾讯应用宝",
+        url: "https://sj.qq.com",
+        icon: ""
+      },
+      {
+        name: "360手机助手",
+        url: "https://sj.360.cn",
+        icon: ""
+      },
+      {
+        name: "百度手机助手",
+        url: "https://shouji.baidu.com",
+        icon: ""
+      },
+      {
+        name: "豌豆荚",
+        url: "https://wandoujia.com",
+        icon: ""
+      },
+      {
+        name: "Steam",
+        url: "https://store.steampowered.com",
+        icon: ""
+      },
+      {
+        name: "Epic Games",
+        url: "https://store.epicgames.com",
+        icon: ""
+      },
+      {
+        name: "Microsoft Store",
+        url: "https://apps.microsoft.com",
+        icon: ""
+      },
+      {
+        name: "Chrome应用商店",
+        url: "https://chrome.google.com/webstore",
+        icon: ""
+      },
+      {
+        name: "Firefox附加组件",
+        url: "https://addons.mozilla.org",
+        icon: ""
+      },
+      {
+        name: "Adobe Creative Cloud",
+        url: "https://adobe.com/creativecloud",
+        icon: ""
+      },
+      {
+        name: "Setapp",
+        url: "https://setapp.com",
+        icon: ""
+      },
+      {
+        name: "APKPure",
+        url: "https://apkpure.com",
+        icon: ""
+      },
+      {
+        name: "F-Droid",
+        url: "https://f-droid.org",
+        icon: ""
+      },
+      {
+        name: "软件下载中心",
+        url: "https://pc.qq.com",
+        icon: ""
+      }
+    ]
+  },
+  {
     name: "Other - 其他",
     sites: [
       {
@@ -4167,6 +4487,111 @@ export const config: Category[] = [
     ]
   },
   {
+    name: "Delivery Services - 快递物流",
+    sites: [
+      {
+        name: "顺丰速运",
+        url: "https://sf-express.com",
+        icon: ""
+      },
+      {
+        name: "中通快递",
+        url: "https://zto.com",
+        icon: ""
+      },
+      {
+        name: "圆通速递",
+        url: "https://yto.net.cn",
+        icon: ""
+      },
+      {
+        name: "申通快递",
+        url: "https://sto.cn",
+        icon: ""
+      },
+      {
+        name: "韵达快递",
+        url: "https://yunda.cn",
+        icon: ""
+      },
+      {
+        name: "百世快递",
+        url: "https://best-inc.cn",
+        icon: ""
+      },
+      {
+        name: "极兔速递",
+        url: "https://jtexpress.cn",
+        icon: ""
+      },
+      {
+        name: "京东物流",
+        url: "https://jdl.com",
+        icon: ""
+      },
+      {
+        name: "菜鸟物流",
+        url: "https://cainiao.com",
+        icon: ""
+      },
+      {
+        name: "德邦快递",
+        url: "https://deppon.com",
+        icon: ""
+      },
+      {
+        name: "天天快递",
+        url: "https://ttkdex.com",
+        icon: ""
+      },
+      {
+        name: "宅急送",
+        url: "https://zjs.com.cn",
+        icon: ""
+      },
+      {
+        name: "EMS中国邮政",
+        url: "https://ems.com.cn",
+        icon: ""
+      },
+      {
+        name: "速尔快递",
+        url: "https://sure56.com",
+        icon: ""
+      },
+      {
+        name: "跨越速运",
+        url: "https://kysy.com.cn",
+        icon: ""
+      },
+      {
+        name: "安能物流",
+        url: "https://ane56.com",
+        icon: ""
+      },
+      {
+        name: "壹米滴答",
+        url: "https://yimidida.com",
+        icon: ""
+      },
+      {
+        name: "快递100",
+        url: "https://kuaidi100.com",
+        icon: ""
+      },
+      {
+        name: "快递鸟",
+        url: "https://kdniao.com",
+        icon: ""
+      },
+      {
+        name: "17track",
+        url: "https://17track.net",
+        icon: ""
+      }
+    ]
+  },
+  {
     name: "Logistics - 物流运输",
     sites: [
       {
@@ -4366,7 +4791,7 @@ export const config: Category[] = [
     ]
   },
   {
-    name: "Banking & Finance - 银行金融",
+    name: "Finance & Payments - 金融与支付",
     sites: [
       {
         name: "中国工商银行",
