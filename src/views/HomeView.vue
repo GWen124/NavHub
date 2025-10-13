@@ -431,24 +431,16 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* 禁用全站文本选中（搜索输入框除外） */
 .app-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background: transparent;
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+/Edge */
-  user-select: none; /* Standard */
-}
-
-/* 允许搜索输入框选中 */
-.search-input {
-  -webkit-user-select: text !important;
-  -moz-user-select: text !important;
-  -ms-user-select: text !important;
-  user-select: text !important;
+  /* 禁用文本选中 */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .app-header {
@@ -592,6 +584,11 @@ onUnmounted(() => {
   color: var(--header-color, #ffffff);
   font-family: var(--header-font-family);
   font-weight: var(--header-font-weight, 400);
+  /* 允许搜索框选中文本 */
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
 }
 
 .search-input::placeholder {
