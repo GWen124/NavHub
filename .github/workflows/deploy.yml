@@ -7,6 +7,11 @@ on:
     branches: [ main, master ]
   workflow_dispatch: # 允许手动触发
     inputs:
+      custom_domain:
+        description: '自定义域名（留空则使用 config.yml 设置）'
+        required: false
+        type: string
+        default: ''
       external_config_url:
         description: '外部配置 URL（留空则使用 config.yml 设置）'
         required: false
@@ -80,10 +85,18 @@ jobs:
       run: npm run build
       
     - name: Create CNAME file (if custom domain is set)
-      if: steps.config.outputs.custom_domain != ''
+      if: github.event.inputs.custom_domain != '' || steps.config.outputs.custom_domain != ''
       run: |
-        echo "🌐 创建 CNAME 文件: ${{ steps.config.outputs.custom_domain }}"
-        echo "${{ steps.config.outputs.custom_domain }}" > dist/CNAME
+        # 优先使用手动输入的域名，否则使用 config.yml 中的域名
+        if [ -n "${{ github.event.inputs.custom_domain }}" ]; then
+          DOMAIN="${{ github.event.inputs.custom_domain }}"
+          echo "🌐 使用手动输入的域名: $DOMAIN"
+        else
+          DOMAIN="${{ steps.config.outputs.custom_domain }}"
+          echo "🌐 使用 config.yml 中的域名: $DOMAIN"
+        fi
+        echo "$DOMAIN" > dist/CNAME
+        echo "✅ CNAME 文件已创建"
       
     - name: Deploy to Web branch
       uses: peaceiris/actions-gh-pages@v3
@@ -108,23 +121,34 @@ jobs:
     - name: Notify Pages deployment
       run: |
         echo "✅ Pages deployment completed successfully!"
-        if [ -n "${{ steps.config.outputs.custom_domain }}" ]; then
+        
+        # 确定使用的域名
+        if [ -n "${{ github.event.inputs.custom_domain }}" ]; then
+          echo "🌐 Site URL: https://${{ github.event.inputs.custom_domain }}"
+          echo "📌 域名来源: 手动输入"
+        elif [ -n "${{ steps.config.outputs.custom_domain }}" ]; then
           echo "🌐 Site URL: https://${{ steps.config.outputs.custom_domain }}"
+          echo "📌 域名来源: config.yml"
         else
           echo "🌐 Site URL: ${{ steps.deployment.outputs.page_url }}"
+          echo "📌 域名来源: GitHub 默认域名"
         fi
+        
         echo "📅 Deployment time: $(date)"
         echo "🔄 Build ID: ${{ github.run_id }}"
+        
+        # 显示配置模式
         if [ -n "${{ github.event.inputs.external_config_url }}" ]; then
           echo "⚙️ 配置模式: 外部配置（手动指定）"
           echo "🔗 配置 URL: ${{ github.event.inputs.external_config_url }}"
-          echo "📝 更新原因: ${{ github.event.inputs.update_reason }}"
         elif [ "${{ steps.config.outputs.external_enabled }}" == "true" ]; then
           echo "⚙️ 配置模式: 外部配置（config.yml）"
           echo "🔗 配置 URL: ${{ steps.config.outputs.external_url }}"
         else
           echo "⚙️ 配置模式: 本地配置"
         fi
+        
+        echo "📝 更新原因: ${{ github.event.inputs.update_reason }}"
         
     - name: Trigger Pages rebuild
       if: always()
