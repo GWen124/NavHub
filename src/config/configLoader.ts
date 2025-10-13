@@ -7,6 +7,23 @@ export interface BackgroundConfig {
   bingMode?: string
 }
 
+export interface FooterLink {
+  name: string
+  icon: string
+  url: string
+}
+
+export interface FooterSecondLineFont {
+  size?: string
+  weight?: string
+}
+
+export interface FooterSecondLine {
+  enabled?: boolean
+  links?: FooterLink[]
+  font?: FooterSecondLineFont
+}
+
 export interface FooterConfig {
   enabled?: boolean
   text?: string
@@ -16,6 +33,7 @@ export interface FooterConfig {
   websiteUrl?: string
   authorText?: string
   authorUrl?: string
+  secondLine?: FooterSecondLine
 }
 
 export interface FaviconConfig {
@@ -59,6 +77,7 @@ export interface FontConfig {
   fontB?: string
   size?: string
   weight?: string
+  secondLine?: FooterSecondLineFont
 }
 
 export interface SidebarConfig extends FontConfig {
@@ -609,8 +628,8 @@ export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> 
       font-style: normal;
     }
     @font-face {
-      font-family: 'footer-font-a';
-      src: url('https://raw.githubusercontent.com/GWen124/HomePage/main/public/fonts/brand.ttf') format('truetype');
+      font-family: 'brand';
+      src: url('/fonts/brand.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
     }
@@ -675,8 +694,21 @@ export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> 
   // Footer字体样式
   const footerFontFamily = generateFontFamily(footer.fontA || '', footer.fontB || '', 'footer')
   root.style.setProperty('--footer-font-family', footerFontFamily)
-  if (footer.size) root.style.setProperty('--footer-font-size', `${footer.size}px`)
+  if (footer.size) {
+    // 如果size已经包含px，直接使用；否则添加px
+    const sizeValue = footer.size.includes('px') ? footer.size : `${footer.size}px`
+    root.style.setProperty('--footer-font-size', sizeValue)
+  }
   if (footer.weight) root.style.setProperty('--footer-font-weight', footer.weight)
+
+  // Footer第二行字体样式（使用主footer字体，但独立大小和粗细）
+  if (footer.secondLine) {
+    // 使用主footer的字体族
+    root.style.setProperty('--footer-second-line-font-family', footerFontFamily)
+    // 独立的大小和粗细配置
+    if (footer.secondLine.size) root.style.setProperty('--footer-second-line-font-size', footer.secondLine.size)
+    if (footer.secondLine.weight) root.style.setProperty('--footer-second-line-font-weight', footer.secondLine.weight)
+  }
 
   // 侧边栏字体样式
   if (sidebar) {

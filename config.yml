@@ -39,8 +39,27 @@ timeDate:
 # Footer 信息配置
 footer:
   websiteText: "WEBSITE.GW124.TOP"
-  websiteUrl: "https://gw124.top"
+  websiteUrl: "https://website.gw124.top/"
   # 注意：作者信息不可配置，始终保持默认值
+  
+  # 第二行链接配置（可选）
+  secondLine:
+    # 是否显示第二行
+    enabled: true
+    # 链接列表
+    links:
+      - name: "Github"
+        icon: "fa-github"
+        url: "https://github.com/GWen124"
+      - name: "Blog"
+        icon: "fa-rss"
+        url: "https://blog.gw124.top/"
+      - name: "Email"
+        icon: "fa-envelope"
+        url: "mailto:9708281@gmail.com"
+      - name: "Telegram"
+        icon: "fa-paper-plane"
+        url: "https://t.me/WenGe124_Bot"
 
 # 版权信息配置
 copyright:
@@ -101,9 +120,9 @@ fonts:
     # 示例：使用Google Fonts的Roboto字体
     fontB: "fonts/brand.ttf"
     # 字体大小（可选，留空使用默认大小）
-    #size: ""
+    size: "4rem"
     # 字体粗细（可选，留空使用默认粗细）
-    #weight: ""
+    weight: "700"
   
   # 中部区域字体（网站分类标题、网站卡片标题）
   content:
@@ -113,25 +132,32 @@ fonts:
       fontA: "fonts/SanJiZhengYaHei-ZhongCu.ttf"
       # B字体：英文和数字优先级高
       fontB: "Arial, sans-serif"
-      # size: ""
-      # weight: ""
+      size: "1.1rem"
+      weight: "600"
     # 网站卡片标题字体
     site:
       # A字体：汉字优先级高
       fontA: "fonts/SanJiZhengYaHei-Xi.ttf"
       # B字体：英文和数字优先级高
       fontB: "Arial, sans-serif"
-      # size: ""
-      # weight: ""
+      size: "0.9rem"
+      weight: "700"
   
   # Footer区域字体（版权信息、链接文字）
   footer:
     # A字体：汉字优先级高
-    fontA: "https://raw.githubusercontent.com/GWen124/HomePage/main/public/fonts/brand.ttf"
+    fontA: "fonts/brand.ttf"
     # B字体：英文和数字优先级高
     fontB: ""
-    size: ""
-    weight: ""
+    size: "14px"
+    weight: "400"
+    
+    # 第二行链接字体（仅大小和粗细独立配置）
+    secondLine:
+      # 字体大小
+      size: "16px"
+      # 字体粗细
+      weight: "400"
   
   # 侧边栏字体（分组名称、网站数量）
   sidebar:
@@ -140,9 +166,9 @@ fonts:
     # B字体：英文和数字优先级高
     fontB: ""
     # 字体大小（可选，留空使用默认大小）
-    # size: "15px"
+    size: "14px"
     # 字体粗细（可选，留空使用默认粗细）
-    # weight: "400"
+    weight: "400"
     # 侧边栏宽度（展开时的宽度）
     # width: "300px"
 

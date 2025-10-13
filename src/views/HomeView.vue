@@ -102,10 +102,26 @@
 
     <footer class="app-footer">
       <div class="footer-content">
-        Copyright © {{ copyrightYear }} 
-        <a :href="appConfigRef.footer?.websiteUrl" target="_blank" class="footer-link">{{ appConfigRef.footer?.websiteText }}</a> 
-      • Powered by 
-        <a :href="appConfigRef.footer?.authorUrl" target="_blank" class="footer-link">{{ appConfigRef.footer?.authorText }}</a>
+        <div class="footer-first-line">
+          Copyright © {{ copyrightYear }} 
+          <a :href="appConfigRef.footer?.websiteUrl" target="_blank" class="footer-link">{{ appConfigRef.footer?.websiteText }}</a> 
+        • Powered by 
+          <a :href="appConfigRef.footer?.authorUrl" target="_blank" class="footer-link">{{ appConfigRef.footer?.authorText }}</a>
+        </div>
+        
+        <!-- 第二行链接 -->
+        <div v-if="appConfigRef.footer?.secondLine?.enabled && appConfigRef.footer?.secondLine?.links" class="footer-second-line">
+          <a 
+            v-for="link in appConfigRef.footer.secondLine.links" 
+            :key="link.name"
+            :href="link.url" 
+            target="_blank" 
+            class="footer-link"
+            :title="link.name"
+          >
+            <i :class="`fa ${link.icon}`" class="footer-icon"></i>{{ link.name }}
+          </a>
+        </div>
       </div>
     </footer>
     
@@ -876,7 +892,7 @@ onUnmounted(() => {
 
 .app-footer {
   background: transparent;
-  padding: 24px 0;
+  padding: 10px 0 10px 0;
   margin-top: auto;
   position: relative;
 }
@@ -902,6 +918,35 @@ onUnmounted(() => {
   text-align: center;
   color: var(--footer-color, #000000);
   font-size: 0.9rem;
+}
+
+.footer-first-line {
+  margin-bottom: 5px;
+}
+
+.footer-second-line {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+/* 第二行容器内的footer-link使用不同的字体大小 */
+.footer-second-line .footer-link {
+  font-family: var(--footer-second-line-font-family, var(--footer-font-family, inherit));
+  font-size: 16px !important;
+  font-weight: 400 !important;
+}
+
+.footer-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 4px;
 }
 
 .footer-link {
@@ -986,6 +1031,20 @@ onUnmounted(() => {
   .footer-content {
     padding: 0 16px;
   }
+  
+  .footer-second-line {
+    gap: 20px;
+  }
+  
+  .footer-second-line .footer-link {
+    font-size: 14px !important;
+  }
+  
+  .footer-icon {
+    font-size: 12px;
+    width: 12px;
+    height: 12px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1005,6 +1064,21 @@ onUnmounted(() => {
     max-width: 500px;
     padding: 6px 10px;
     gap: 5px;
+  }
+  
+  .footer-second-line {
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  
+  .footer-second-line .footer-link {
+    font-size: 12px !important;
+  }
+  
+  .footer-icon {
+    font-size: 11px;
+    width: 11px;
+    height: 11px;
   }
   
   .main-content {

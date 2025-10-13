@@ -23,7 +23,32 @@ export const appConfig = reactive<AppConfig>({
   },
   "footer": {
     "websiteText": "WEBSITE.GW124.TOP",
-    "websiteUrl": "https://gw124.top"
+    "websiteUrl": "https://website.gw124.top/",
+    "secondLine": {
+      "enabled": true,
+      "links": [
+        {
+          "name": "Github",
+          "icon": "fa-github",
+          "url": "https://github.com/GWen124"
+        },
+        {
+          "name": "Blog",
+          "icon": "fa-rss",
+          "url": "https://blog.gw124.top/"
+        },
+        {
+          "name": "Email",
+          "icon": "fa-envelope",
+          "url": "mailto:9708281@gmail.com"
+        },
+        {
+          "name": "Telegram",
+          "icon": "fa-paper-plane",
+          "url": "https://t.me/WenGe124_Bot"
+        }
+      ]
+    }
   },
   "copyright": {
     "startDate": "2025-10-01",
@@ -45,27 +70,39 @@ export const appConfig = reactive<AppConfig>({
   "fonts": {
     "header": {
       "fontA": "fonts/AnJingChenXinShouJinTi.ttf",
-      "fontB": "fonts/brand.ttf"
+      "fontB": "fonts/brand.ttf",
+      "size": "4rem",
+      "weight": "700"
     },
     "content": {
       "category": {
         "fontA": "fonts/SanJiZhengYaHei-ZhongCu.ttf",
-        "fontB": "Arial, sans-serif"
+        "fontB": "Arial, sans-serif",
+        "size": "1.1rem",
+        "weight": "600"
       },
       "site": {
         "fontA": "fonts/SanJiZhengYaHei-Xi.ttf",
-        "fontB": "Arial, sans-serif"
+        "fontB": "Arial, sans-serif",
+        "size": "0.9rem",
+        "weight": "700"
       }
     },
     "footer": {
-      "fontA": "https://raw.githubusercontent.com/GWen124/HomePage/main/public/fonts/brand.ttf",
+      "fontA": "fonts/brand.ttf",
       "fontB": "",
-      "size": "",
-      "weight": ""
+      "size": "14px",
+      "weight": "400",
+      "secondLine": {
+        "size": "16px",
+        "weight": "400"
+      }
     },
     "sidebar": {
       "fontA": "fonts/SanJiZhengYaHei-ZhongCu.ttf",
-      "fontB": ""
+      "fontB": "",
+      "size": "14px",
+      "weight": "400"
     }
   },
   "autoIcon": {
@@ -95,7 +132,32 @@ export const appConfig = reactive<AppConfig>({
   footer: {
     ...{
   "websiteText": "WEBSITE.GW124.TOP",
-  "websiteUrl": "https://gw124.top"
+  "websiteUrl": "https://website.gw124.top/",
+  "secondLine": {
+    "enabled": true,
+    "links": [
+      {
+        "name": "Github",
+        "icon": "fa-github",
+        "url": "https://github.com/GWen124"
+      },
+      {
+        "name": "Blog",
+        "icon": "fa-rss",
+        "url": "https://blog.gw124.top/"
+      },
+      {
+        "name": "Email",
+        "icon": "fa-envelope",
+        "url": "mailto:9708281@gmail.com"
+      },
+      {
+        "name": "Telegram",
+        "icon": "fa-paper-plane",
+        "url": "https://t.me/WenGe124_Bot"
+      }
+    ]
+  }
 },
     authorText: "Wen",
     authorUrl: "https://github.com/GWen124"
