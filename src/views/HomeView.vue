@@ -996,7 +996,7 @@ onUnmounted(() => {
   }
   
   .main-quote {
-    font-size: var(--header-font-size, 1.8rem);
+    font-size: 1.8rem !important;
   }
   
   .time-section {
@@ -1050,7 +1050,7 @@ onUnmounted(() => {
 
 @media (max-width: 480px) {
   .main-quote {
-    font-size: var(--header-font-size, 1.5rem);
+    font-size: 1.5rem !important;
   }
   
   .current-time {
