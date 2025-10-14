@@ -32,8 +32,8 @@
 
 1. **克隆项目**
 ```bash
-git clone <repository-url>
-cd Website-Hub
+git clone https://github.com/GWen124/NavHub.git
+cd NavHub
 ```
 
 2. **安装依赖**
@@ -67,93 +67,61 @@ npm run build
 
 #### 基础配置
 ```yaml
-# 页面标题
-title: "我的网站导航"
+# 网页标题
+pageTitle: "Discover. Save. Go."
 
-# 页面描述
-description: "个性化网站导航面板"
+# 页面主标题文字
+pageQuote: "人生寂寞，知己难求。"
 
-# 作者信息
-author: "Your Name"
+# 标签页图标配置
+favicon:
+  icon: "https://example.com/favicon.ico"
 ```
 
-#### 主题配置
+#### 背景配置
 ```yaml
-theme:
-  # 主色调
-  primaryColor: "#3b82f6"
-  # 背景色
-  backgroundColor: "#f8fafc"
-  # 文字颜色
-  textColor: "#1e293b"
+background:
+  # Bing 轮播背景开关
+  bingWallpaper: false
+  # 背景图片或视频
+  image: "https://example.com/background.jpg"
+  # Bing轮播模式
+  bingMode: "localFirst"
 ```
 
 #### 字体配置
 ```yaml
 fonts:
-  # 标题字体
+  # 头部区域字体
   header:
-    fontA: "fonts/custom-font.ttf"  # 中文字体
-    fontB: "Arial, sans-serif"      # 英文字体
+    fontA: "fonts/AnJingChenXinShouJinTi.ttf"  # 中文字体
+    fontB: "fonts/brand.ttf"                    # 英文字体
   
-  # 内容字体
+  # 中部区域字体
   content:
     category:
-      fontA: "fonts/category-font.ttf"
+      fontA: "fonts/SanJiZhengYaHei-ZhongCu.ttf"
       fontB: "Arial, sans-serif"
     site:
-      fontA: "fonts/site-font.ttf"
+      fontA: "fonts/SanJiZhengYaHei-Xi.ttf"
       fontB: "Arial, sans-serif"
-```
-
-#### 侧边栏配置
-```yaml
-sidebar:
-  # 字体配置
-  fontA: "fonts/sidebar-font.ttf"
-  fontB: "Arial, sans-serif"
-  # 背景透明度
-  backgroundOpacity: 0.3
-  # 毛玻璃效果
-  blurAmount: 20
-  saturation: 150
-```
-
-#### 网站配置
-```yaml
-sites:
-  - name: "常用网站"
-    sites:
-      - name: "Google"
-        url: "https://www.google.com"
-        icon: "https://www.google.com/favicon.ico"
-      - name: "GitHub"
-        url: "https://github.com"
-        icon: "https://github.com/favicon.ico"
-```
-
-### 自动图标配置
-
-项目支持自动获取网站图标，配置如下：
-
-```yaml
-autoIcon:
-  # 自动图标模式
-  mode: 1  # 1: 强制自动获取 2: 智能模式 3: 仅回退
   
-  # 图标源配置
-  sources:
-    - "google"      # Google Favicon
-    - "duckduckgo"  # DuckDuckGo
-    - "favicon.io"  # Favicon.io
-    - "clearbit"    # Clearbit Logo
-    - "brandfetch"  # Brandfetch
-    - "iconify"     # Iconify
-  
-  # 缓存配置
-  cache:
-    enabled: true
-    expiry: 7  # 缓存天数
+  # Footer区域字体
+  footer:
+    fontA: "fonts/brand.ttf"
+    fontB: ""
+```
+
+#### 颜色配置
+```yaml
+colors:
+  # 自动变色开关
+  autoColor: true
+  # 手动颜色设置
+  manual:
+    header: "#000000"
+    cardTitle: "#000000"
+    footer: "#000000"
 ```
 
 ## 🎯 使用指南
@@ -161,15 +129,11 @@ autoIcon:
 ### 添加新网站
 
 1. **编辑配置文件**
-打开 `config.yml` 文件，在 `sites` 部分添加新网站：
+打开 `config.yml` 文件，在相应分类下添加新网站：
 
 ```yaml
-sites:
-  - name: "新分类"
-    sites:
-      - name: "网站名称"
-        url: "https://example.com"
-        icon: "https://example.com/favicon.ico"  # 可选，不填会自动获取
+# 网站配置在 src/config/config.ts 中管理
+# 支持分组管理和自动排序
 ```
 
 2. **保存并刷新**
@@ -178,13 +142,15 @@ sites:
 ### 自定义主题
 
 1. **修改颜色**
-在 `config.yml` 的 `theme` 部分修改颜色值：
+在 `config.yml` 的 `colors` 部分修改颜色值：
 
 ```yaml
-theme:
-  primaryColor: "#your-color"      # 主色调
-  backgroundColor: "#your-bg"      # 背景色
-  textColor: "#your-text"         # 文字颜色
+colors:
+  autoColor: false  # 关闭自动变色
+  manual:
+    header: "#your-color"      # 头部颜色
+    cardTitle: "#your-color"    # 卡片标题颜色
+    footer: "#your-color"       # 底部颜色
 ```
 
 2. **添加自定义字体**
@@ -212,31 +178,19 @@ fonts:
 src/
 ├── components/          # Vue组件
 │   ├── Sidebar.vue     # 侧边栏组件
+│   ├── CategorySection.vue # 分类组件
 │   ├── SiteCard.vue    # 网站卡片组件
-│   ├── AutoIcon.vue    # 自动图标组件
 │   └── ...
 ├── config/             # 配置相关
 │   ├── configLoader.ts # 配置加载器
 │   ├── generated.ts    # 生成的配置
-│   └── ...
+│   └── config.ts       # 网站配置
 ├── utils/              # 工具函数
-│   ├── iconUtils.ts    # 图标工具
 │   ├── searchEngines.ts # 搜索引擎
 │   └── ...
 └── views/              # 页面视图
     └── HomeView.vue    # 主页
 ```
-
-### 添加新功能
-
-1. **创建组件**
-在 `src/components/` 目录下创建新的Vue组件
-
-2. **添加配置**
-在 `config.yml` 中添加相关配置项
-
-3. **更新类型定义**
-在 `src/config/index.ts` 中添加TypeScript类型定义
 
 ### 构建和部署
 
@@ -279,22 +233,12 @@ npm run lint
 
 ## 📄 许可证
 
-本项目采用 MIT 许可证，详见 [LICENSE](LICENSE) 文件。
+本项目采用 MIT 许可证。
 
 ## 🤝 贡献
 
 欢迎提交 Issue 和 Pull Request 来改进项目！
 
-## 📞 支持
-
-如有问题或建议，请通过以下方式联系：
-
-- 提交 [Issue](https://github.com/your-repo/issues)
-- 发送邮件至 your-email@example.com
-
 ---
 
 **NavHub** - 让网站导航更简单、更美观、更个性化！
-# Docker 构建测试
-# 触发 Docker 构建
-# 重新触发 Docker 构建
