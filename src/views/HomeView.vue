@@ -397,9 +397,9 @@ onMounted(async () => {
     applyColorsConfig(appConfig.colors)
   }
   
-  // 应用字体配置
+  // 应用字体配置（立即应用，不等待异步加载）
   if (appConfig.fonts) {
-    await applyFontsConfig(appConfig.fonts)
+    applyFontsConfig(appConfig.fonts)
   }
   
   // 延迟应用背景，确保DOM完全加载

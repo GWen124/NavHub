@@ -585,6 +585,48 @@ function generateFontFamily(fontA: string, fontB: string, region: string): strin
   return fonts.join(', ')
 }
 
+// 立即应用字体配置，避免字体闪烁
+function applyFontsImmediately(fontsConfig: FontsConfig): void {
+  const { header, content, footer, sidebar } = fontsConfig
+  const root = document.documentElement
+  
+  // 立即应用字体变量
+  if (header) {
+    const headerFontFamily = generateFontFamily(header.fontA || '', header.fontB || '', 'header')
+    root.style.setProperty('--header-font-family', headerFontFamily)
+    
+    const headerBFontFamily = generateFontFamily('', header.fontB || '', 'header-b')
+    root.style.setProperty('--header-font-b-family', headerBFontFamily)
+    
+    if (header.size) {
+      const sizeValue = header.size.includes('px') ? header.size : `${header.size}px`
+      root.style.setProperty('--header-font-size', sizeValue)
+    }
+    if (header.weight) root.style.setProperty('--header-font-weight', header.weight)
+  }
+  
+  if (content) {
+    if (content.category) {
+      const categoryFontFamily = generateFontFamily(content.category.fontA || '', content.category.fontB || '', 'category')
+      root.style.setProperty('--category-font-family', categoryFontFamily)
+    }
+    if (content.site) {
+      const siteFontFamily = generateFontFamily(content.site.fontA || '', content.site.fontB || '', 'site')
+      root.style.setProperty('--site-font-family', siteFontFamily)
+    }
+  }
+  
+  if (footer) {
+    const footerFontFamily = generateFontFamily(footer.fontA || '', footer.fontB || '', 'footer')
+    root.style.setProperty('--footer-font-family', footerFontFamily)
+  }
+  
+  if (sidebar) {
+    const sidebarFontFamily = generateFontFamily(sidebar.fontA || '', sidebar.fontB || '', 'sidebar')
+    root.style.setProperty('--sidebar-font-family', sidebarFontFamily)
+  }
+}
+
 // 应用字体配置
 export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> {
   const { header, content, footer, sidebar } = fontsConfig
@@ -598,6 +640,9 @@ export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> 
   
   // 应用字体样式
   const root = document.documentElement
+  
+  // 立即应用字体，不等待异步加载
+  applyFontsImmediately(fontsConfig)
   
   // 头部字体样式
   const headerFontFamily = generateFontFamily(header.fontA || '', header.fontB || '', 'header')
