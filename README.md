@@ -68,7 +68,7 @@ npm run build
 #### 基础配置
 ```yaml
 # 网页标题
-pageTitle: "Discover. Save. Go."
+pageTitle: "NavHub"
 
 # 页面主标题文字
 pageQuote: "人生寂寞，知己难求。"
