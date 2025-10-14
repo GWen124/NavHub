@@ -594,47 +594,7 @@ export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> 
     return
   }
   
-  // 注入CSS @font-face规则（在字体应用之前）
-  const style = document.createElement('style')
-  style.textContent = `
-    @font-face {
-      font-family: 'AnJingChenXinShouJinTi';
-      src: url('/fonts/AnJingChenXinShouJinTi.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'brand';
-      src: url('/fonts/brand.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'SanJiZhengYaHei-Cu';
-      src: url('/fonts/SanJiZhengYaHei-Cu.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'SanJiZhengYaHei-ZhongCu';
-      src: url('/fonts/SanJiZhengYaHei-ZhongCu.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'SanJiZhengYaHei-Xi';
-      src: url('/fonts/SanJiZhengYaHei-Xi.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'brand';
-      src: url('/fonts/brand.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-  `
-  document.head.appendChild(style)
+  // 字体已经在 index.html 中预定义，这里不需要重复定义
   
   // 应用字体样式
   const root = document.documentElement

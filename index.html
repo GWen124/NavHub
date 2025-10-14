@@ -5,6 +5,53 @@
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Hub</title>
+    
+    <!-- 预加载字体，避免字体闪烁 -->
+    <link rel="preload" href="/fonts/AnJingChenXinShouJinTi.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="/fonts/brand.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="/fonts/SanJiZhengYaHei-Cu.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="/fonts/SanJiZhengYaHei-ZhongCu.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="/fonts/SanJiZhengYaHei-Xi.ttf" as="font" type="font/ttf" crossorigin>
+    
+    <!-- 预定义字体样式，避免 FOUT -->
+    <style>
+      @font-face {
+        font-family: 'AnJingChenXinShouJinTi';
+        src: url('/fonts/AnJingChenXinShouJinTi.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'brand';
+        src: url('/fonts/brand.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'SanJiZhengYaHei-Cu';
+        src: url('/fonts/SanJiZhengYaHei-Cu.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'SanJiZhengYaHei-ZhongCu';
+        src: url('/fonts/SanJiZhengYaHei-ZhongCu.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'SanJiZhengYaHei-Xi';
+        src: url('/fonts/SanJiZhengYaHei-Xi.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+    </style>
+    
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>

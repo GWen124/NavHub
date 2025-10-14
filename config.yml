@@ -101,16 +101,10 @@ fonts:
     # 远程URL示例: https://github.com/GWen124/HomePage/blob/main/public/fonts/brand.ttf
     # 留空使用系统默认字体
     fontA: "fonts/AnJingChenXinShouJinTi.ttf"
- 
-
     # B字体：英文和数字优先级高（英文、数字、符号等）
     # 留空则只使用A字体
     # 示例：使用Google Fonts的Roboto字体
     fontB: "fonts/brand.ttf"
-    # 字体大小（可选，留空使用默认大小）
-    size: "64px"
-    # 字体粗细（可选，留空使用默认粗细）
-    weight: "700"
   
   # 中部区域字体（网站分类标题、网站卡片标题）
   content:
@@ -120,16 +114,12 @@ fonts:
       fontA: "fonts/SanJiZhengYaHei-ZhongCu.ttf"
       # B字体：英文和数字优先级高
       fontB: "Arial, sans-serif"
-      size: "18px"
-      weight: "600"
     # 网站卡片标题字体
     site:
       # A字体：汉字优先级高
       fontA: "fonts/SanJiZhengYaHei-Xi.ttf"
       # B字体：英文和数字优先级高
       fontB: "Arial, sans-serif"
-      size: "14px"
-      weight: "700"
   
   # Footer区域字体（版权信息、链接文字）
   footer:
@@ -137,15 +127,6 @@ fonts:
     fontA: "fonts/brand.ttf"
     # B字体：英文和数字优先级高
     fontB: ""
-    size: "14px"
-    weight: "400"
-    
-    # 第二行链接字体（仅大小和粗细独立配置）
-    secondLine:
-      # 字体大小
-      size: "16px"
-      # 字体粗细
-      weight: "400"
   
   # 侧边栏字体（分组名称、网站数量）
   sidebar:
@@ -153,10 +134,6 @@ fonts:
     fontA: "fonts/SanJiZhengYaHei-ZhongCu.ttf"
     # B字体：英文和数字优先级高
     fontB: ""
-    # 字体大小（可选，留空使用默认大小）
-    size: "14px"
-    # 字体粗细（可选，留空使用默认粗细）
-    weight: "400"
     # 侧边栏宽度（展开时的宽度）
     # width: "300px"
 

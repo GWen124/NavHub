@@ -70,39 +70,25 @@ export const appConfig = reactive<AppConfig>({
   "fonts": {
     "header": {
       "fontA": "fonts/AnJingChenXinShouJinTi.ttf",
-      "fontB": "fonts/brand.ttf",
-      "size": "64px",
-      "weight": "700"
+      "fontB": "fonts/brand.ttf"
     },
     "content": {
       "category": {
         "fontA": "fonts/SanJiZhengYaHei-ZhongCu.ttf",
-        "fontB": "Arial, sans-serif",
-        "size": "18px",
-        "weight": "600"
+        "fontB": "Arial, sans-serif"
       },
       "site": {
         "fontA": "fonts/SanJiZhengYaHei-Xi.ttf",
-        "fontB": "Arial, sans-serif",
-        "size": "14px",
-        "weight": "700"
+        "fontB": "Arial, sans-serif"
       }
     },
     "footer": {
       "fontA": "fonts/brand.ttf",
-      "fontB": "",
-      "size": "14px",
-      "weight": "400",
-      "secondLine": {
-        "size": "16px",
-        "weight": "400"
-      }
+      "fontB": ""
     },
     "sidebar": {
       "fontA": "fonts/SanJiZhengYaHei-ZhongCu.ttf",
-      "fontB": "",
-      "size": "14px",
-      "weight": "400"
+      "fontB": ""
     }
   },
   "autoIcon": {
