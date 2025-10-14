@@ -103,41 +103,34 @@ onMounted(() => {
 
 <style scoped>
 .auto-icon {
-  display: inline-block;
-  width: v-bind(size + 'px');
-  height: v-bind(size + 'px');
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
   position: relative;
 }
 
 .icon-image {
-  width: 100%;
-  height: 100%;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
   border-radius: 8px;
   transition: all 0.3s ease;
 }
 
-.icon-image:hover {
-  transform: scale(1.05);
-}
-
 .icon-placeholder {
-  width: 100%;
-  height: 100%;
+  width: 48px;
+  height: 48px;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-weight: bold;
-  font-size: v-bind(size * 0.4 + 'px');
+  font-size: 24px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
-}
-
-.icon-placeholder:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* 加载状态 */

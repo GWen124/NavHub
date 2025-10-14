@@ -886,7 +886,7 @@ onUnmounted(() => {
 }
 
 .categories-container {
-  max-width: 85vw;
+  max-width: 90vw;
   margin: 0 auto;
   padding: 0 24px;
 }

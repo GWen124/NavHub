@@ -36,7 +36,7 @@ const props = defineProps<Props>()
   align-items: center;
   margin-bottom: 16px;
   padding: 0 4px;
-  width: 85%;
+  width: 90%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -52,7 +52,7 @@ const props = defineProps<Props>()
 .sites-grid {
   display: flex;
   flex-wrap: wrap;
-  width: 85%;
+  width: 90%;
   margin: 0 auto;
   justify-content: flex-start;
 }

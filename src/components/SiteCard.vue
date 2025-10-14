@@ -118,7 +118,7 @@ const xiconComponent = computed(() => {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 8px 12px;
+  padding: 4px 8px;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 12px;
   text-decoration: none;
@@ -126,11 +126,11 @@ const xiconComponent = computed(() => {
   transition: all 0.3s ease;
   border: none;
   cursor: pointer;
-  min-height: 60px;
+  min-height: 46px;
   height: auto;
   width: 100%;
   justify-content: flex-start;
-  gap: 10px;
+  gap: 8px;
   backdrop-filter: blur(10px);
 }
 
@@ -170,6 +170,20 @@ const xiconComponent = computed(() => {
   width: 48px;
   height: 48px;
   object-fit: contain;
+  border-radius: 8px;
+}
+
+/* 确保 AutoIcon 组件内的图片也使用相同尺寸 */
+.site-icon :deep(.icon-image) {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.site-icon :deep(.icon-placeholder) {
+  width: 48px;
+  height: 48px;
   border-radius: 8px;
 }
 
@@ -238,6 +252,17 @@ const xiconComponent = computed(() => {
     height: 40px;
   }
   
+  .site-icon :deep(.icon-image) {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .site-icon :deep(.icon-placeholder) {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+  
   .site-icon :deep(svg) {
     width: 32px;
     height: 32px;
@@ -279,6 +304,17 @@ const xiconComponent = computed(() => {
     height: 36px;
   }
   
+  .site-icon :deep(.icon-image) {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .site-icon :deep(.icon-placeholder) {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+  
   .site-icon :deep(svg) {
     width: 28px;
     height: 28px;
@@ -318,6 +354,17 @@ const xiconComponent = computed(() => {
   .site-icon img {
     width: 32px;
     height: 32px;
+  }
+  
+  .site-icon :deep(.icon-image) {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .site-icon :deep(.icon-placeholder) {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
   }
   
   .site-icon :deep(svg) {
