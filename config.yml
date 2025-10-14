@@ -38,8 +38,8 @@ timeDate:
 
 # Footer 信息配置
 footer:
-  websiteText: "WEBSITE.GW124.TOP"
-  websiteUrl: "https://website.gw124.top/"
+  websiteText: "NAV.GW124.TOP"
+  websiteUrl: "https://nav.gw124.top/"
   # 注意：作者信息不可配置，始终保持默认值
   
   # 第二行链接配置（可选）
