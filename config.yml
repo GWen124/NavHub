@@ -113,13 +113,13 @@ fonts:
       # A字体：汉字优先级高
       fontA: "fonts/SanJiZhengYaHei-ZhongCu.ttf"
       # B字体：英文和数字优先级高
-      fontB: "Arial, sans-serif"
+      fontB: ""
     # 网站卡片标题字体
     site:
       # A字体：汉字优先级高
       fontA: "fonts/SanJiZhengYaHei-Xi.ttf"
       # B字体：英文和数字优先级高
-      fontB: "Arial, sans-serif"
+      fontB: ""
   
   # Footer区域字体（版权信息、链接文字）
   footer:
