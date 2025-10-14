@@ -1,4 +1,4 @@
-# Website Panel 配置文件
+# Website Hub 配置文件
 # 修改此文件来自定义网站设置
 
 # 部署配置
@@ -10,7 +10,7 @@ deployment:
   customDomain: ""
 
 # 网页标题
-pageTitle: "Website Panel"
+pageTitle: "Website Hub"
 
 # 标签页图标配置
 favicon:

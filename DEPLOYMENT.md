@@ -1,6 +1,6 @@
 # 部署指南
 
-本文档详细说明如何将 Website Panel 部署到各种平台。
+本文档详细说明如何将 Website Hub 部署到各种平台。
 
 ## 📋 部署前准备
 
@@ -285,10 +285,10 @@ http {
 3. **构建和运行**
 ```bash
 # 构建镜像
-docker build -t website-panel .
+docker build -t website-hub .
 
 # 运行容器
-docker run -p 80:80 website-panel
+docker run -p 80:80 website-hub
 ```
 
 ## 🔧 环境配置

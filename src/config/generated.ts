@@ -10,7 +10,7 @@ export const appConfig = reactive<AppConfig>({
   "deployment": {
     "customDomain": ""
   },
-  "pageTitle": "Website Panel",
+  "pageTitle": "Website Hub",
   "favicon": {
     "icon": "https://image.gw124.top/Avatar/A62B54A6-13B8-4BB8-9AAA-75E3342388BB_1_105_c.jpeg"
   },

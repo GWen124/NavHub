@@ -1,4 +1,4 @@
-# Website Panel - 个性化网站导航面板
+# Website Hub - 个性化网站导航面板
 
 一个现代化的、高度可定制的网站导航面板，支持多设备响应式设计、自动图标获取、主题定制等功能。
 
@@ -33,7 +33,7 @@
 1. **克隆项目**
 ```bash
 git clone <repository-url>
-cd Website-Panel
+cd Website-Hub
 ```
 
 2. **安装依赖**
@@ -294,4 +294,4 @@ npm run lint
 
 ---
 
-**Website Panel** - 让网站导航更简单、更美观、更个性化！
+**Website Hub** - 让网站导航更简单、更美观、更个性化！

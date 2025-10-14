@@ -123,7 +123,7 @@ export interface AppConfig {
 
 // 默认配置
 const defaultConfig: AppConfig = {
-  pageTitle: 'Website Panel',
+  pageTitle: 'Website Hub',
   pageQuote: '人生寂寞，知己难求。',
   background: {
     image: '',
