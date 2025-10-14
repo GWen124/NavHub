@@ -118,7 +118,7 @@ const xiconComponent = computed(() => {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 4px 12px;
+  padding: 8px 12px;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 12px;
   text-decoration: none;
@@ -126,8 +126,8 @@ const xiconComponent = computed(() => {
   transition: all 0.3s ease;
   border: none;
   cursor: pointer;
-  min-height: 40px;
-  height: 100%;
+  min-height: 60px;
+  height: auto;
   width: 100%;
   justify-content: flex-start;
   gap: 10px;
@@ -206,14 +206,14 @@ const xiconComponent = computed(() => {
   font-weight: var(--site-font-weight, 700);
   color: var(--card-title-color, #000000);
   text-align: left;
-  line-height: 1.2;
+  line-height: 1.3;
   flex: 1;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  height: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+  overflow-wrap: break-word;
   min-width: 0;
 }
 
