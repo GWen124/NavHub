@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  website-hub:
-    image: gwen124/website-hub:latest
-    container_name: website-hub
+  navhub:
+    image: gwen124/navhub:latest
+    container_name: navhub
     ports:
       - "8080:80"
     volumes:

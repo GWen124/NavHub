@@ -10,9 +10,9 @@
 version: '3.8'
 
 services:
-  website-hub:
-    image: gwen124/website-hub:latest
-    container_name: website-hub
+  navhub:
+    image: gwen124/navhub:latest
+    container_name: navhub
     ports:
       - "8080:80"
     volumes:
@@ -42,14 +42,14 @@ docker-compose up -d
 
 ```bash
 docker run -d \
-  --name website-hub \
+  --name navhub \
   -p 8080:80 \
   -v $(pwd)/config.yml:/config/config.yml:ro \
   -v $(pwd)/fonts:/config/fonts:ro \
   -v $(pwd)/footer-links.json:/config/footer-links.json:ro \
   -e TZ=Asia/Shanghai \
   --restart unless-stopped \
-  gwen124/website-hub:latest
+  gwen124/navhub:latest
 ```
 
 ## 配置说明
@@ -135,25 +135,25 @@ ports:
 
 ```bash
 # 克隆项目
-git clone https://github.com/GWen124/Website-Panel.git
-cd Website-Panel
+git clone https://github.com/GWen124/NavHub.git
+cd NavHub
 
 # 构建镜像
-docker build -t website-hub:latest .
+docker build -t navhub:latest .
 
 # 运行容器
 docker run -d \
-  --name website-hub \
+  --name navhub \
   -p 8080:80 \
   -v $(pwd)/config.yml:/config/config.yml:ro \
-  website-hub:latest
+  navhub:latest
 ```
 
 ## 更新镜像
 
 ```bash
 # 拉取最新镜像
-docker pull gwen124/website-hub:latest
+docker pull gwen124/navhub:latest
 
 # 停止并删除旧容器
 docker-compose down
@@ -195,7 +195,7 @@ docker-compose restart
 docker-compose logs -f
 
 # 或
-docker logs -f website-hub
+docker logs -f navhub
 ```
 
 ## 停止和删除
@@ -221,7 +221,7 @@ docker-compose down --rmi all
 
 ```yaml
 services:
-  website-hub:
+  navhub:
     # ...
     deploy:
       resources:
@@ -237,7 +237,7 @@ services:
 
 ```yaml
 services:
-  website-hub:
+  navhub:
     # ...
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
@@ -249,5 +249,5 @@ services:
 
 ## 支持
 
-如有问题，请提交 Issue：https://github.com/GWen124/Website-Panel/issues
+如有问题，请提交 Issue：https://github.com/GWen124/NavHub/issues
 
