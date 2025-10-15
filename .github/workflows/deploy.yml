@@ -12,8 +12,13 @@ on:
         required: false
         type: string
         default: ''
-      external_config_url:
-        description: '外部配置 URL（留空则使用 config.yml 设置）'
+      external_sites_config_url:
+        description: '外部网站配置 URL（控制网站分组和网站列表）'
+        required: false
+        type: string
+        default: ''
+      external_project_config_url:
+        description: '外部项目配置 URL（控制项目设置如域名、背景、字体等）'
         required: false
         type: string
         default: ''
@@ -56,43 +61,78 @@ jobs:
         echo "custom_domain=$CUSTOM_DOMAIN" >> $GITHUB_OUTPUT
         echo "📝 读取到自定义域名: $CUSTOM_DOMAIN"
         
-        # 读取外部配置 URL（如果 config.yml 中启用了）
-        EXTERNAL_ENABLED=$(grep -A 5 "externalConfig:" config.yml | grep "enabled:" | sed 's/.*enabled: *\(.*\)/\1/')
-        EXTERNAL_URL=$(grep -A 5 "externalConfig:" config.yml | grep "url:" | sed 's/.*url: *"\(.*\)".*/\1/')
-        echo "external_enabled=$EXTERNAL_ENABLED" >> $GITHUB_OUTPUT
-        echo "external_url=$EXTERNAL_URL" >> $GITHUB_OUTPUT
-        echo "⚙️ 外部配置启用: $EXTERNAL_ENABLED"
-        if [ -n "$EXTERNAL_URL" ]; then
-          echo "🔗 外部配置 URL: $EXTERNAL_URL"
+        # 读取外部网站配置 URL（如果 config.yml 中启用了）
+        EXTERNAL_SITES_ENABLED=$(grep -A 5 "externalConfig:" config.yml | grep "enabled:" | sed 's/.*enabled: *\(.*\)/\1/')
+        EXTERNAL_SITES_URL=$(grep -A 5 "externalConfig:" config.yml | grep "url:" | sed 's/.*url: *"\(.*\)".*/\1/')
+        echo "external_sites_enabled=$EXTERNAL_SITES_ENABLED" >> $GITHUB_OUTPUT
+        echo "external_sites_url=$EXTERNAL_SITES_URL" >> $GITHUB_OUTPUT
+        echo "⚙️ 外部网站配置启用: $EXTERNAL_SITES_ENABLED"
+        if [ -n "$EXTERNAL_SITES_URL" ]; then
+          echo "🔗 外部网站配置 URL: $EXTERNAL_SITES_URL"
+        fi
+        
+        # 读取外部项目配置 URL（如果 config.yml 中启用了）
+        EXTERNAL_PROJECT_ENABLED=$(grep -A 5 "externalProjectConfig:" config.yml | grep "enabled:" | sed 's/.*enabled: *\(.*\)/\1/')
+        EXTERNAL_PROJECT_URL=$(grep -A 5 "externalProjectConfig:" config.yml | grep "url:" | sed 's/.*url: *"\(.*\)".*/\1/')
+        echo "external_project_enabled=$EXTERNAL_PROJECT_ENABLED" >> $GITHUB_OUTPUT
+        echo "external_project_url=$EXTERNAL_PROJECT_URL" >> $GITHUB_OUTPUT
+        echo "⚙️ 外部项目配置启用: $EXTERNAL_PROJECT_ENABLED"
+        if [ -n "$EXTERNAL_PROJECT_URL" ]; then
+          echo "🔗 外部项目配置 URL: $EXTERNAL_PROJECT_URL"
         fi
       
-    - name: Configure external config (if provided)
-      if: github.event.inputs.external_config_url != ''
+    - name: Configure external sites config (if provided)
+      if: github.event.inputs.external_sites_config_url != ''
       run: |
-        echo "🔄 使用外部配置..."
+        echo "🔄 使用外部网站配置..."
         echo "📝 更新原因: ${{ github.event.inputs.update_reason }}"
-        echo "🔗 配置 URL: ${{ github.event.inputs.external_config_url }}"
-        # 临时修改 config.yml 以启用外部配置
-        # 使用更精确的 sed 命令，只替换 externalConfig 部分的配置
+        echo "🔗 网站配置 URL: ${{ github.event.inputs.external_sites_config_url }}"
+        # 临时修改 config.yml 以启用外部网站配置
         sed -i '/^externalConfig:/,/^[a-zA-Z]/ { s/enabled: false/enabled: true/; }' config.yml
-        # 只替换 externalConfig 部分的 url
-        sed -i '/^externalConfig:/,/^[a-zA-Z]/ { s|url: ".*"|url: "${{ github.event.inputs.external_config_url }}"|; }' config.yml
-        echo "✅ 外部配置已设置"
-        echo "📄 当前配置:"
+        sed -i '/^externalConfig:/,/^[a-zA-Z]/ { s|url: ".*"|url: "${{ github.event.inputs.external_sites_config_url }}"|; }' config.yml
+        echo "✅ 外部网站配置已设置"
+        echo "📄 当前网站配置:"
         grep -A 5 "externalConfig:" config.yml
       
-    - name: Validate external config URL
-      if: steps.config.outputs.external_enabled == 'true' && steps.config.outputs.external_url != ''
+    - name: Configure external project config (if provided)
+      if: github.event.inputs.external_project_config_url != ''
       run: |
-        echo "🔍 验证外部配置URL..."
-        echo "🔗 配置URL: ${{ steps.config.outputs.external_url }}"
+        echo "🔄 使用外部项目配置..."
+        echo "📝 更新原因: ${{ github.event.inputs.update_reason }}"
+        echo "🔗 项目配置 URL: ${{ github.event.inputs.external_project_config_url }}"
+        # 临时修改 config.yml 以启用外部项目配置
+        sed -i '/^externalProjectConfig:/,/^[a-zA-Z]/ { s/enabled: false/enabled: true/; }' config.yml
+        sed -i '/^externalProjectConfig:/,/^[a-zA-Z]/ { s|url: ".*"|url: "${{ github.event.inputs.external_project_config_url }}"|; }' config.yml
+        echo "✅ 外部项目配置已设置"
+        echo "📄 当前项目配置:"
+        grep -A 5 "externalProjectConfig:" config.yml
+      
+    - name: Validate external sites config URL
+      if: steps.config.outputs.external_sites_enabled == 'true' && steps.config.outputs.external_sites_url != ''
+      run: |
+        echo "🔍 验证外部网站配置URL..."
+        echo "🔗 网站配置URL: ${{ steps.config.outputs.external_sites_url }}"
         # 测试URL是否可访问
-        if curl -s --head --fail "${{ steps.config.outputs.external_url }}" > /dev/null; then
-          echo "✅ 外部配置URL可访问"
+        if curl -s --head --fail "${{ steps.config.outputs.external_sites_url }}" > /dev/null; then
+          echo "✅ 外部网站配置URL可访问"
         else
-          echo "⚠️ 外部配置URL不可访问，将使用本地配置"
-          # 禁用外部配置，回退到本地配置
+          echo "⚠️ 外部网站配置URL不可访问，将使用本地配置"
+          # 禁用外部网站配置，回退到本地配置
           sed -i '/^externalConfig:/,/^[a-zA-Z]/ { s/enabled: true/enabled: false/; }' config.yml
+        fi
+      
+    - name: Validate external project config URL
+      if: steps.config.outputs.external_project_enabled == 'true' && steps.config.outputs.external_project_url != ''
+      run: |
+        echo "🔍 验证外部项目配置URL..."
+        echo "🔗 项目配置URL: ${{ steps.config.outputs.external_project_url }}"
+        # 测试URL是否可访问
+        if curl -s --head --fail "${{ steps.config.outputs.external_project_url }}" > /dev/null; then
+          echo "✅ 外部项目配置URL可访问"
+        else
+          echo "⚠️ 外部项目配置URL不可访问，将使用本地配置"
+          # 禁用外部项目配置，回退到本地配置
+          sed -i '/^externalProjectConfig:/,/^[a-zA-Z]/ { s/enabled: true/enabled: false/; }' config.yml
         fi
       
     - name: Build
@@ -152,26 +192,45 @@ jobs:
         echo "🔄 Build ID: ${{ github.run_id }}"
         
         # 显示配置模式
-        if [ -n "${{ github.event.inputs.external_config_url }}" ]; then
-          echo "⚙️ 配置模式: 外部配置（手动指定）"
-          echo "🔗 配置 URL: ${{ github.event.inputs.external_config_url }}"
-        elif [ "${{ steps.config.outputs.external_enabled }}" == "true" ]; then
-          echo "⚙️ 配置模式: 外部配置（config.yml）"
-          echo "🔗 配置 URL: ${{ steps.config.outputs.external_url }}"
+        echo "⚙️ 配置模式:"
+        if [ -n "${{ github.event.inputs.external_sites_config_url }}" ]; then
+          echo "  📁 网站配置: 外部配置（手动指定）"
+          echo "  🔗 网站配置 URL: ${{ github.event.inputs.external_sites_config_url }}"
+        elif [ "${{ steps.config.outputs.external_sites_enabled }}" == "true" ]; then
+          echo "  📁 网站配置: 外部配置（config.yml）"
+          echo "  🔗 网站配置 URL: ${{ steps.config.outputs.external_sites_url }}"
         else
-          echo "⚙️ 配置模式: 本地配置"
+          echo "  📁 网站配置: 本地配置"
+        fi
+        
+        if [ -n "${{ github.event.inputs.external_project_config_url }}" ]; then
+          echo "  ⚙️ 项目配置: 外部配置（手动指定）"
+          echo "  🔗 项目配置 URL: ${{ github.event.inputs.external_project_config_url }}"
+        elif [ "${{ steps.config.outputs.external_project_enabled }}" == "true" ]; then
+          echo "  ⚙️ 项目配置: 外部配置（config.yml）"
+          echo "  🔗 项目配置 URL: ${{ steps.config.outputs.external_project_url }}"
+        else
+          echo "  ⚙️ 项目配置: 本地配置"
         fi
         
         echo "📝 更新原因: ${{ github.event.inputs.update_reason }}"
         
         # 显示最终使用的配置信息
         echo "📋 最终配置信息:"
-        if [ -n "${{ github.event.inputs.external_config_url }}" ]; then
-          echo "🔗 外部配置URL: ${{ github.event.inputs.external_config_url }}"
-        elif [ "${{ steps.config.outputs.external_enabled }}" == "true" ] && [ -n "${{ steps.config.outputs.external_url }}" ]; then
-          echo "🔗 外部配置URL: ${{ steps.config.outputs.external_url }}"
+        if [ -n "${{ github.event.inputs.external_sites_config_url }}" ]; then
+          echo "🔗 外部网站配置URL: ${{ github.event.inputs.external_sites_config_url }}"
+        elif [ "${{ steps.config.outputs.external_sites_enabled }}" == "true" ] && [ -n "${{ steps.config.outputs.external_sites_url }}" ]; then
+          echo "🔗 外部网站配置URL: ${{ steps.config.outputs.external_sites_url }}"
         else
-          echo "📁 使用本地配置"
+          echo "📁 网站配置: 使用本地配置"
+        fi
+        
+        if [ -n "${{ github.event.inputs.external_project_config_url }}" ]; then
+          echo "🔗 外部项目配置URL: ${{ github.event.inputs.external_project_config_url }}"
+        elif [ "${{ steps.config.outputs.external_project_enabled }}" == "true" ] && [ -n "${{ steps.config.outputs.external_project_url }}" ]; then
+          echo "🔗 外部项目配置URL: ${{ steps.config.outputs.external_project_url }}"
+        else
+          echo "📁 项目配置: 使用本地配置"
         fi
         
     - name: Trigger Pages rebuild

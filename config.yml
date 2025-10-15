@@ -17,7 +17,7 @@ favicon:
   # 图标路径或URL，留空表示使用默认图标
   # 本地图标示例: favicon.ico 或 images/icon.png
   # 网络图标示例: https://example.com/favicon.ico
-  icon: "https://image.gw124.top/Avatar/A62B54A6-13B8-4BB8-9AAA-75E3342388BB_1_105_c.jpeg"
+  icon: "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Uncategorized/Myicon.png"
 
 # 页面主标题文字
 pageQuote: "发现 · 收藏 · 出发"
@@ -38,8 +38,8 @@ timeDate:
 
 # Footer 信息配置
 footer:
-  websiteText: "NAV.GW124.TOP"
-  websiteUrl: "https://nav.gw124.top/"
+  websiteText: "NAVHUB.GW124.TOP"
+  websiteUrl: "https://navhub.gw124.top/"
   # 注意：作者信息不可配置，始终保持默认值
   
   # 第二行链接配置（可选）
@@ -71,7 +71,7 @@ background:
   # 本地视频示例: video.mp4 或 videos/background.mp4
   # 网络视频示例: https://example.com/video.mp4
   # 支持的视频格式: mp4, webm, ogg, avi, mov, wmv, flv, mkv
-  image: "https://image.gw124.top/Video/1.mp4"
+  image: ""
   # Bing轮播模式选择
   # "localFirst": 先显示本地背景，30秒后切换到Bing轮播
   # "direct": 直接显示Bing轮播，不显示本地背景
@@ -177,11 +177,24 @@ externalConfig:
   # 是否启用外部配置
   # true: 构建时从外部 URL 拉取网站配置（会覆盖 config.ts 中的配置）
   # false: 使用本地 config.ts 中的配置
-  enabled: true
+  enabled: false
   # 外部配置文件的 URL（需要返回 JSON 格式的网站配置）
   # 示例：https://example.com/sites-config.json
   # 示例：https://gist.githubusercontent.com/username/xxx/raw/sites.json
   url: ""
   # 回退策略：当外部配置不可用时，自动使用本地 config.ts
   # 注意：外部配置拉取失败时，构建过程会自动回退到本地配置，无需手动干预
+
+# 外部项目配置
+externalProjectConfig:
+  # 是否启用外部项目配置
+  # true: 构建时从外部 URL 拉取项目配置（会覆盖 config.yml 中的配置）
+  # false: 使用本地 config.yml 中的配置
+  enabled: false
+  # 外部项目配置文件的 URL（需要返回 YAML 格式的项目配置）
+  # 示例：https://example.com/project-config.yml
+  # 示例：https://gist.githubusercontent.com/username/xxx/raw/project-config.yml
+  url: ""
+  # 回退策略：当外部项目配置不可用时，自动使用本地 config.yml
+  # 注意：外部项目配置拉取失败时，构建过程会自动回退到本地配置，无需手动干预
   
