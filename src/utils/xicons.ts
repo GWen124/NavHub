@@ -26,6 +26,9 @@ import {
   Briefcase,
   Search,
   Blog,
+  Markdown,
+  Image,
+  Images,
   Zhihu
 } from '@vicons/fa'
 
@@ -43,6 +46,9 @@ export const xiconMap: Record<string, any> = {
   Figma,
   StickyNote,
   Briefcase,
+  Markdown,
+  Image,
+  Images,
   
   // 社交媒体类
   Users,
@@ -81,6 +87,9 @@ export {
   StackOverflow,
   Youtube,
   Blog,
+  Markdown,
+  Image,
+  Images,
   Zhihu
 }
 
