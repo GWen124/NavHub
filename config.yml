@@ -154,6 +154,7 @@ categorySorting:
   # 置顶分组（始终显示在最前面，按数组顺序排列）
   pinnedCategories:
     - "Favorites - 常用网站"
+    - "Private Projects - 私人项目"
     - "AI Tools - AI工具"
     - "Online Tools - 在线工具"
     - "Useful Tools - 实用工具"
