@@ -29,18 +29,21 @@ import {
   Markdown,
   Image,
   Images,
+  Paperclip,
+  Clock,
+  Icons,
+  NetworkWired,
+  Unlock,
+  FileExport,
   Zhihu
 } from '@vicons/fa'
 
 // Xicons 图标映射表
 export const xiconMap: Record<string, any> = {
-  // 搜索引擎类
   Google,
   Bold,
   Windows,
   Dochub,
-  
-  // 工作工具类
   Github,
   StackOverflow,
   Figma,
@@ -49,31 +52,29 @@ export const xiconMap: Record<string, any> = {
   Markdown,
   Image,
   Images,
-  
-  // 社交媒体类
   Users,
   Twitter,
   Linkedin,
   Discord,
   Reddit,
   Blog,
-  
-  // 娱乐休闲类
   PlayCircle,
   Youtube,
   Film,
   Spotify,
   Steam,
-  
-  // 新闻资讯类
+  Paperclip,
   Newspaper,
   Globe,
   Tv,
   Microchip,
-  
-  // 搜索类
   Search,
   Zhihu,
+  Clock,
+  Icons,
+  NetworkWired,
+  Unlock,
+  FileExport,
   Code
 }
 
@@ -90,6 +91,12 @@ export {
   Markdown,
   Image,
   Images,
+  Paperclip,
+  Clock,
+  Icons,
+  NetworkWired,
+  Unlock,
+  FileExport,
   Zhihu
 }
 
