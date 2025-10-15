@@ -8,10 +8,10 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// 从外部 URL 获取配置
+// 从外部 URL 获取网站配置
 async function fetchExternalConfig(url) {
   try {
-    console.log(`🌐 正在从外部 URL 拉取配置: ${url}`)
+    console.log(`🌐 正在从外部 URL 拉取网站配置: ${url}`)
     const response = await fetch(url)
     
     if (!response.ok) {
@@ -21,13 +21,38 @@ async function fetchExternalConfig(url) {
     const data = await response.json()
     
     if (!Array.isArray(data)) {
-      throw new Error('外部配置格式错误：期望数组格式')
+      throw new Error('外部网站配置格式错误：期望数组格式')
     }
     
-    console.log(`✅ 成功拉取外部配置，包含 ${data.length} 个分组`)
+    console.log(`✅ 成功拉取外部网站配置，包含 ${data.length} 个分组`)
     return data
   } catch (error) {
-    console.error(`❌ 拉取外部配置失败: ${error.message}`)
+    console.error(`❌ 拉取外部网站配置失败: ${error.message}`)
+    return null
+  }
+}
+
+// 从外部 URL 获取项目配置
+async function fetchExternalProjectConfig(url) {
+  try {
+    console.log(`🌐 正在从外部 URL 拉取项目配置: ${url}`)
+    const response = await fetch(url)
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+    }
+    
+    const yamlText = await response.text()
+    const data = yaml.load(yamlText)
+    
+    if (!data || typeof data !== 'object') {
+      throw new Error('外部项目配置格式错误：期望YAML对象格式')
+    }
+    
+    console.log(`✅ 成功拉取外部项目配置`)
+    return data
+  } catch (error) {
+    console.error(`❌ 拉取外部项目配置失败: ${error.message}`)
     return null
   }
 }
@@ -63,12 +88,31 @@ if (config.footer?.secondLine?.enabled) {
   }
 }
 
-// 处理外部配置
+// 处理外部项目配置
+let usingExternalProjectConfig = false
+if (config.externalProjectConfig && config.externalProjectConfig.enabled && config.externalProjectConfig.url) {
+  console.log('📦 检测到外部项目配置已启用')
+  const externalProjectConfig = await fetchExternalProjectConfig(config.externalProjectConfig.url)
+  
+  if (externalProjectConfig) {
+    // 使用外部项目配置覆盖本地配置
+    console.log('🔄 使用外部项目配置覆盖本地配置')
+    Object.assign(config, externalProjectConfig)
+    usingExternalProjectConfig = true
+    console.log('✅ 已使用外部项目配置更新本地配置')
+  } else {
+    console.log('⚠️  外部项目配置拉取失败，回退到本地配置')
+  }
+} else {
+  console.log('📝 使用本地项目配置')
+}
+
+// 处理外部网站配置
 let sitesConfigCode = ''
 let usingExternalConfig = false
 
 if (config.externalConfig && config.externalConfig.enabled && config.externalConfig.url) {
-  console.log('📦 检测到外部配置已启用')
+  console.log('📦 检测到外部网站配置已启用')
   const externalSites = await fetchExternalConfig(config.externalConfig.url)
   
   if (externalSites && externalSites.length > 0) {
@@ -101,10 +145,10 @@ export const config: Category[] = ${JSON.stringify(externalSites, null, 2)}
     }
     
     fs.writeFileSync(configTsPath, externalConfigCode)
-    console.log('✅ 已使用外部配置更新 src/config.ts')
+    console.log('✅ 已使用外部网站配置更新 src/config.ts')
     usingExternalConfig = true
   } else {
-    console.log('⚠️  外部配置拉取失败，回退到本地 config.ts')
+    console.log('⚠️  外部网站配置拉取失败，回退到本地 config.ts')
     console.log('💡 将继续使用本地配置文件构建项目')
     
     // 如果存在备份文件，恢复备份
@@ -123,9 +167,13 @@ export const config: Category[] = ${JSON.stringify(externalSites, null, 2)}
 console.log('')
 console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
 console.log('📊 配置摘要:')
-console.log(`   配置来源: ${usingExternalConfig ? '外部 URL' : '本地文件'}`)
+console.log(`   项目配置来源: ${usingExternalProjectConfig ? '外部 URL' : '本地文件'}`)
+if (usingExternalProjectConfig) {
+  console.log(`   项目配置 URL: ${config.externalProjectConfig.url}`)
+}
+console.log(`   网站配置来源: ${usingExternalConfig ? '外部 URL' : '本地文件'}`)
 if (usingExternalConfig) {
-  console.log(`   URL: ${config.externalConfig.url}`)
+  console.log(`   网站配置 URL: ${config.externalConfig.url}`)
 }
 console.log(`   分组排序: ${config.categorySorting?.autoSort ? '启用' : '禁用'}`)
 console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
