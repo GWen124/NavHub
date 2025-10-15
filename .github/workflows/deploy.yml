@@ -81,6 +81,20 @@ jobs:
         echo "📄 当前配置:"
         grep -A 5 "externalConfig:" config.yml
       
+    - name: Validate external config URL
+      if: steps.config.outputs.external_enabled == 'true' && steps.config.outputs.external_url != ''
+      run: |
+        echo "🔍 验证外部配置URL..."
+        echo "🔗 配置URL: ${{ steps.config.outputs.external_url }}"
+        # 测试URL是否可访问
+        if curl -s --head --fail "${{ steps.config.outputs.external_url }}" > /dev/null; then
+          echo "✅ 外部配置URL可访问"
+        else
+          echo "⚠️ 外部配置URL不可访问，将使用本地配置"
+          # 禁用外部配置，回退到本地配置
+          sed -i '/^externalConfig:/,/^[a-zA-Z]/ { s/enabled: true/enabled: false/; }' config.yml
+        fi
+      
     - name: Build
       run: npm run build
       
@@ -149,6 +163,16 @@ jobs:
         fi
         
         echo "📝 更新原因: ${{ github.event.inputs.update_reason }}"
+        
+        # 显示最终使用的配置信息
+        echo "📋 最终配置信息:"
+        if [ -n "${{ github.event.inputs.external_config_url }}" ]; then
+          echo "🔗 外部配置URL: ${{ github.event.inputs.external_config_url }}"
+        elif [ "${{ steps.config.outputs.external_enabled }}" == "true" ] && [ -n "${{ steps.config.outputs.external_url }}" ]; then
+          echo "🔗 外部配置URL: ${{ steps.config.outputs.external_url }}"
+        else
+          echo "📁 使用本地配置"
+        fi
         
     - name: Trigger Pages rebuild
       if: always()
