@@ -10,7 +10,7 @@ deployment:
   customDomain: "navhub.gw124.top"
 
 # 网页标题
-pageTitle: "你所喜爱的网站，一站汇聚。"
+pageTitle: "发现 · 收藏 · 出发"
 
 # 标签页图标配置
 favicon:
@@ -20,7 +20,7 @@ favicon:
   icon: "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Uncategorized/Myicon.png"
 
 # 页面主标题文字
-pageQuote: "发现 · 收藏 · 出发"
+pageQuote: "你所喜爱的网站，一站汇聚。"
 
 # 页面标题显示配置
 pageTitleConfig:
