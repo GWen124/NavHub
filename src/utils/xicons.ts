@@ -25,6 +25,7 @@ import {
   Code,
   Briefcase,
   Search,
+  Blog,
   Zhihu
 } from '@vicons/fa'
 
@@ -49,6 +50,7 @@ export const xiconMap: Record<string, any> = {
   Linkedin,
   Discord,
   Reddit,
+  Blog,
   
   // 娱乐休闲类
   PlayCircle,
