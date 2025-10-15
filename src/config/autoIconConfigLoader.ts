@@ -243,7 +243,17 @@ const isValidIconUrl = (icon: string): boolean => {
     return true
   }
   
-  // 其他情况（如 xicon: 等）返回 false
+  // 检查是否为 xicon 图标
+  if (icon.startsWith('xicon:') || icon.startsWith('fa:')) {
+    return true
+  }
+  
+  // 检查是否为 Font Awesome 图标
+  if (icon.startsWith('fa') || icon.startsWith('fas') || icon.startsWith('fab') || icon.startsWith('far')) {
+    return true
+  }
+  
+  // 其他情况返回 false
   return false
 }
 
