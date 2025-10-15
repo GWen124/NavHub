@@ -8,7 +8,7 @@ import type { AppConfig } from './configLoader'
 export const appConfig = reactive<AppConfig>({
   ...{
   "deployment": {
-    "customDomain": ""
+    "customDomain": "navhub.gw124.top"
   },
   "pageTitle": "NavHub",
   "favicon": {
@@ -22,8 +22,8 @@ export const appConfig = reactive<AppConfig>({
     "enabled": true
   },
   "footer": {
-    "websiteText": "WEBSITE.GW124.TOP",
-    "websiteUrl": "https://website.gw124.top/",
+    "websiteText": "NAV.GW124.TOP",
+    "websiteUrl": "https://nav.gw124.top/",
     "secondLine": {
       "enabled": true,
       "links": [
@@ -75,11 +75,11 @@ export const appConfig = reactive<AppConfig>({
     "content": {
       "category": {
         "fontA": "fonts/SanJiZhengYaHei-ZhongCu.ttf",
-        "fontB": "Arial, sans-serif"
+        "fontB": ""
       },
       "site": {
         "fontA": "fonts/SanJiZhengYaHei-Xi.ttf",
-        "fontB": "Arial, sans-serif"
+        "fontB": ""
       }
     },
     "footer": {
@@ -92,12 +92,13 @@ export const appConfig = reactive<AppConfig>({
     }
   },
   "autoIcon": {
-    "mode": 3
+    "mode": 2
   },
   "categorySorting": {
     "autoSort": true,
     "pinnedCategories": [
       "Favorites - 常用网站",
+      "Private Projects - 私人项目",
       "AI Tools - AI工具",
       "Online Tools - 在线工具",
       "Useful Tools - 实用工具",
@@ -111,14 +112,14 @@ export const appConfig = reactive<AppConfig>({
     "mode": 2
   },
   "externalConfig": {
-    "enabled": false,
-    "url": ""
+    "enabled": true,
+    "url": "https://raw.githubusercontent.com/GWen124/Script/refs/heads/master/Web/Website%20Panel/nav.gw124.top.json"
   }
 },
   footer: {
     ...{
-  "websiteText": "WEBSITE.GW124.TOP",
-  "websiteUrl": "https://website.gw124.top/",
+  "websiteText": "NAV.GW124.TOP",
+  "websiteUrl": "https://nav.gw124.top/",
   "secondLine": {
     "enabled": true,
     "links": [
