@@ -483,7 +483,7 @@ onUnmounted(() => {
 .quote-section {
   display: flex;
   align-items: center;
-  gap: 0px;
+  gap: 20px;
   width: 100%;
   justify-content: center;
 }

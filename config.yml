@@ -10,7 +10,7 @@ deployment:
   customDomain: "navhub.gw124.top"
 
 # 网页标题
-pageTitle: "NavHub"
+pageTitle: "发现 · 收藏 · 出发"
 
 # 标签页图标配置
 favicon:
