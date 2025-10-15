@@ -181,7 +181,7 @@ externalConfig:
   # 外部配置文件的 URL（需要返回 JSON 格式的网站配置）
   # 示例：https://example.com/sites-config.json
   # 示例：https://gist.githubusercontent.com/username/xxx/raw/sites.json
-  url: "https://raw.githubusercontent.com/GWen124/Script/refs/heads/master/Web/Website%20Panel/nav.gw124.top.json"
+  url: ""
   # 回退策略：当外部配置不可用时，自动使用本地 config.ts
   # 注意：外部配置拉取失败时，构建过程会自动回退到本地配置，无需手动干预
   
