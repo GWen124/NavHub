@@ -35,6 +35,9 @@ import {
   NetworkWired,
   Unlock,
   FileExport,
+  Home,
+  Server,
+  Signal,
   Zhihu
 } from '@vicons/fa'
 
@@ -75,6 +78,9 @@ export const xiconMap: Record<string, any> = {
   NetworkWired,
   Unlock,
   FileExport,
+  Server,
+  Signal,
+  Home,
   Code
 }
 
@@ -97,6 +103,9 @@ export {
   NetworkWired,
   Unlock,
   FileExport,
+  Home,
+  Server,
+  Signal,
   Zhihu
 }
 
