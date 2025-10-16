@@ -56,7 +56,7 @@ export const config: Category[] = [
       {
         "name": "Home Page",
         "url": "https://gw124.top",
-        "icon": "https://image.gw124.top/Avatar/A62B54A6-13B8-4BB8-9AAA-75E3342388BB_1_105_c.jpeg"
+        "icon": "xicon:Home"
       },
       {
         "name": "Blog",
@@ -71,12 +71,12 @@ export const config: Category[] = [
       {
         "name": "Site Status",
         "url": "https://sitestatus.gw124.top/",
-        "icon": ""
+        "icon": "xicon:Signal"
       },
       {
         "name": "StatusLive",
         "url": "https://statuslive.gw124.top/",
-        "icon": ""
+        "icon": "xicon:Server"
       },
       {
         "name": "Markdown Editor",
@@ -91,37 +91,37 @@ export const config: Category[] = [
       {
         "name": "Icons Hub",
         "url": "https://icons.gw124.top/",
-        "icon": ""
+        "icon": "xicon:Icons"
       },
       {
         "name": "GitHub Proxy",
         "url": "https://cdn.gw124.top/",
-        "icon": ""
+        "icon": "xicon:GithubSquare"
       },
       {
         "name": "Short Link",
         "url": "https://gw126.top/",
-        "icon": ""
+        "icon": "xicon:Paperclip"
       },
       {
         "name": "Sublink Worker",
         "url": "https://sublink.gw124.top/",
-        "icon": ""
+        "icon": "xicon:NetworkWired"
       },
       {
         "name": "2FA Auth",
         "url": "https://2fa.gw124.top/",
-        "icon": ""
+        "icon": "xicon:Unlock"
       },
       {
         "name": "Global Time Overview",
         "url": "https://gwen124.github.io/",
-        "icon": ""
+        "icon": "xicon:Clock"
       },
       {
         "name": "Txt to Epub",
         "url": "https://epub.gw124.top/",
-        "icon": ""
+        "icon": "xicon:FileExport"
       }
     ]
   },
