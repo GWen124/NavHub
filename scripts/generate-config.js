@@ -112,14 +112,9 @@ if (config.externalProjectConfig && config.externalProjectConfig.enabled && conf
     // 恢复原始的 autoIcon 配置设置
     if (originalAutoIcon) {
       config.autoIcon = originalAutoIcon
-      console.log('🔄 已恢复原始的 autoIcon 配置设置')
     }
     
-    // 输出当前的 autoIcon 配置
-    console.log(`⚙️  当前 autoIcon 模式: ${config.autoIcon?.mode || '未设置'}`)
-    
     usingExternalProjectConfig = true
-    console.log('✅ 已使用外部项目配置更新本地配置')
     
     // 重新加载 footer 链接配置（因为外部配置可能覆盖了 footer）
     if (config.footer?.secondLine?.enabled) {
@@ -155,20 +150,6 @@ if (config.externalConfig && config.externalConfig.enabled && config.externalCon
   const externalSites = await fetchExternalConfig(config.externalConfig.url)
   
   if (externalSites && externalSites.length > 0) {
-    // 检查并报告包含 xicon 的网站
-    let xiconCount = 0
-    externalSites.forEach(category => {
-      category.sites?.forEach(site => {
-        if (site.icon && (site.icon.startsWith('xicon:') || site.icon.startsWith('fa:'))) {
-          xiconCount++
-          console.log(`🎨 发现 xicon 图标: ${site.name} -> ${site.icon}`)
-        }
-      })
-    })
-    if (xiconCount > 0) {
-      console.log(`✅ 共发现 ${xiconCount} 个 xicon 图标`)
-    }
-    
     // 使用外部配置覆盖 src/config.ts
     const externalConfigCode = `// 网站配置数据 (从外部配置生成)
 // 构建时间: ${new Date().toISOString()}

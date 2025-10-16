@@ -89,14 +89,7 @@ const shouldUseAuto = computed(() => {
   }
   
   // 否则使用配置决定
-  const result = shouldUseAutoIcon(props.site)
-  
-  // 输出调试信息
-  if (isExternalIcon.value) {
-    console.log(`🎯 ${props.site.name}: shouldUseAuto=${result}, icon=${props.site.icon}`)
-  }
-  
-  return result
+  return shouldUseAutoIcon(props.site)
 })
 
 // 判断是否为外链图标
@@ -108,20 +101,8 @@ const isExternalIcon = computed(() => {
 const encodedIconUrl = computed(() => {
   if (!isExternalIcon.value) return props.site.icon
   
-  try {
-    // 只编码空格，不编码其他字符（避免破坏 CDN URL 格式）
-    const encoded = props.site.icon.replace(/ /g, '%20')
-    if (import.meta.env.DEV && encoded !== props.site.icon) {
-      console.log('🔗 图标 URL 编码:', props.site.name)
-      console.log('   原始:', props.site.icon)
-      console.log('   编码:', encoded)
-    }
-    return encoded
-  } catch (error) {
-    // 如果处理失败，返回原始值
-    console.error('❌ URL 编码失败:', props.site.name, error)
-    return props.site.icon
-  }
+  // 只编码空格，不编码其他字符（避免破坏 CDN URL 格式）
+  return props.site.icon.replace(/ /g, '%20')
 })
 
 // 判断是否为 Xicon 图标
