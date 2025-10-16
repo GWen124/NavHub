@@ -175,7 +175,8 @@ const loaderConfigs = [
 ]
 
 // 随机选择一个动画方案
-const selectedConfig = loaderConfigs[Math.floor(Math.random() * loaderConfigs.length)]
+const randomIndex = Math.floor(Math.random() * loaderConfigs.length)
+const selectedConfig = loaderConfigs[randomIndex] || loaderConfigs[0]
 const loaderType = ref(selectedConfig.type)
 mainLoadingText.value = selectedConfig.mainText
 
