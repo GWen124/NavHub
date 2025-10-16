@@ -82,6 +82,11 @@ const loadConfigFromYaml = async (): Promise<Partial<AutoIconConfig>> => {
   // 尝试从 generated.ts 加载配置（优先级最高）
   try {
     const { appConfig } = await import('./generated')
+    console.log('📦 尝试从 generated.ts 加载配置')
+    console.log('   appConfig 存在:', !!appConfig)
+    console.log('   appConfig.autoIcon 存在:', !!(appConfig && appConfig.autoIcon))
+    console.log('   appConfig.autoIcon.mode:', appConfig?.autoIcon?.mode)
+    
     if (appConfig && appConfig.autoIcon && appConfig.autoIcon.mode) {
       const mode = appConfig.autoIcon.mode
       // 验证 mode 值是否有效
@@ -95,10 +100,14 @@ const loadConfigFromYaml = async (): Promise<Partial<AutoIconConfig>> => {
           fallback: defaultConfig.fallback,
           debug: defaultConfig.debug
         }
+      } else {
+        console.warn('⚠️ autoIcon.mode 值无效:', mode)
       }
+    } else {
+      console.warn('⚠️ generated.ts 中缺少 autoIcon 配置')
     }
   } catch (error) {
-    console.warn('⚠️ 无法从 generated.ts 加载配置，尝试其他方式')
+    console.error('❌ 从 generated.ts 加载配置失败:', error)
   }
   
   // 在开发环境中，从 config.yml 文件加载配置
