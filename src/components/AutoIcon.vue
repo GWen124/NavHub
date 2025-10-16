@@ -57,26 +57,30 @@ const loadIcon = async () => {
     isLoading.value = true
     hasError.value = false
     
-    // 如果有自定义图标，先检查是否可用
-    if (props.fallbackIcon) {
-      const isAvailable = await checkIconAvailability(props.fallbackIcon)
-      if (isAvailable) {
-        iconUrl.value = props.fallbackIcon
-        return
-      }
+    // 如果有自定义图标，直接使用（不检查可用性，避免额外请求）
+    if (props.fallbackIcon && !props.fallbackIcon.startsWith('xicon:') && !props.fallbackIcon.startsWith('fa:')) {
+      iconUrl.value = props.fallbackIcon
+      return
     }
     
-    // 使用增强的智能图标获取（支持智能回退）
-    const smartIcon = await getEnhancedSmartFavicon(props.url, props.fallbackIcon || '', props.name)
+    // 对于空图标，直接使用备用图标，避免复杂的网络请求
+    if (!props.fallbackIcon || props.fallbackIcon.trim() === '') {
+      iconUrl.value = getFallbackIcon(props.url, props.name)
+      return
+    }
+    
+    // 使用简化的智能图标获取
+    const smartIcon = await getSmartFavicon(props.url)
     if (smartIcon) {
       iconUrl.value = smartIcon
     } else {
       // 使用备用图标
-      iconUrl.value = getFallbackIcon(props.url)
+      iconUrl.value = getFallbackIcon(props.url, props.name)
     }
   } catch (error) {
+    console.warn(`⚠️ 获取图标失败: ${props.name}`, error)
     hasError.value = true
-    iconUrl.value = getFallbackIcon(props.url)
+    iconUrl.value = getFallbackIcon(props.url, props.name)
   } finally {
     isLoading.value = false
   }

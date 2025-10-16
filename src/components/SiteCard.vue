@@ -101,7 +101,7 @@ const isFontAwesomeIcon = computed(() => {
 // 判断是否为 Emoji 图标
 const isEmojiIcon = computed(() => {
   // 简单的 emoji 检测：检查是否包含 emoji 字符
-  const emojiRegex = /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u
+  const emojiRegex = /[\uD83C-\uDBFF\uDC00-\uDFFF]+|[\u2600-\u27BF]+|[\uD83C\uDDF0-\uD83C\uDDFF]+|[\uD83D\uDC00-\uD83D\uDE4F]+|[\uD83D\uDE80-\uD83D\uDEFF]+/g
   return emojiRegex.test(props.site.icon) && props.site.icon.length <= 4 && !props.site.icon.startsWith('http')
 })
 
@@ -109,7 +109,11 @@ const isEmojiIcon = computed(() => {
 const xiconComponent = computed(() => {
   if (!isXiconIcon.value) return null
   const iconName = getIconName(props.site.icon)
-  return getIconComponent(iconName)
+  const component = getIconComponent(iconName)
+  if (!component) {
+    console.warn(`❌ 无法找到 Xicon 组件: ${props.site.icon} -> ${iconName}`)
+  }
+  return component
 })
 </script>
 

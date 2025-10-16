@@ -255,102 +255,37 @@ export const getWebsiteFavicon = async (url: string): Promise<string | null> => 
 }
 
 /**
- * 智能获取网站图标 - 按优先级尝试多种方法
+ * 简化的智能获取网站图标 - 减少请求数量，提高性能
  * @param url 网站URL
- * @param services 服务优先级列表
- * @param shapePriority 形状优先级列表
- * @param qualityPriority 质量优先级列表
  * @returns Promise<string>
  */
-export const getSmartFavicon = async (url: string, services: string[] = ['direct', 'clearbit', 'google', 'duckduckgo', 'iconhorse', 'simple', 'iconify', 'iconfont'], shapePriority: string[] = ['square', 'round', 'any'], qualityPriority: string[] = ['hd', 'normal', 'any']): Promise<string | null> => {
-  const domain = new URL(url).hostname;
-  
-  // 1. 检查缓存
-  if (commonSitesCache.has(domain)) {
-    const cachedIcon = commonSitesCache.get(domain)!;
-    return cachedIcon;
-  }
-  
-  // 2. 优先匹配上图标 - 检查可用性，确保返回有效图标
-  const allServices = ['clearbit', 'iconhorse', 'duckduckgo', 'favicon', 'simple', 'iconify', 'google', 'iconfont'];
-  
-  for (const service of allServices) {
-    if (!services.includes(service)) continue;
-    
-    let iconUrl = '';
-    switch (service) {
-      case 'clearbit':
-        iconUrl = `https://logo.clearbit.com/${domain}`;
-        break;
-      case 'google':
-        iconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
-        break;
-      case 'iconhorse':
-        iconUrl = `https://icon.horse/icon/${domain}`;
-        break;
-      case 'duckduckgo':
-        iconUrl = `https://icons.duckduckgo.com/ip3/${domain}.ico`;
-        break;
-      case 'favicon':
-        iconUrl = `https://favicon.io/icon/${domain}`;
-        break;
-      case 'simple':
-        iconUrl = `https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/${domain}.svg`;
-        break;
-      case 'iconify':
-        iconUrl = `https://api.iconify.design/logos/${domain}.svg`;
-        break;
-      case 'iconfont':
-        iconUrl = `https://at.alicdn.com/t/font_${domain}.svg`;
-        break;
-    }
-    
-    if (iconUrl) {
-      // 检查图标是否可用
-      try {
-        const isAvailable = await checkIconAvailability(iconUrl);
-        if (isAvailable) {
-          // 缓存结果
-          commonSitesCache.set(domain, iconUrl);
-          
-          // 后台继续优化（不阻塞用户界面）
-          setTimeout(async () => {
-            try {
-              const betterIcon = await getBetterIcon(url, domain);
-              if (betterIcon && betterIcon !== iconUrl) {
-                // 更新缓存
-                commonSitesCache.set(domain, betterIcon);
-                // 这里可以触发图标更新事件
-              }
-            } catch (error) {
-              // 静默处理后台优化失败
-            }
-          }, 100);
-          
-          return iconUrl;
-        }
-      } catch (error) {
-        // 静默处理检查失败
-      }
-    }
-  }
-  
-  // 3. 如果都失败，尝试网站直接图标（跳过SSL错误）
+export const getSmartFavicon = async (url: string): Promise<string | null> => {
   try {
-    const directIcon = await getWebsiteFavicon(url);
-    if (directIcon) {
-      commonSitesCache.set(domain, directIcon);
-      return directIcon;
+    const domain = new URL(url).hostname;
+    
+    // 1. 检查缓存
+    if (commonSitesCache.has(domain)) {
+      return commonSitesCache.get(domain)!;
     }
+    
+    // 2. 只尝试最可靠的 Google 服务，避免多个并发请求
+    const googleIconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+    
+    try {
+      const isAvailable = await checkIconAvailability(googleIconUrl);
+      if (isAvailable) {
+        commonSitesCache.set(domain, googleIconUrl);
+        return googleIconUrl;
+      }
+    } catch (error) {
+      // 静默处理检查失败
+    }
+    
+    return null;
   } catch (error) {
-    // 跳过SSL证书错误，直接进入回退
-    if (error instanceof Error && error.message.includes('CERT')) {
-      // 静默处理SSL证书错误
-    }
+    console.warn(`⚠️ 获取图标失败: ${url}`, error);
+    return null;
   }
-  
-  // 4. 如果网站直接图标也失败，返回null让上层处理回退
-  return null;
 }
 
 /**
@@ -998,10 +933,9 @@ export const checkIconAvailability = async (iconUrl: string): Promise<boolean> =
   
   return executeWithConcurrencyControl(async () => {
     try {
-      // 使用 AbortController 设置超时（常用网站更快超时）
+      // 使用 AbortController 设置更短的超时时间
       const controller = new AbortController()
-      const isCommonSite = COMMON_SITES.some(site => iconUrl.includes(site.toLowerCase()))
-      const timeout = isCommonSite ? 1500 : 3000 // 常用网站1.5秒，其他3秒
+      const timeout = 1000 // 统一1秒超时，提高响应速度
       const timeoutId = setTimeout(() => controller.abort(), timeout)
       
       const response = await fetch(iconUrl, { 
