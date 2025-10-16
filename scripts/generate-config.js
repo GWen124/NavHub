@@ -145,6 +145,20 @@ if (config.externalConfig && config.externalConfig.enabled && config.externalCon
   const externalSites = await fetchExternalConfig(config.externalConfig.url)
   
   if (externalSites && externalSites.length > 0) {
+    // 检查并报告包含 xicon 的网站
+    let xiconCount = 0
+    externalSites.forEach(category => {
+      category.sites?.forEach(site => {
+        if (site.icon && (site.icon.startsWith('xicon:') || site.icon.startsWith('fa:'))) {
+          xiconCount++
+          console.log(`🎨 发现 xicon 图标: ${site.name} -> ${site.icon}`)
+        }
+      })
+    })
+    if (xiconCount > 0) {
+      console.log(`✅ 共发现 ${xiconCount} 个 xicon 图标`)
+    }
+    
     // 使用外部配置覆盖 src/config.ts
     const externalConfigCode = `// 网站配置数据 (从外部配置生成)
 // 构建时间: ${new Date().toISOString()}
