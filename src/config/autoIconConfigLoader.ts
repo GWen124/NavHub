@@ -79,7 +79,24 @@ export const loadAutoIconConfig = async (): Promise<AutoIconConfig> => {
  * 从 YAML 文件加载配置（模拟实现）
  */
 const loadConfigFromYaml = async (): Promise<Partial<AutoIconConfig>> => {
-  // 在生产环境中，配置已经通过 generated.ts 嵌入，无需加载
+  // 尝试从 generated.ts 加载配置（优先级最高）
+  try {
+    const { appConfig } = await import('./generated')
+    if (appConfig && appConfig.autoIcon) {
+      console.log('✅ 从 generated.ts 加载 autoIcon 配置，mode:', appConfig.autoIcon.mode)
+      return {
+        mode: appConfig.autoIcon.mode || 2,
+        services: ['clearbit', 'google', 'duckduckgo', 'iconhorse', 'simple', 'iconify', 'iconfont', 'direct'],
+        customSources: defaultConfig.customSources,
+        icon: defaultConfig.icon,
+        fallback: defaultConfig.fallback,
+        debug: defaultConfig.debug
+      }
+    }
+  } catch (error) {
+    console.warn('⚠️ 无法从 generated.ts 加载配置，尝试其他方式')
+  }
+  
   // 在开发环境中，从 config.yml 文件加载配置
   if (import.meta.env.DEV) {
     try {
@@ -162,9 +179,10 @@ const loadConfigFromYaml = async (): Promise<Partial<AutoIconConfig>> => {
     }
   }
   
-  // 生产环境中，返回默认配置
+  // 如果所有方法都失败，返回默认配置（mode: 2 保留自定义图标）
+  console.warn('⚠️ 使用默认 autoIcon 配置，mode: 2')
   return {
-    mode: 3,
+    mode: 2,
     services: ['clearbit', 'google', 'duckduckgo', 'simple', 'iconify', 'iconfont', 'direct'],
     icon: {
       size: 64,

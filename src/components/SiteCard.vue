@@ -93,14 +93,10 @@ const encodedIconUrl = computed(() => {
   if (!isExternalIcon.value) return props.site.icon
   
   try {
-    // 分割 URL 为基础部分和路径部分
-    const url = new URL(props.site.icon)
-    // 对路径部分的每个段落进行编码
-    const pathSegments = url.pathname.split('/').map(segment => encodeURIComponent(decodeURIComponent(segment)))
-    url.pathname = pathSegments.join('/')
-    return url.toString()
+    // 只编码空格，不编码其他字符（避免破坏 CDN URL 格式）
+    return props.site.icon.replace(/ /g, '%20')
   } catch (error) {
-    // 如果 URL 解析失败，返回原始值
+    // 如果处理失败，返回原始值
     return props.site.icon
   }
 })
