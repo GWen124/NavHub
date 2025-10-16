@@ -106,6 +106,10 @@ export interface SiteSortingConfig {
   mode?: number
 }
 
+export interface AutoIconConfig {
+  mode?: number
+}
+
 export interface AppConfig {
   pageTitle?: string
   pageQuote?: string
@@ -119,6 +123,7 @@ export interface AppConfig {
   fonts?: FontsConfig
   categorySorting?: CategorySortingConfig
   siteSorting?: SiteSortingConfig
+  autoIcon?: AutoIconConfig
 }
 
 // 默认配置
