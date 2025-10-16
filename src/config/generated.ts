@@ -56,7 +56,7 @@ export const appConfig = reactive<AppConfig>({
   },
   "background": {
     "bingWallpaper": false,
-    "image": "",
+    "image": "https://image.gw124.top/Background/10-9-6k.jpg",
     "bingMode": "localFirst"
   },
   "colors": {
@@ -97,12 +97,7 @@ export const appConfig = reactive<AppConfig>({
   "categorySorting": {
     "autoSort": true,
     "pinnedCategories": [
-      "Favorites - 常用网站",
-      "Private Projects - 私人项目",
-      "AI Tools - AI工具",
-      "Online Tools - 在线工具",
-      "Useful Tools - 实用工具",
-      "Productivity - 生产力工具"
+      "Favorites - 常用网站"
     ],
     "bottomCategories": [
       "Other - 其他"

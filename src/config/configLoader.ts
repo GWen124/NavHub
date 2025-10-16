@@ -777,9 +777,7 @@ export async function applyFontsConfig(fontsConfig: FontsConfig): Promise<void> 
 // 加载字体
 async function loadFont(fontName: string, fontUrl: string): Promise<void> {
   try {
-    const font = new FontFace(fontName, `url(${fontUrl})`, {
-      display: 'swap'  // 立即显示后备字体，字体加载完成后切换
-    })
+    const font = new FontFace(fontName, `url(${fontUrl})`)
     await font.load()
     document.fonts.add(font)
   } catch (error) {
