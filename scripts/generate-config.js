@@ -155,19 +155,33 @@ if (config.externalProjectConfig?.url) {
 let sitesConfigCode = ''
 let usingExternalConfig = false
 
-// 优先级1: 检查项目根目录的 Website.json 文件（第三方仓库可以直接提供此文件）
-const localWebsiteJsonPath = path.join(__dirname, '../Website.json')
-if (fs.existsSync(localWebsiteJsonPath)) {
-  console.log('📦 检测到本地 Website.json 文件')
+// 优先级1: 检查 Website.json 文件（支持两个位置）
+// 优先检查 public/Website.json（第三方仓库常用），如果不存在则检查根目录
+const publicWebsiteJsonPath = path.join(__dirname, '../public/Website.json')
+const rootWebsiteJsonPath = path.join(__dirname, '../Website.json')
+
+let localWebsiteJsonPath = null
+let websiteJsonSource = ''
+
+if (fs.existsSync(publicWebsiteJsonPath)) {
+  localWebsiteJsonPath = publicWebsiteJsonPath
+  websiteJsonSource = 'public/Website.json'
+} else if (fs.existsSync(rootWebsiteJsonPath)) {
+  localWebsiteJsonPath = rootWebsiteJsonPath
+  websiteJsonSource = 'Website.json'
+}
+
+if (localWebsiteJsonPath) {
+  console.log(`📦 检测到本地 ${websiteJsonSource} 文件`)
   try {
     const websiteJsonContent = fs.readFileSync(localWebsiteJsonPath, 'utf8')
     const websiteData = JSON.parse(websiteJsonContent)
     
     if (Array.isArray(websiteData) && websiteData.length > 0) {
       // 使用 Website.json 覆盖 src/config.ts
-      const websiteConfigCode = `// 网站配置数据 (从 Website.json 生成)
+      const websiteConfigCode = `// 网站配置数据 (从 ${websiteJsonSource} 生成)
 // 构建时间: ${new Date().toISOString()}
-// 数据来源: Website.json
+// 数据来源: ${websiteJsonSource}
 
 export interface Site {
   name: string
@@ -193,14 +207,14 @@ export const config: Category[] = ${JSON.stringify(websiteData, null, 2)}
       }
       
       fs.writeFileSync(configTsPath, websiteConfigCode)
-      console.log(`✅ 已使用 Website.json 更新 src/config.ts（包含 ${websiteData.length} 个分组）`)
+      console.log(`✅ 已使用 ${websiteJsonSource} 更新 src/config.ts（包含 ${websiteData.length} 个分组）`)
       usingExternalConfig = true
     } else {
-      console.error('❌ Website.json 格式错误：期望非空数组格式')
+      console.error(`❌ ${websiteJsonSource} 格式错误：期望非空数组格式`)
       console.log('💡 将尝试使用其他配置源')
     }
   } catch (error) {
-    console.error(`❌ 读取 Website.json 失败: ${error.message}`)
+    console.error(`❌ 读取 ${websiteJsonSource} 失败: ${error.message}`)
     console.log('💡 将尝试使用其他配置源')
   }
 }
@@ -273,8 +287,8 @@ if (usingExternalProjectConfig) {
 // 确定网站配置来源
 let siteConfigSource = '本地文件'
 let siteConfigDetail = ''
-if (fs.existsSync(localWebsiteJsonPath)) {
-  siteConfigSource = 'Website.json'
+if (localWebsiteJsonPath) {
+  siteConfigSource = websiteJsonSource
   siteConfigDetail = ''
 } else if (usingExternalConfig && config.externalConfig?.url) {
   siteConfigSource = '外部 URL'
