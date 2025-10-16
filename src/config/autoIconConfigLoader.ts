@@ -82,15 +82,19 @@ const loadConfigFromYaml = async (): Promise<Partial<AutoIconConfig>> => {
   // 尝试从 generated.ts 加载配置（优先级最高）
   try {
     const { appConfig } = await import('./generated')
-    if (appConfig && appConfig.autoIcon) {
-      console.log('✅ 从 generated.ts 加载 autoIcon 配置，mode:', appConfig.autoIcon.mode)
-      return {
-        mode: appConfig.autoIcon.mode || 2,
-        services: ['clearbit', 'google', 'duckduckgo', 'iconhorse', 'simple', 'iconify', 'iconfont', 'direct'],
-        customSources: defaultConfig.customSources,
-        icon: defaultConfig.icon,
-        fallback: defaultConfig.fallback,
-        debug: defaultConfig.debug
+    if (appConfig && appConfig.autoIcon && appConfig.autoIcon.mode) {
+      const mode = appConfig.autoIcon.mode
+      // 验证 mode 值是否有效
+      if (mode === 1 || mode === 2 || mode === 3) {
+        console.log('✅ 从 generated.ts 加载 autoIcon 配置，mode:', mode)
+        return {
+          mode: mode as 1 | 2 | 3,
+          services: ['clearbit', 'google', 'duckduckgo', 'iconhorse', 'simple', 'iconify', 'iconfont', 'direct'],
+          customSources: defaultConfig.customSources,
+          icon: defaultConfig.icon,
+          fallback: defaultConfig.fallback,
+          debug: defaultConfig.debug
+        }
       }
     }
   } catch (error) {
