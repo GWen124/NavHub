@@ -9,6 +9,18 @@
           backgroundImage: loadingBackground || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
         }"
       >
+        <!-- 视频背景 -->
+        <video 
+          v-if="loadingVideoUrl"
+          class="loading-video-bg"
+          autoplay
+          muted
+          loop
+          playsinline
+        >
+          <source :src="loadingVideoUrl" type="video/mp4">
+        </video>
+        
         <div class="loading-content">
           <!-- 动画效果 - 可选方案 -->
           <!-- 方案1: 3D立方体 (默认) -->
@@ -101,6 +113,7 @@ const themeStore = useThemeStore()
 const showLoading = ref(true)
 const loadingProgress = ref('正在初始化...')
 const loadingBackground = ref<string>('')
+const loadingVideoUrl = ref<string>('')
 const mainLoadingText = ref('探索世界，从这里开始')
 const subtitleText = ref('正在为您准备精彩内容')
 
@@ -201,14 +214,16 @@ const applyLoadingBackground = async () => {
     }
   }
   
-  // 如果有自定义背景图片
+  // 如果有自定义背景图片或视频
   if (bgConfig.image && bgConfig.image.trim() !== '') {
     const imageUrl = bgConfig.image
     // 检查是否是视频
     const videoExtensions = ['.mp4', '.webm', '.ogg', '.avi', '.mov', '.wmv', '.flv', '.mkv']
     const isVideo = videoExtensions.some(ext => imageUrl.toLowerCase().includes(ext))
     
-    if (!isVideo) {
+    if (isVideo) {
+      loadingVideoUrl.value = imageUrl
+    } else {
       loadingBackground.value = `url(${imageUrl})`
     }
   }
@@ -339,6 +354,20 @@ body {
   justify-content: center;
   z-index: 9999;
   overflow: hidden;
+}
+
+/* 加载页面视频背景 */
+.loading-video-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: 0;
 }
 
 /* 背景遮罩层，确保文字可读 */
