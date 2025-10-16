@@ -87,6 +87,22 @@
         margin: 0;
         padding: 0;
       }
+      
+      /* 滚动条样式 - 完全隐藏，保留滚动功能 */
+      ::-webkit-scrollbar {
+        width: 0px !important;
+        display: none !important;
+      }
+      
+      html {
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+      }
+      
+      body {
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+      }
     </style>
   </head>
   <body>

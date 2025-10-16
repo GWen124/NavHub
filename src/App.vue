@@ -304,6 +304,25 @@ body {
   font-style: normal;
 }
 
+/* 全局滚动条样式 - 透明轨道 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
 /* ==================== 加载页面样式 ==================== */
 .loading-screen {
   position: fixed;

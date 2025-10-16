@@ -1091,24 +1091,21 @@ onUnmounted(() => {
 
 /* 滚动条样式 */
 :global(::-webkit-scrollbar) {
-  width: 8px;
+  width: 6px;
 }
 
 :global(::-webkit-scrollbar-track) {
   background: transparent;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 :global(::-webkit-scrollbar-thumb) {
   background: rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
 }
 
 :global(::-webkit-scrollbar-thumb:hover) {
   background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 </style>

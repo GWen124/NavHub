@@ -56,6 +56,8 @@
 
 html {
   background-color: transparent;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 body {
@@ -83,4 +85,6 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: visible;
 }
+
