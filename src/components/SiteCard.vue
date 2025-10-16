@@ -75,7 +75,14 @@ const shouldUseAuto = computed(() => {
   }
   
   // 否则使用配置决定
-  return shouldUseAutoIcon(props.site)
+  const result = shouldUseAutoIcon(props.site)
+  
+  // 开发环境下输出调试信息
+  if (import.meta.env.DEV && isExternalIcon.value) {
+    console.log(`🎯 ${props.site.name}: shouldUseAuto=${result}, icon=${props.site.icon}`)
+  }
+  
+  return result
 })
 
 // 加载配置
@@ -94,9 +101,16 @@ const encodedIconUrl = computed(() => {
   
   try {
     // 只编码空格，不编码其他字符（避免破坏 CDN URL 格式）
-    return props.site.icon.replace(/ /g, '%20')
+    const encoded = props.site.icon.replace(/ /g, '%20')
+    if (import.meta.env.DEV && encoded !== props.site.icon) {
+      console.log('🔗 图标 URL 编码:', props.site.name)
+      console.log('   原始:', props.site.icon)
+      console.log('   编码:', encoded)
+    }
+    return encoded
   } catch (error) {
     // 如果处理失败，返回原始值
+    console.error('❌ URL 编码失败:', props.site.name, error)
     return props.site.icon
   }
 })
