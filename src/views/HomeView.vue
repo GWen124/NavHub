@@ -588,7 +588,7 @@ onUnmounted(() => {
   padding: 6px 12px;
   backdrop-filter: none;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  border: none;
   gap: 8px;
   z-index: 10; /* 提高层级 */
   overflow: visible; /* 确保子元素不被裁剪 */
