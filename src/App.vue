@@ -176,7 +176,7 @@ const loaderConfigs = [
 
 // 随机选择一个动画方案
 const randomIndex = Math.floor(Math.random() * loaderConfigs.length)
-const selectedConfig = loaderConfigs[randomIndex] || loaderConfigs[0]
+const selectedConfig = loaderConfigs[randomIndex] || loaderConfigs[0]!
 const loaderType = ref(selectedConfig.type)
 mainLoadingText.value = selectedConfig.mainText
 
@@ -229,34 +229,34 @@ const checkFontsLoaded = async (): Promise<boolean> => {
 // 加载流程
 const initializeApp = async () => {
   try {
-    const steps = selectedConfig.steps
+    const steps = selectedConfig?.steps || []
     
     // 步骤1: 应用背景到加载页面
-    loadingProgress.value = steps[0].progress
-    subtitleText.value = steps[0].subtitle
+    loadingProgress.value = steps[0]?.progress || '正在加载背景...'
+    subtitleText.value = steps[0]?.subtitle || '为您准备精彩内容'
     await applyLoadingBackground()
     await new Promise(resolve => setTimeout(resolve, 400))
     
     // 步骤2: 初始化主题
-    loadingProgress.value = steps[1].progress
-    subtitleText.value = steps[1].subtitle
+    loadingProgress.value = steps[1]?.progress || '正在加载主题...'
+    subtitleText.value = steps[1]?.subtitle || '初始化主题'
     themeStore.initTheme()
     await new Promise(resolve => setTimeout(resolve, 400))
     
     // 步骤3: 等待字体加载
-    loadingProgress.value = steps[2].progress
-    subtitleText.value = steps[2].subtitle
+    loadingProgress.value = steps[2]?.progress || '正在加载字体...'
+    subtitleText.value = steps[2]?.subtitle || '加载字体中'
     await checkFontsLoaded()
     await new Promise(resolve => setTimeout(resolve, 500))
     
     // 步骤4: 加载配置
-    loadingProgress.value = steps[3].progress
-    subtitleText.value = steps[3].subtitle
+    loadingProgress.value = steps[3]?.progress || '正在加载配置...'
+    subtitleText.value = steps[3]?.subtitle || '配置加载中'
     await new Promise(resolve => setTimeout(resolve, 400))
     
     // 步骤5: 准备完成
-    loadingProgress.value = steps[4].progress
-    subtitleText.value = steps[4].subtitle
+    loadingProgress.value = steps[4]?.progress || '准备就绪'
+    subtitleText.value = steps[4]?.subtitle || '即将进入'
     await new Promise(resolve => setTimeout(resolve, 400))
     
     // 隐藏加载页面
