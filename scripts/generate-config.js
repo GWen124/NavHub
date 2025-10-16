@@ -90,9 +90,9 @@ if (config.footer?.secondLine?.enabled) {
 
 // 处理外部项目配置
 let usingExternalProjectConfig = false
-// 保存原始的配置设置（防止被外部项目配置覆盖）
-const originalExternalConfig = config.externalConfig ? { ...config.externalConfig } : null
-const originalAutoIcon = config.autoIcon ? { ...config.autoIcon } : null
+// 保存本地的配置设置
+const localExternalConfig = config.externalConfig ? { ...config.externalConfig } : null
+const localAutoIcon = config.autoIcon ? { ...config.autoIcon } : null
 
 if (config.externalProjectConfig?.url) {
   console.log('📦 检测到外部项目配置 URL')
@@ -101,17 +101,27 @@ if (config.externalProjectConfig?.url) {
   if (externalProjectConfig) {
     // 使用外部项目配置覆盖本地配置
     console.log('🔄 使用外部项目配置覆盖本地配置')
+    
+    // 保存远程项目配置中的 externalConfig 和 autoIcon
+    const remoteExternalConfig = externalProjectConfig.externalConfig
+    const remoteAutoIcon = externalProjectConfig.autoIcon
+    
     Object.assign(config, externalProjectConfig)
     
-    // 恢复原始的外部网站配置设置
-    if (originalExternalConfig) {
-      config.externalConfig = originalExternalConfig
-      console.log('🔄 已恢复原始的外部网站配置设置')
+    // 合并外部网站配置设置（优先使用远程的，如果远程没有或为空则使用本地的）
+    if (remoteExternalConfig?.url) {
+      config.externalConfig = remoteExternalConfig
+      console.log('🔄 使用远程项目配置中的外部网站配置设置')
+    } else if (localExternalConfig?.url) {
+      config.externalConfig = localExternalConfig
+      console.log('🔄 使用本地的外部网站配置设置')
     }
     
-    // 恢复原始的 autoIcon 配置设置
-    if (originalAutoIcon) {
-      config.autoIcon = originalAutoIcon
+    // 合并 autoIcon 配置设置（优先使用远程的，如果远程没有则使用本地的）
+    if (remoteAutoIcon) {
+      config.autoIcon = remoteAutoIcon
+    } else if (localAutoIcon) {
+      config.autoIcon = localAutoIcon
     }
     
     usingExternalProjectConfig = true
