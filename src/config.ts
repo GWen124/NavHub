@@ -13,43 +13,37 @@ export interface Category {
 
 export const config: Category[] = [
   {
-    name: "Favorites - 常用网站",
-    sites: [
+    "name": "Favorites - 常用网站",
+    "sites": [
       {
-        name: "Home Page",
-        url: "https://gw124.top",
-        icon: "https://image.gw124.top/Avatar/A62B54A6-13B8-4BB8-9AAA-75E3342388BB_1_105_c.jpeg"
+        "name": "Google",
+        "url": "https://www.google.com/",
+        "icon": "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/App Hub/Google.png"
       },
       {
-        name: "Google",
-        url: "https://www.google.com/",
-        icon: "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Google/Google.png",
-        autoIcon: true
+        "name": "GitHub",
+        "url": "https://github.com",
+        "icon": "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/App Hub/GitHub_A.png"
       },
       {
-        name: "GitHub",
-        url: "https://github.com",
-        icon: "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Project Management & To-do List/GitHub_A.png"
+        "name": "YouTube",
+        "url": "https://www.youtube.com/",
+        "icon": "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Social & Entertainment/Youtube.png"
       },
       {
-        name: "YouTube",
-        url: "https://www.youtube.com/",
-        icon: "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Streaming Service Platform/Youtube.png"
+        "name": "CloudFlare",
+        "url": "https://www.cloudflare.com",
+        "icon": "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Cloud Hub/Cloudflare.png"
       },
       {
-        name: "CloudFlare",
-        url: "https://www.cloudflare.com",
-        icon: "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Cloud Protection Services/Cloudflare.png"
+        "name": "Bilibili",
+        "url": "https://www.bilibili.com/",
+        "icon": "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Social & Entertainment/Bilibili.png"
       },
       {
-        name: "Bilibili",
-        url: "https://www.bilibili.com/",
-        icon: "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Streaming Service Platform/Bilibili.png"
-      },
-      {
-        name: "知乎",
-        url: "https://www.zhihu.com/",
-        icon: ""
+        "name": "知乎",
+        "url": "https://www.zhihu.com/",
+        "icon": ""
       }
     ]
   },
