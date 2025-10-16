@@ -39,24 +39,5 @@ export default defineConfig({
         }
       }
     }
-  },
-  publicDir: 'public',
-  // 排除不需要复制到 dist 的文件
-  assetsInclude: ['**/*.ttf', '**/*.woff', '**/*.woff2', '**/*.otf'],
-  // 使用 copyPublicDir 配置
-  build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-    sourcemap: false,
-    minify: 'terser',
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['vue', 'vue-router', 'pinia']
-        }
-      }
-    },
-    // 复制 public 目录时排除特定文件
-    copyPublicDir: true
   }
 })
