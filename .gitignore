@@ -89,6 +89,8 @@ dist
 .cache/
 public
 !public/fonts/
+!public/Website.json.example
+!public/footer-links.json
 
 # Storybook build outputs
 .out
@@ -170,6 +172,8 @@ dist
 .cache/
 public
 !public/fonts/
+!public/Website.json.example
+!public/footer-links.json
 
 # Storybook build outputs
 .out
@@ -251,6 +255,8 @@ dist
 .cache/
 public
 !public/fonts/
+!public/Website.json.example
+!public/footer-links.json
 
 # Storybook build outputs
 .out

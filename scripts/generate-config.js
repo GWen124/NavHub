@@ -155,7 +155,58 @@ if (config.externalProjectConfig?.url) {
 let sitesConfigCode = ''
 let usingExternalConfig = false
 
-if (config.externalConfig?.url) {
+// 优先级1: 检查 public/Website.json 文件（第三方仓库可以直接提供此文件）
+const localWebsiteJsonPath = path.join(__dirname, '../public/Website.json')
+if (fs.existsSync(localWebsiteJsonPath)) {
+  console.log('📦 检测到本地 public/Website.json 文件')
+  try {
+    const websiteJsonContent = fs.readFileSync(localWebsiteJsonPath, 'utf8')
+    const websiteData = JSON.parse(websiteJsonContent)
+    
+    if (Array.isArray(websiteData) && websiteData.length > 0) {
+      // 使用 Website.json 覆盖 src/config.ts
+      const websiteConfigCode = `// 网站配置数据 (从 public/Website.json 生成)
+// 构建时间: ${new Date().toISOString()}
+// 数据来源: public/Website.json
+
+export interface Site {
+  name: string
+  url: string
+  icon: string
+  autoIcon?: boolean
+}
+
+export interface Category {
+  name: string
+  sites: Site[]
+}
+
+export const config: Category[] = ${JSON.stringify(websiteData, null, 2)}
+`
+      const configTsPath = path.join(__dirname, '../src/config.ts')
+      
+      // 备份原始配置（仅第一次）
+      const backupPath = path.join(__dirname, '../src/config.ts.backup')
+      if (fs.existsSync(configTsPath) && !fs.existsSync(backupPath)) {
+        fs.copyFileSync(configTsPath, backupPath)
+        console.log('💾 已备份原始 config.ts 到 config.ts.backup')
+      }
+      
+      fs.writeFileSync(configTsPath, websiteConfigCode)
+      console.log(`✅ 已使用 public/Website.json 更新 src/config.ts（包含 ${websiteData.length} 个分组）`)
+      usingExternalConfig = true
+    } else {
+      console.error('❌ public/Website.json 格式错误：期望非空数组格式')
+      console.log('💡 将尝试使用其他配置源')
+    }
+  } catch (error) {
+    console.error(`❌ 读取 public/Website.json 失败: ${error.message}`)
+    console.log('💡 将尝试使用其他配置源')
+  }
+}
+
+// 优先级2: 如果没有使用 Website.json，检查外部 URL 配置
+if (!usingExternalConfig && config.externalConfig?.url) {
   console.log('📦 检测到外部网站配置 URL')
   const externalSites = await fetchExternalConfig(config.externalConfig.url)
   
@@ -203,7 +254,10 @@ export const config: Category[] = ${JSON.stringify(externalSites, null, 2)}
       console.log('🔄 已从备份恢复本地配置')
     }
   }
-} else {
+}
+
+// 优先级3: 使用本地 config.ts
+if (!usingExternalConfig) {
   console.log('📝 使用本地 config.ts 配置')
 }
 
@@ -215,9 +269,24 @@ console.log(`   项目配置来源: ${usingExternalProjectConfig ? '外部 URL' 
 if (usingExternalProjectConfig) {
   console.log(`   项目配置 URL: ${config.externalProjectConfig.url}`)
 }
-console.log(`   网站配置来源: ${usingExternalConfig ? '外部 URL' : '本地文件'}`)
-if (usingExternalConfig) {
-  console.log(`   网站配置 URL: ${config.externalConfig.url}`)
+
+// 确定网站配置来源
+let siteConfigSource = '本地文件'
+let siteConfigDetail = ''
+if (fs.existsSync(localWebsiteJsonPath)) {
+  siteConfigSource = 'public/Website.json'
+  siteConfigDetail = ''
+} else if (usingExternalConfig && config.externalConfig?.url) {
+  siteConfigSource = '外部 URL'
+  siteConfigDetail = config.externalConfig.url
+} else {
+  siteConfigSource = '本地文件'
+  siteConfigDetail = 'src/config.ts'
+}
+
+console.log(`   网站配置来源: ${siteConfigSource}`)
+if (siteConfigDetail) {
+  console.log(`   网站配置详情: ${siteConfigDetail}`)
 }
 console.log(`   分组排序: ${config.categorySorting?.autoSort ? '启用' : '禁用'}`)
 console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')

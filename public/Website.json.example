@@ -1,0 +1,13 @@
+[
+  {
+    "name": "示例分组",
+    "sites": [
+      {
+        "name": "示例网站",
+        "url": "https://example.com",
+        "icon": "https://example.com/favicon.ico"
+      }
+    ]
+  }
+]
+
