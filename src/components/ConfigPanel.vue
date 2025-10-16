@@ -245,8 +245,6 @@ const saveConfig = async () => {
     
     // 关闭面板
     closePanel()
-    
-    console.log('配置保存成功')
   } catch (error) {
     console.error('保存配置失败:', error)
   }
