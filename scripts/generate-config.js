@@ -100,6 +100,25 @@ if (config.externalProjectConfig && config.externalProjectConfig.enabled && conf
     Object.assign(config, externalProjectConfig)
     usingExternalProjectConfig = true
     console.log('✅ 已使用外部项目配置更新本地配置')
+    
+    // 重新加载 footer 链接配置（因为外部配置可能覆盖了 footer）
+    if (config.footer?.secondLine?.enabled) {
+      try {
+        const footerLinksPath = path.join(__dirname, '../public/footer-links.json')
+        if (fs.existsSync(footerLinksPath)) {
+          const footerLinksContent = fs.readFileSync(footerLinksPath, 'utf8')
+          const footerLinksData = JSON.parse(footerLinksContent)
+          // 将链接数据嵌入到配置中
+          if (!config.footer.secondLine) {
+            config.footer.secondLine = {}
+          }
+          config.footer.secondLine.links = footerLinksData.links
+          console.log('✅ 已重新加载 footer 链接配置（外部项目配置覆盖后）')
+        }
+      } catch (error) {
+        console.error('❌ 重新加载 footer 链接配置失败:', error.message)
+      }
+    }
   } else {
     console.log('⚠️  外部项目配置拉取失败，回退到本地配置')
   }
