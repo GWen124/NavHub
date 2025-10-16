@@ -90,6 +90,9 @@ if (config.footer?.secondLine?.enabled) {
 
 // 处理外部项目配置
 let usingExternalProjectConfig = false
+// 保存原始的外部配置设置（防止被外部项目配置覆盖）
+const originalExternalConfig = config.externalConfig ? { ...config.externalConfig } : null
+
 if (config.externalProjectConfig && config.externalProjectConfig.enabled && config.externalProjectConfig.url) {
   console.log('📦 检测到外部项目配置已启用')
   const externalProjectConfig = await fetchExternalProjectConfig(config.externalProjectConfig.url)
@@ -98,6 +101,13 @@ if (config.externalProjectConfig && config.externalProjectConfig.enabled && conf
     // 使用外部项目配置覆盖本地配置
     console.log('🔄 使用外部项目配置覆盖本地配置')
     Object.assign(config, externalProjectConfig)
+    
+    // 恢复原始的外部网站配置设置（如果本地有设置的话）
+    if (originalExternalConfig) {
+      config.externalConfig = originalExternalConfig
+      console.log('🔄 已恢复原始的外部网站配置设置')
+    }
+    
     usingExternalProjectConfig = true
     console.log('✅ 已使用外部项目配置更新本地配置')
     
