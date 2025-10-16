@@ -94,8 +94,8 @@ let usingExternalProjectConfig = false
 const originalExternalConfig = config.externalConfig ? { ...config.externalConfig } : null
 const originalAutoIcon = config.autoIcon ? { ...config.autoIcon } : null
 
-if (config.externalProjectConfig && config.externalProjectConfig.enabled && config.externalProjectConfig.url) {
-  console.log('📦 检测到外部项目配置已启用')
+if (config.externalProjectConfig?.url) {
+  console.log('📦 检测到外部项目配置 URL')
   const externalProjectConfig = await fetchExternalProjectConfig(config.externalProjectConfig.url)
   
   if (externalProjectConfig) {
@@ -145,8 +145,8 @@ if (config.externalProjectConfig && config.externalProjectConfig.enabled && conf
 let sitesConfigCode = ''
 let usingExternalConfig = false
 
-if (config.externalConfig && config.externalConfig.enabled && config.externalConfig.url) {
-  console.log('📦 检测到外部网站配置已启用')
+if (config.externalConfig?.url) {
+  console.log('📦 检测到外部网站配置 URL')
   const externalSites = await fetchExternalConfig(config.externalConfig.url)
   
   if (externalSites && externalSites.length > 0) {
