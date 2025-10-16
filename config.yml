@@ -71,7 +71,7 @@ background:
   # 本地视频示例: video.mp4 或 videos/background.mp4
   # 网络视频示例: https://example.com/video.mp4
   # 支持的视频格式: mp4, webm, ogg, avi, mov, wmv, flv, mkv
-  image: ""
+  image: "https://image.gw124.top/Background/10-9-6k.jpg"
   # Bing轮播模式选择
   # "localFirst": 先显示本地背景，30秒后切换到Bing轮播
   # "direct": 直接显示Bing轮播，不显示本地背景
@@ -154,11 +154,6 @@ categorySorting:
   # 置顶分组（始终显示在最前面，按数组顺序排列）
   pinnedCategories:
     - "Favorites - 常用网站"
-    - "Private Projects - 私人项目"
-    - "AI Tools - AI工具"
-    - "Online Tools - 在线工具"
-    - "Useful Tools - 实用工具"
-    - "Productivity - 生产力工具"
 
   # 末尾分组（始终显示在最后面，按数组顺序排列）
   bottomCategories:
