@@ -112,11 +112,9 @@ export const appConfig = reactive<AppConfig>({
     "mode": 2
   },
   "externalConfig": {
-    "enabled": false,
     "url": ""
   },
   "externalProjectConfig": {
-    "enabled": false,
     "url": ""
   }
 },
