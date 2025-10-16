@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import type { Site } from '@/config/index'
 import { isXicon, getIconName, getIconComponent } from '@/utils/icons'
 import AutoIcon from './AutoIcon.vue'
@@ -67,8 +67,22 @@ const props = withDefaults(defineProps<Props>(), {
   useAutoIcon: undefined // undefined 表示使用配置决定
 })
 
+// 配置是否已加载
+const configLoaded = ref(false)
+
+// 加载配置
+onMounted(async () => {
+  await loadAutoIconConfig()
+  configLoaded.value = true
+})
+
 // 是否应该使用自动图标
 const shouldUseAuto = computed(() => {
+  // 如果配置未加载完成，默认不使用自动图标（避免闪烁）
+  if (!configLoaded.value) {
+    return false
+  }
+  
   // 如果手动指定了 useAutoIcon，则使用手动设置
   if (props.useAutoIcon !== undefined) {
     return props.useAutoIcon
@@ -77,17 +91,12 @@ const shouldUseAuto = computed(() => {
   // 否则使用配置决定
   const result = shouldUseAutoIcon(props.site)
   
-  // 开发环境下输出调试信息
-  if (import.meta.env.DEV && isExternalIcon.value) {
+  // 输出调试信息
+  if (isExternalIcon.value) {
     console.log(`🎯 ${props.site.name}: shouldUseAuto=${result}, icon=${props.site.icon}`)
   }
   
   return result
-})
-
-// 加载配置
-onMounted(async () => {
-  await loadAutoIconConfig()
 })
 
 // 判断是否为外链图标
