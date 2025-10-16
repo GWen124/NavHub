@@ -18,7 +18,7 @@
       <template v-else>
         <img
           v-if="isExternalIcon"
-          :src="site.icon"
+          :src="encodedIconUrl"
           :alt="site.name"
         >
         <component
@@ -86,6 +86,23 @@ onMounted(async () => {
 // 判断是否为外链图标
 const isExternalIcon = computed(() => {
   return props.site.icon.startsWith('http')
+})
+
+// 编码外链图标 URL（处理空格和特殊字符）
+const encodedIconUrl = computed(() => {
+  if (!isExternalIcon.value) return props.site.icon
+  
+  try {
+    // 分割 URL 为基础部分和路径部分
+    const url = new URL(props.site.icon)
+    // 对路径部分的每个段落进行编码
+    const pathSegments = url.pathname.split('/').map(segment => encodeURIComponent(decodeURIComponent(segment)))
+    url.pathname = pathSegments.join('/')
+    return url.toString()
+  } catch (error) {
+    // 如果 URL 解析失败，返回原始值
+    return props.site.icon
+  }
 })
 
 // 判断是否为 Xicon 图标

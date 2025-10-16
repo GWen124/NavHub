@@ -10,11 +10,11 @@ export const appConfig = reactive<AppConfig>({
   "deployment": {
     "customDomain": "navhub.gw124.top"
   },
-  "pageTitle": "NavHub",
+  "pageTitle": "发现 · 收藏 · 出发",
   "favicon": {
-    "icon": "https://image.gw124.top/Avatar/A62B54A6-13B8-4BB8-9AAA-75E3342388BB_1_105_c.jpeg"
+    "icon": "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Uncategorized/Myicon.png"
   },
-  "pageQuote": "人生寂寞，知己难求。",
+  "pageQuote": "你所喜爱的网站，一站汇聚。",
   "pageTitleConfig": {
     "hideQuote": true
   },
@@ -22,8 +22,8 @@ export const appConfig = reactive<AppConfig>({
     "enabled": true
   },
   "footer": {
-    "websiteText": "NAV.GW124.TOP",
-    "websiteUrl": "https://nav.gw124.top/",
+    "websiteText": "NAVHUB.GW124.TOP",
+    "websiteUrl": "https://navhub.gw124.top/",
     "secondLine": {
       "enabled": true,
       "links": [
@@ -56,7 +56,7 @@ export const appConfig = reactive<AppConfig>({
   },
   "background": {
     "bingWallpaper": false,
-    "image": "https://image.gw124.top/Video/1.mp4",
+    "image": "",
     "bingMode": "localFirst"
   },
   "colors": {
@@ -112,14 +112,18 @@ export const appConfig = reactive<AppConfig>({
     "mode": 2
   },
   "externalConfig": {
-    "enabled": true,
-    "url": "https://raw.githubusercontent.com/GWen124/Script/refs/heads/master/Web/Website%20Panel/nav.gw124.top.json"
+    "enabled": false,
+    "url": ""
+  },
+  "externalProjectConfig": {
+    "enabled": false,
+    "url": ""
   }
 },
   footer: {
     ...{
-  "websiteText": "NAV.GW124.TOP",
-  "websiteUrl": "https://nav.gw124.top/",
+  "websiteText": "NAVHUB.GW124.TOP",
+  "websiteUrl": "https://navhub.gw124.top/",
   "secondLine": {
     "enabled": true,
     "links": [
