@@ -100,9 +100,9 @@ const isFontAwesomeIcon = computed(() => {
 
 // 判断是否为 Emoji 图标
 const isEmojiIcon = computed(() => {
-  // 简单的 emoji 检测：检查是否包含 emoji 字符
-  const emojiRegex = /[\uD83C-\uDBFF\uDC00-\uDFFF]+|[\u2600-\u27BF]+|[\uD83C\uDDF0-\uD83C\uDDFF]+|[\uD83D\uDC00-\uD83D\uDE4F]+|[\uD83D\uDE80-\uD83D\uDEFF]+/g
-  return emojiRegex.test(props.site.icon) && props.site.icon.length <= 4 && !props.site.icon.startsWith('http')
+  // 简单的 emoji 检测：检查字符长度和是否不是 URL
+  // 如果图标很短且不是 URL，可能是 emoji
+  return props.site.icon.length <= 4 && !props.site.icon.startsWith('http') && !props.site.icon.includes(':') && !props.site.icon.startsWith('fa')
 })
 
 // 获取 Xicon 组件
