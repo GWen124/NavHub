@@ -21,27 +21,27 @@ export const config: Category[] = [
       {
         "name": "Google",
         "url": "https://www.google.com/",
-        "icon": "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Google/Google.png"
+        "icon": "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/App Hub/Google.png"
       },
       {
         "name": "GitHub",
         "url": "https://github.com",
-        "icon": "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Project Management & To-do List/GitHub_A.png"
+        "icon": "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/App Hub/GitHub_A.png"
       },
       {
         "name": "YouTube",
         "url": "https://www.youtube.com/",
-        "icon": "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Streaming Service Platform/Youtube.png"
+        "icon": "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Social & Entertainment/Youtube.png"
       },
       {
         "name": "CloudFlare",
         "url": "https://www.cloudflare.com",
-        "icon": "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Cloud Protection Services/Cloudflare.png"
+        "icon": "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Cloud Hub/Cloudflare.png"
       },
       {
         "name": "Bilibili",
         "url": "https://www.bilibili.com/",
-        "icon": "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Streaming Service Platform/Bilibili.png"
+        "icon": "https://cdn.jsdelivr.net/gh/GWen124/MyIcons@Web/icon/Social & Entertainment/Bilibili.png"
       },
       {
         "name": "知乎",
