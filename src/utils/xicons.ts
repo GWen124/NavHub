@@ -40,6 +40,7 @@ import {
   Signal,
   GithubSquare,
   Compass,
+  MediumM,
   Zhihu
 } from '@vicons/fa'
 
@@ -92,6 +93,7 @@ export const xiconMap: Record<string, any> = {
   Home,
   GithubSquare,
   Compass,
+  MediumM,
   Zhihu
 }
 
@@ -137,6 +139,7 @@ export {
   Home,
   GithubSquare,
   Compass,
+  MediumM,
   Code
 }
 
