@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NavHub</title>
     
+    <!-- DNS 预解析，加速外部资源加载 -->
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://www.bing.com">
+    <link rel="dns-prefetch" href="https://www.google.com">
+    
+    <!-- 预连接到 CDN -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    
     <!-- 预加载字体，避免字体闪烁 -->
     <link rel="preload" href="./fonts/AnJingChenXinShouJinTi.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="preload" href="./fonts/brand.ttf" as="font" type="font/ttf" crossorigin>
@@ -62,8 +70,9 @@
       }
     </style>
     
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Awesome - 异步加载，不阻塞渲染 -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     
     <!-- 立即应用字体配置，避免字体闪烁 -->
     <script>
@@ -104,9 +113,10 @@
         -ms-overflow-style: none !important;
       }
     </style>
-    <script type="module" crossorigin src="./assets/index-BhKPIIQg.js"></script>
-    <link rel="modulepreload" crossorigin href="./assets/vendor-B3Ol2qD9.js">
-    <link rel="stylesheet" crossorigin href="./assets/index-Dh6GJNqs.css">
+    <script type="module" crossorigin src="./assets/js/index-CmYh-SVC.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/js/vue-vendor-BSHCzLdv.js">
+    <link rel="modulepreload" crossorigin href="./assets/js/icons-fa-BP-bSxbT.js">
+    <link rel="stylesheet" crossorigin href="./assets/css/index-CuVfGVAG.css">
   </head>
   <body>
     <div id="app"></div>
