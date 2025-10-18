@@ -39,7 +39,7 @@ timeDate:
 # Footer 信息配置
 footer:
   websiteText: "NAVHUB.GW124.TOP"
-  websiteUrl: "https://navhub.gw124.top/"
+  websiteUrl: "https://github.com/GWen124/NavHub"
   # 注意：作者信息不可配置，始终保持默认值
   
   # 第二行链接配置（可选）
