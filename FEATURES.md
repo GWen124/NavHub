@@ -438,7 +438,9 @@ Authorization callback URL: https://your-domain.com
 - Client ID
 - Client Secret
 
-#### 2) 部署Cloudflare Worker
+#### 2) 选择 OAuth 后端部署方式
+
+**方式A：Cloudflare Workers（公开网站推荐）**
 
 ```bash
 cd cloudflare-worker
@@ -453,13 +455,36 @@ CLIENT_SECRET=你的GitHub Client Secret
 ALLOWED_ORIGIN=https://your-domain.com
 ```
 
+**方式B：Docker 内置服务器（私有部署推荐）**
+
+```bash
+# 创建环境变量文件
+cat > .env << EOF
+GITHUB_CLIENT_ID=你的Client_ID
+GITHUB_CLIENT_SECRET=你的Client_Secret
+ALLOWED_ORIGINS=http://localhost
+EOF
+
+# 启动服务
+docker-compose -f docker-compose.oauth.yml up -d
+```
+
+详细配置请查看：[Docker OAuth 部署指南](DOCKER_OAUTH.md)
+
 #### 3) 配置NavHub
 
 ```yaml
 oauth:
   enabled: true
   clientId: "你的GitHub Client ID"
+  
+  # Cloudflare Workers 方式
   workerUrl: "https://navhub-oauth.your-username.workers.dev"
+  
+  # 或 Docker 内置服务器方式
+  # workerUrl: "http://localhost:3001"  # 本地开发
+  # workerUrl: "https://your-domain.com/api/oauth"  # 生产环境（通过 Nginx 反向代理）
+  
   redirectUri: "https://your-domain.com"
   allowedUsers:  # 白名单
     - "GWen124"

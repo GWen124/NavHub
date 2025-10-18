@@ -1,0 +1,58 @@
+# NavHub with OAuth Server - Multi-stage Build
+# 支持内置 OAuth 后端的 Docker 镜像
+
+# ================== 前端构建阶段 ==================
+FROM node:20-alpine AS frontend-builder
+
+WORKDIR /app
+
+# 复制前端代码
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+RUN npm run build
+
+# ================== OAuth 服务器构建阶段 ==================
+FROM node:20-alpine AS oauth-builder
+
+WORKDIR /oauth
+
+COPY oauth-server/package*.json ./
+RUN npm ci --production
+
+# ================== 最终运行阶段 ==================
+FROM node:20-alpine
+
+# 安装 nginx 和 supervisor
+RUN apk add --no-cache nginx supervisor
+
+# 创建必要的目录
+RUN mkdir -p /var/log/supervisor \
+    && mkdir -p /run/nginx \
+    && mkdir -p /usr/share/nginx/html
+
+# 复制前端构建产物
+COPY --from=frontend-builder /app/dist /usr/share/nginx/html
+
+# 复制 OAuth 服务器
+COPY --from=oauth-builder /oauth /oauth
+COPY oauth-server/server.js /oauth/
+
+# 复制 nginx 配置
+COPY nginx.oauth.conf /etc/nginx/http.d/default.conf
+
+# 复制 supervisor 配置
+COPY supervisord.conf /etc/supervisord.conf
+
+# 创建启动脚本
+COPY docker-entrypoint.oauth.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+# 暴露端口
+EXPOSE 80 3001
+
+# 使用 supervisor 同时运行 nginx 和 OAuth 服务器
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+

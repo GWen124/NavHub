@@ -311,18 +311,44 @@ USERNAME.github.io
 
 ### Docker 部署
 
+#### 基础部署（无 OAuth）
+
 ```bash
-# 构建镜像
-docker build -t navhub .
-
-# 运行容器
-docker run -d -p 8080:80 navhub
-
-# 使用docker-compose
+# 使用 docker-compose
 docker-compose up -d
+
+# 访问应用
+http://localhost:8080
 ```
 
-详细部署文档请查看 [DEPLOYMENT.md](DEPLOYMENT.md)
+#### 带 OAuth 后端部署（推荐）
+
+```bash
+# 1. 配置环境变量
+cat > .env << EOF
+GITHUB_CLIENT_ID=你的Client_ID
+GITHUB_CLIENT_SECRET=你的Client_Secret
+ALLOWED_ORIGINS=http://localhost
+EOF
+
+# 2. 启动完整服务（前端 + OAuth 服务器）
+docker-compose -f docker-compose.oauth.yml up -d
+
+# 3. 访问应用
+http://localhost
+```
+
+**OAuth 部署方式对比**：
+
+| 方式 | 适用场景 | 优势 |
+|------|---------|------|
+| **Cloudflare Workers** | 公开网站、个人博客 | 全球 CDN、免费、免维护 |
+| **Docker 内置服务器** | 私有部署、企业内网 | 自托管、更可控、一键部署 |
+
+详细部署文档：
+- [标准部署](DEPLOYMENT.md)
+- [Docker 部署](DOCKER.md)  
+- [Docker OAuth 部署](DOCKER_OAUTH.md) ⭐
 
 ## 📚 核心功能速览
 

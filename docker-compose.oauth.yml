@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # OAuth 后端服务器
+  oauth-server:
+    build:
+      context: ./oauth-server
+      dockerfile: Dockerfile
+    container_name: navhub-oauth-server
+    ports:
+      - "3001:3001"
+    environment:
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+      - OAUTH_PORT=3001
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-*}
+    restart: unless-stopped
+    networks:
+      - navhub-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # NavHub 前端 + Nginx
+  navhub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: navhub
+    ports:
+      - "80:80"
+    volumes:
+      # 挂载主配置文件
+      - ./config.yml:/app/config.yml:ro
+      # 挂载网站配置（可选）
+      # - ./sites-config.json:/app/sites-config.json:ro
+      # 挂载 footer 链接配置（可选）
+      - ./public/footer-links.json:/app/public/footer-links.json:ro
+      # 挂载自定义字体（可选）
+      # - ./fonts:/app/public/fonts:ro
+    environment:
+      - TZ=Asia/Shanghai
+      - OAUTH_SERVER_URL=http://oauth-server:3001
+    depends_on:
+      - oauth-server
+    restart: unless-stopped
+    networks:
+      - navhub-network
+
+networks:
+  navhub-network:
+    driver: bridge
+
