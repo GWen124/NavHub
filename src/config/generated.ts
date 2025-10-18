@@ -5,6 +5,7 @@ import { reactive } from 'vue'
 import type { AppConfig } from './configLoader'
 
 // 从 config.yml 生成的配置
+// 环境变量 (import.meta.env) 会在运行时覆盖这些值
 export const appConfig = reactive<AppConfig>({
   ...{
   "deployment": {
@@ -113,11 +114,13 @@ export const appConfig = reactive<AppConfig>({
     "url": ""
   },
   "oauth": {
-    "enabled": false,
-    "clientId": "",
-    "workerUrl": "",
-    "redirectUri": "",
-    "scope": "read:user"
+    "enabled": true,
+    "clientId": "Ov23liKN6KwjRfGrnyVU\"\"",
+    "workerUrl": "https://navhub.gwen.workers.dev/",
+    "redirectUri": "https://navhub.gw124.top",
+    "allowedUsers": [
+      "GWen124"
+    ]
   }
 },
   footer: {
@@ -152,6 +155,14 @@ export const appConfig = reactive<AppConfig>({
 },
     authorText: "Wen",
     authorUrl: "https://github.com/GWen124/NavHub"
+  },
+  // 运行时环境变量覆盖（Vite 会在构建时注入这些值）
+  oauth: {
+    enabled: import.meta.env.VITE_OAUTH_ENABLED === 'true' ? true : (import.meta.env.VITE_OAUTH_ENABLED === 'false' ? false : true),
+    clientId: import.meta.env.VITE_OAUTH_CLIENT_ID || "Ov23liKN6KwjRfGrnyVU\"\"",
+    workerUrl: import.meta.env.VITE_OAUTH_WORKER_URL || "https://navhub.gwen.workers.dev/",
+    redirectUri: import.meta.env.VITE_OAUTH_REDIRECT_URI || "https://navhub.gw124.top",
+    allowedUsers: ["GWen124"]
   }
 })
 

@@ -200,10 +200,11 @@ oauth:
   workerUrl: ""
   # OAuth 回调地址
   # 必须与 GitHub OAuth App 设置中的 callback URL 一致
-  # 通常是你的网站首页
+  # 本地开发: http://localhost:5173
+  # 生产环境: https://your-domain.com
   redirectUri: ""
-  # OAuth 权限范围
-  # 默认只请求读取用户基本信息的权限
-  # 可选值: read:user, user:email 等
-  scope: "read:user"
+  # 白名单用户（可选，留空表示允许所有人登录）
+  # 填写 GitHub 用户名列表，只有这些用户可以登录
+  # 示例: ["GWen124", "user2", "user3"]
+  allowedUsers: []
   

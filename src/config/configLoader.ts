@@ -115,7 +115,7 @@ export interface OAuthConfig {
   clientId?: string
   workerUrl?: string
   redirectUri?: string
-  scope?: string
+  allowedUsers?: string[]
 }
 
 export interface AppConfig {

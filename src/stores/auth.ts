@@ -67,7 +67,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // 处理 OAuth 回调
-  const handleCallback = async (code: string, oauthConfig: { workerUrl: string }) => {
+  const handleCallback = async (code: string, oauthConfig: { workerUrl: string; allowedUsers?: string[] }) => {
     isLoading.value = true
     error.value = null
 
@@ -95,6 +95,13 @@ export const useAuthStore = defineStore('auth', () => {
 
       // 获取用户信息
       const userData = await fetchUser(token)
+
+      // 检查用户白名单（如果配置了）
+      if (oauthConfig.allowedUsers && oauthConfig.allowedUsers.length > 0) {
+        if (!oauthConfig.allowedUsers.includes(userData.login)) {
+          throw new Error('您没有访问权限')
+        }
+      }
 
       // 保存认证信息
       saveAuth(token, userData)

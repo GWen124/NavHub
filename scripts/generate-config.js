@@ -311,6 +311,31 @@ console.log('━━━━━━━━━━━━━━━━━━━━━━�
 console.log('')
 
 
+// 处理环境变量覆盖 OAuth 配置
+// Vite 环境变量优先级：.env.local > .env > config.yml
+if (process.env.VITE_OAUTH_ENABLED !== undefined) {
+  config.oauth = config.oauth || {}
+  
+  // 环境变量覆盖配置
+  if (process.env.VITE_OAUTH_ENABLED === 'true' || process.env.VITE_OAUTH_ENABLED === 'false') {
+    config.oauth.enabled = process.env.VITE_OAUTH_ENABLED === 'true'
+  }
+  
+  if (process.env.VITE_OAUTH_CLIENT_ID) {
+    config.oauth.clientId = process.env.VITE_OAUTH_CLIENT_ID
+  }
+  
+  if (process.env.VITE_OAUTH_WORKER_URL) {
+    config.oauth.workerUrl = process.env.VITE_OAUTH_WORKER_URL
+  }
+  
+  if (process.env.VITE_OAUTH_REDIRECT_URI) {
+    config.oauth.redirectUri = process.env.VITE_OAUTH_REDIRECT_URI
+  }
+  
+  // allowedUsers 从配置文件读取，不支持环境变量（因为是数组）
+}
+
 // 生成 TypeScript 配置
 const configCode = `// 此文件由 scripts/generate-config.js 自动生成
 // 请勿手动修改此文件
@@ -319,12 +344,21 @@ import { reactive } from 'vue'
 import type { AppConfig } from './configLoader'
 
 // 从 config.yml 生成的配置
+// 环境变量 (import.meta.env) 会在运行时覆盖这些值
 export const appConfig = reactive<AppConfig>({
   ...${JSON.stringify(config, null, 2)},
   footer: {
     ...${JSON.stringify(config.footer || {}, null, 2)},
     authorText: "Wen",
     authorUrl: "https://github.com/GWen124/NavHub"
+  },
+  // 运行时环境变量覆盖（Vite 会在构建时注入这些值）
+  oauth: {
+    enabled: import.meta.env.VITE_OAUTH_ENABLED === 'true' ? true : (import.meta.env.VITE_OAUTH_ENABLED === 'false' ? false : ${config.oauth?.enabled || false}),
+    clientId: import.meta.env.VITE_OAUTH_CLIENT_ID || ${JSON.stringify(config.oauth?.clientId || '')},
+    workerUrl: import.meta.env.VITE_OAUTH_WORKER_URL || ${JSON.stringify(config.oauth?.workerUrl || '')},
+    redirectUri: import.meta.env.VITE_OAUTH_REDIRECT_URI || ${JSON.stringify(config.oauth?.redirectUri || '')},
+    allowedUsers: ${JSON.stringify(config.oauth?.allowedUsers || [])}
   }
 })
 

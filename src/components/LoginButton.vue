@@ -45,10 +45,12 @@ const handleLogin = () => {
   sessionStorage.setItem('oauth_state', state)
 
   // 构建 GitHub OAuth URL
+  const redirectUri = oauthConfig.redirectUri || window.location.origin
+  
   const params = new URLSearchParams({
     client_id: oauthConfig.clientId,
-    redirect_uri: oauthConfig.redirectUri || window.location.origin,
-    scope: oauthConfig.scope || 'read:user',
+    redirect_uri: redirectUri,
+    scope: 'read:user',
     state: state
   })
 
@@ -78,7 +80,8 @@ const handleOAuthCallback = async () => {
     const oauthConfig = appConfig.oauth
     if (oauthConfig?.enabled && oauthConfig.workerUrl) {
       const success = await authStore.handleCallback(code, {
-        workerUrl: oauthConfig.workerUrl
+        workerUrl: oauthConfig.workerUrl,
+        allowedUsers: oauthConfig.allowedUsers
       })
 
       if (success) {
