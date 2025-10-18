@@ -210,7 +210,7 @@ const applyLoadingBackground = async () => {
         loadingBackground.value = `url(${imageUrl})`
       }
     } catch (error) {
-      console.warn('获取Bing壁纸失败:', error)
+      // Bing壁纸获取失败，使用本地背景
     }
   }
   
@@ -236,8 +236,7 @@ const checkFontsLoaded = async (): Promise<boolean> => {
     await document.fonts.ready
     return true
   } catch (error) {
-    console.warn('字体加载检查失败:', error)
-    return true // 即使失败也继续
+    return true // 字体加载失败时继续
   }
 }
 
@@ -277,8 +276,7 @@ const initializeApp = async () => {
     // 隐藏加载页面
     showLoading.value = false
   } catch (error) {
-    console.error('初始化失败:', error)
-    // 即使出错也要显示主页面
+    // 初始化失败时也显示主页面
     showLoading.value = false
   }
 }

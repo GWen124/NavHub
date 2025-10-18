@@ -36,7 +36,6 @@ const handleLogin = () => {
   const oauthConfig = appConfig.oauth
   
   if (!oauthConfig?.enabled || !oauthConfig.clientId) {
-    console.error('OAuth 配置未启用或 Client ID 未设置')
     return
   }
 
@@ -65,7 +64,6 @@ const handleLogout = () => {
   // 弹出确认框
   if (confirm('确定要退出登录吗？')) {
     authStore.logout()
-    console.log('已退出登录')
   }
 }
 
@@ -76,22 +74,12 @@ const handleOAuthCallback = async () => {
   const state = urlParams.get('state')
   const savedState = sessionStorage.getItem('oauth_state')
 
-  console.log('OAuth 回调检测:', { code: !!code, state, savedState })
-
   if (code && state && state === savedState) {
-    console.log('开始处理 OAuth 回调...')
-    
     // 清除 state
     sessionStorage.removeItem('oauth_state')
 
     // 处理回调
     const oauthConfig = appConfig.oauth
-    console.log('OAuth 配置:', {
-      enabled: oauthConfig?.enabled,
-      hasClientId: !!oauthConfig?.clientId,
-      hasWorkerUrl: !!oauthConfig?.workerUrl,
-      workerUrl: oauthConfig?.workerUrl
-    })
     
     if (oauthConfig?.enabled && oauthConfig.workerUrl) {
       const success = await authStore.handleCallback(code, {
@@ -99,15 +87,10 @@ const handleOAuthCallback = async () => {
         allowedUsers: oauthConfig.allowedUsers
       })
 
-      console.log('OAuth 回调处理结果:', success)
-
       if (success) {
-        console.log('登录成功！清除 URL 参数')
         // 清除 URL 中的参数
         window.history.replaceState({}, document.title, window.location.pathname)
       } else {
-        console.error('登录失败，查看 authStore.error:', authStore.error)
-        
         // 检查是否是权限错误
         if (authStore.error && authStore.error.startsWith('UNAUTHORIZED:')) {
           const username = authStore.error.split(':')[1]
@@ -119,7 +102,6 @@ const handleOAuthCallback = async () => {
           window.history.replaceState({}, document.title, window.location.pathname)
           
           // 自动跳转到 GitHub 登出页面，清除 GitHub 的授权状态
-          console.log('检测到非白名单用户，自动跳转到 GitHub 登出页面')
           const returnUrl = encodeURIComponent(window.location.href)
           window.location.href = `https://github.com/logout?return_to=${returnUrl}`
         } else {
@@ -130,8 +112,6 @@ const handleOAuthCallback = async () => {
           }
         }
       }
-    } else {
-      console.error('OAuth 配置不完整或未启用')
     }
   }
 }
@@ -142,13 +122,6 @@ onMounted(() => {
 
   // 处理 OAuth 回调
   handleOAuthCallback()
-  
-  // 调试信息
-  console.log('Auth Store 初始化:', {
-    isAuthenticated: authStore.isAuthenticated,
-    user: authStore.user,
-    token: authStore.accessToken ? '已设置' : '未设置'
-  })
 })
 </script>
 

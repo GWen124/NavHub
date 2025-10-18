@@ -28,7 +28,6 @@ export const useAuthStore = defineStore('auth', () => {
       try {
         user.value = JSON.parse(savedUser)
       } catch (e) {
-        console.error('解析用户信息失败:', e)
         clearAuth()
       }
     }
@@ -75,8 +74,6 @@ export const useAuthStore = defineStore('auth', () => {
 
     try {
       // 调用 Cloudflare Worker 交换 token
-      console.log('调用 Worker:', `${oauthConfig.workerUrl}/callback`, { code })
-      
       const response = await fetch(`${oauthConfig.workerUrl}/callback`, {
         method: 'POST',
         headers: {
@@ -85,11 +82,7 @@ export const useAuthStore = defineStore('auth', () => {
         body: JSON.stringify({ code })
       })
 
-      console.log('Worker 响应状态:', response.status, response.statusText)
-
       if (!response.ok) {
-        const errorText = await response.text()
-        console.error('Worker 错误响应:', errorText)
         throw new Error(`获取访问令牌失败: ${response.status}`)
       }
 
@@ -121,7 +114,6 @@ export const useAuthStore = defineStore('auth', () => {
       return true
     } catch (e) {
       error.value = e instanceof Error ? e.message : '登录失败'
-      console.error('OAuth 回调处理失败:', e)
       // 确保清除本地认证信息
       clearAuth()
       return false
@@ -143,7 +135,6 @@ export const useAuthStore = defineStore('auth', () => {
       await fetchUser(accessToken.value)
       return true
     } catch (e) {
-      console.error('Token 验证失败:', e)
       clearAuth()
       return false
     }
