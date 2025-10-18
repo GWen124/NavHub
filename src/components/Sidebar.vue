@@ -36,6 +36,7 @@
     <!-- 侧边栏主体 -->
     <nav
       v-show="!isMobile || isOpen || (isTablet && isDragging)"
+      ref="sidebarRef"
       class="sidebar"
       :class="{ 'is-expanded': isExpanded || (isMobile && isOpen) || (isTablet && isOpen) }"
       :style="{ transform: isTablet && isDragging ? `translateX(${sidebarTransform}px)` : '' }"
@@ -46,7 +47,11 @@
       @touchmove="handleTouchMove"
       @touchend="handleTouchEnd"
     >
-      <ul class="category-list">
+      <ul 
+        ref="categoryListRef"
+        class="category-list"
+        @scroll="handleScroll"
+      >
             <li
               v-for="(category, index) in categories"
               :key="index"
@@ -57,6 +62,31 @@
               <span class="site-count">{{ category.sites.length }}</span>
             </li>
       </ul>
+      
+      <!-- 一键到底/顶按钮 - 长条形卡片 -->
+      <button
+        v-show="(isExpanded || (isMobile && isOpen) || (isTablet && isOpen)) && categories.length > 5"
+        class="scroll-toggle-card"
+        @click.stop="toggleScroll"
+      >
+        <div class="scroll-content">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="18" 
+            height="18" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            stroke-width="2.5" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"
+            :class="{ 'rotate-180': isAtBottom }"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+          <span class="scroll-text">{{ isAtBottom ? '回到顶部' : '跳到底部' }}</span>
+        </div>
+      </button>
     </nav>
   </div>
 </template>
@@ -80,6 +110,11 @@ const touchStartX = ref(0)
 const touchStartY = ref(0)
 const isDragging = ref(false)
 const sidebarTransform = ref(0)
+
+// 滚动相关
+const sidebarRef = ref<HTMLElement | null>(null)
+const categoryListRef = ref<HTMLElement | null>(null)
+const isAtBottom = ref(false)
 
 // 检测设备类型
 const checkDevice = () => {
@@ -215,6 +250,48 @@ const scrollToCategory = (categoryName: string) => {
   }
 }
 
+// 监听侧边栏列表滚动
+const handleScroll = () => {
+  if (!categoryListRef.value) return
+  
+  const { scrollTop, scrollHeight, clientHeight } = categoryListRef.value
+  // 判断是否接近底部（留10px容差）
+  isAtBottom.value = scrollTop + clientHeight >= scrollHeight - 10
+}
+
+// 一键到底/顶切换
+const toggleScroll = () => {
+  if (!categoryListRef.value) return
+  
+  if (isAtBottom.value) {
+    // 当前在底部，滚动到顶部
+    // 1. 滚动侧边栏列表到顶部
+    categoryListRef.value.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+    
+    // 2. 滚动主页面到最顶部
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  } else {
+    // 当前不在底部，滚动到底部
+    // 1. 滚动侧边栏列表到底部
+    categoryListRef.value.scrollTo({
+      top: categoryListRef.value.scrollHeight,
+      behavior: 'smooth'
+    })
+    
+    // 2. 滚动主页面到最底部（footer区域）
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth'
+    })
+  }
+}
+
 // 防抖函数
 const debounce = (func: Function, wait: number) => {
   let timeout: number | null = null
@@ -322,9 +399,9 @@ onUnmounted(() => {
                width 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
                background-color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  /* 右侧圆角 */
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
+  /* 右侧小圆角 */
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
   /* 完全隐藏滚动条 */
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -335,10 +412,10 @@ onUnmounted(() => {
   left: 0;
   width: var(--sidebar-width, 280px);
   background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(0.8px) saturate(100%);
-  -webkit-backdrop-filter: blur(0.8px) saturate(100%);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* 隐藏所有浏览器的滚动条 */
@@ -359,6 +436,7 @@ onUnmounted(() => {
   list-style: none;
   padding: 0;
   margin: 0;
+  padding-bottom: 48px; /* 为底部卡片留出空间 */
   width: 500px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -447,6 +525,69 @@ onUnmounted(() => {
 /* 展开时显示数量 */
 .sidebar.is-expanded .site-count {
   opacity: 1;
+}
+
+/* 一键到底/顶按钮 - 长条形卡片 */
+.scroll-toggle-card {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 48px;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  z-index: 10;
+  color: rgba(255, 255, 255, 0.9);
+  border-bottom-right-radius: 8px;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.scroll-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.scroll-toggle-card:hover {
+  background: rgba(0, 0, 0, 0.5);
+  border-top-color: rgba(255, 255, 255, 0.4);
+}
+
+.scroll-toggle-card:active {
+  background: rgba(0, 0, 0, 0.4);
+  transform: scale(0.98);
+}
+
+.scroll-toggle-card svg {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+}
+
+.scroll-toggle-card svg.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.scroll-text {
+  font-family: var(--sidebar-font-family, system-ui, -apple-system, BlinkMacSystemFont, sans-serif);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 /* 遮罩层淡入淡出动画 */
