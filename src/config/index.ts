@@ -83,11 +83,26 @@ function sortCategories(categories: Category[], isAuthenticated: boolean = false
   const siteSorting = appConfig.siteSorting
   
   // 过滤规则：
-  // 1. 过滤掉 hidden: true 的分组
-  // 2. 如果未登录，过滤掉 requireAuth: true 的分组
+  // 1. hidden: true 且 requireAuth: true - 登录后显示，未登录隐藏
+  // 2. hidden: true 但没有 requireAuth - 永远隐藏
+  // 3. requireAuth: true - 需要登录才显示
+  // 4. 无标记 - 公开显示
   const visibleCategories = categories.filter(category => {
-    if (category.hidden) return false
-    if (category.requireAuth && !isAuthenticated) return false
+    // 如果同时设置了 hidden 和 requireAuth，登录后显示
+    if (category.hidden && category.requireAuth) {
+      return isAuthenticated
+    }
+    
+    // 如果只设置了 hidden（没有 requireAuth），永远隐藏
+    if (category.hidden && !category.requireAuth) {
+      return false
+    }
+    
+    // 如果设置了 requireAuth，需要登录才显示
+    if (category.requireAuth && !isAuthenticated) {
+      return false
+    }
+    
     return true
   })
   
