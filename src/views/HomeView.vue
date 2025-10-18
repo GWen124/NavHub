@@ -131,7 +131,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, onUnmounted } from 'vue'
+import { ref, onMounted, computed, onUnmounted, watch } from 'vue'
 import { useConfig, type Category } from '@/config/index'
 import { useThemeStore } from '@/stores/theme'
 import { useAuthStore } from '@/stores/auth'
@@ -146,6 +146,15 @@ const authStore = useAuthStore()
 
 // 使用动态配置（根据登录状态）
 const dynamicConfig = useConfig()
+
+// 监听登录状态变化，自动更新分组
+watch(() => authStore.isAuthenticated, () => {
+  if (!searchQuery.value.trim()) {
+    filteredCategories.value = dynamicConfig.value
+  } else {
+    handleSearch()
+  }
+}, { immediate: false })
 
 const searchQuery = ref('')
 const selectedSearchEngine = ref('google')

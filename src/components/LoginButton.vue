@@ -63,6 +63,7 @@ const handleLogin = () => {
 // 退出登录
 const handleLogout = () => {
   authStore.logout()
+  console.log('已退出登录')
 }
 
 // 处理 OAuth 回调
