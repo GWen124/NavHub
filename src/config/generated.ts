@@ -144,7 +144,7 @@ export const appConfig = reactive<AppConfig>({
   }
 },
     authorText: "Wen",
-    authorUrl: "https://gw124.top/"
+    authorUrl: "https://github.com/GWen124/NavHub"
   }
 })
 

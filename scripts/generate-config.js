@@ -320,7 +320,7 @@ export const appConfig = reactive<AppConfig>({
   footer: {
     ...${JSON.stringify(config.footer || {}, null, 2)},
     authorText: "Wen",
-    authorUrl: "https://gw124.top/"
+    authorUrl: "https://github.com/GWen124/NavHub"
   }
 })
 
