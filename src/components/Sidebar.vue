@@ -115,6 +115,7 @@ const sidebarTransform = ref(0)
 const sidebarRef = ref<HTMLElement | null>(null)
 const categoryListRef = ref<HTMLElement | null>(null)
 const isAtBottom = ref(false)
+const mainPageScrollHandler = ref<(() => void) | null>(null)
 
 // 检测设备类型
 const checkDevice = () => {
@@ -250,13 +251,26 @@ const scrollToCategory = (categoryName: string) => {
   }
 }
 
-// 监听侧边栏列表滚动
+// 监听侧边栏列表滚动（保留，用于同步滚动）
 const handleScroll = () => {
-  if (!categoryListRef.value) return
+  // 侧边栏滚动时不更新 isAtBottom 状态
+  // 状态由主页面滚动控制
+}
+
+// 监听主页面滚动
+const handleMainPageScroll = () => {
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+  const scrollHeight = document.documentElement.scrollHeight
+  const clientHeight = window.innerHeight
   
-  const { scrollTop, scrollHeight, clientHeight } = categoryListRef.value
-  // 判断是否接近底部（留10px容差）
-  isAtBottom.value = scrollTop + clientHeight >= scrollHeight - 10
+  // 如果页面没有滚动条（内容不够高），始终显示"跳到底部"
+  if (scrollHeight <= clientHeight + 10) {
+    isAtBottom.value = false
+    return
+  }
+  
+  // 判断主页面是否接近底部（留100px容差）
+  isAtBottom.value = scrollTop + clientHeight >= scrollHeight - 100
 }
 
 // 一键到底/顶切换
@@ -329,6 +343,14 @@ onMounted(() => {
   checkDevice()
   window.addEventListener('resize', handleResize)
   
+  // 监听主页面滚动，更新按钮状态
+  window.addEventListener('scroll', handleMainPageScroll, { passive: true })
+  
+  // 延迟初始化检查，确保页面完全加载
+  setTimeout(() => {
+    handleMainPageScroll()
+  }, 500)
+  
   // 为pad端添加全局触摸事件
   document.addEventListener('touchstart', handleTouchStart, { passive: false })
   document.addEventListener('touchmove', handleTouchMove, { passive: false })
@@ -337,6 +359,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
+  window.removeEventListener('scroll', handleMainPageScroll)
   
   // 清理pad端的全局触摸事件
   document.removeEventListener('touchstart', handleTouchStart)
