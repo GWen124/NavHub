@@ -15,6 +15,22 @@ export interface Category {
 
 export const config: Category[] = [
   {
+    "name": "Private - 私密分组（测试）",
+    "requireAuth": true,
+    "sites": [
+      {
+        "name": "私密网站1",
+        "url": "https://private1.example.com",
+        "icon": ""
+      },
+      {
+        "name": "私密网站2",
+        "url": "https://private2.example.com",
+        "icon": ""
+      }
+    ]
+  },
+  {
     "name": "Favorites - 常用网站",
     "sites": [
       {

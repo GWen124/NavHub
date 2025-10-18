@@ -114,13 +114,11 @@ export const appConfig = reactive<AppConfig>({
     "url": ""
   },
   "oauth": {
-    "enabled": true,
-    "clientId": "Ov23liKN6KwjRfGrnyVU\"\"",
-    "workerUrl": "https://navhub.gwen.workers.dev/",
-    "redirectUri": "https://navhub.gw124.top",
-    "allowedUsers": [
-      "GWen124"
-    ]
+    "enabled": false,
+    "clientId": "",
+    "workerUrl": "",
+    "redirectUri": "",
+    "allowedUsers": []
   }
 },
   footer: {
@@ -158,11 +156,11 @@ export const appConfig = reactive<AppConfig>({
   },
   // 运行时环境变量覆盖（Vite 会在构建时注入这些值）
   oauth: {
-    enabled: import.meta.env.VITE_OAUTH_ENABLED === 'true' ? true : (import.meta.env.VITE_OAUTH_ENABLED === 'false' ? false : true),
-    clientId: import.meta.env.VITE_OAUTH_CLIENT_ID || "Ov23liKN6KwjRfGrnyVU\"\"",
-    workerUrl: import.meta.env.VITE_OAUTH_WORKER_URL || "https://navhub.gwen.workers.dev/",
-    redirectUri: import.meta.env.VITE_OAUTH_REDIRECT_URI || "https://navhub.gw124.top",
-    allowedUsers: ["GWen124"]
+    enabled: import.meta.env.VITE_OAUTH_ENABLED === 'true' ? true : (import.meta.env.VITE_OAUTH_ENABLED === 'false' ? false : false),
+    clientId: import.meta.env.VITE_OAUTH_CLIENT_ID || "",
+    workerUrl: import.meta.env.VITE_OAUTH_WORKER_URL || "",
+    redirectUri: import.meta.env.VITE_OAUTH_REDIRECT_URI || "",
+    allowedUsers: []
   }
 })
 

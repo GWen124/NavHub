@@ -98,6 +98,13 @@ onMounted(() => {
 
   // 处理 OAuth 回调
   handleOAuthCallback()
+  
+  // 调试信息
+  console.log('Auth Store 初始化:', {
+    isAuthenticated: authStore.isAuthenticated,
+    user: authStore.user,
+    token: authStore.accessToken ? '已设置' : '未设置'
+  })
 })
 </script>
 
