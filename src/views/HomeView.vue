@@ -4,11 +4,6 @@
     <Sidebar :categories="filteredCategories" />
     <header class="app-header">
       <div class="header-content">
-        <!-- 登录按钮（右上角） -->
-        <div v-if="appConfigRef.oauth?.enabled" class="login-section">
-          <LoginButton />
-        </div>
-        
         <div class="quote-section" :class="{ 'centered': !appConfigRef.timeDate?.enabled }">
           <h1 v-if="appConfigRef.pageTitleConfig?.hideQuote" class="main-quote">{{ appConfigRef.pageQuote }}</h1>
           <div v-if="appConfigRef.timeDate?.enabled" class="time-section">
@@ -115,7 +110,7 @@
         </div>
         
         <!-- 第二行链接 -->
-        <div v-if="appConfigRef.footer?.secondLine?.enabled && appConfigRef.footer?.secondLine?.links" class="footer-second-line">
+        <div v-if="appConfigRef.footer?.secondLine?.enabled && (appConfigRef.footer?.secondLine?.links || appConfigRef.oauth?.enabled)" class="footer-second-line">
           <a 
             v-for="link in appConfigRef.footer.secondLine.links" 
             :key="link.name"
@@ -126,6 +121,8 @@
           >
             <i :class="`fa ${link.icon}`" class="footer-icon"></i>{{ link.name }}
           </a>
+          <!-- OAuth 登录按钮 -->
+          <LoginButton v-if="appConfigRef.oauth?.enabled" />
         </div>
       </div>
     </footer>
@@ -492,14 +489,6 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  position: relative;
-}
-
-.login-section {
-  position: absolute;
-  top: -60px;
-  right: 24px;
-  z-index: 100;
 }
 
 .quote-section {
