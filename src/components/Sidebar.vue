@@ -276,6 +276,11 @@ const toggleScroll = () => {
       top: 0,
       behavior: 'smooth'
     })
+    
+    // 3. 延迟更新状态，确保滚动完成后状态正确
+    setTimeout(() => {
+      isAtBottom.value = false
+    }, 100)
   } else {
     // 当前不在底部，滚动到底部
     // 1. 滚动侧边栏列表到底部
@@ -289,6 +294,14 @@ const toggleScroll = () => {
       top: document.documentElement.scrollHeight,
       behavior: 'smooth'
     })
+    
+    // 3. 延迟更新状态，确保滚动完成后状态正确
+    setTimeout(() => {
+      if (categoryListRef.value) {
+        const { scrollTop, scrollHeight, clientHeight } = categoryListRef.value
+        isAtBottom.value = scrollTop + clientHeight >= scrollHeight - 10
+      }
+    }, 600) // 等待平滑滚动完成
   }
 }
 
