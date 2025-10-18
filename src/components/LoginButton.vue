@@ -155,19 +155,19 @@ onMounted(() => {
 }
 
 .footer-icon {
-  font-size: 14px;
-  width: 14px;
-  height: 14px;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-right: 4px;
+  margin-right: 6px;
   vertical-align: middle;
 }
 
 .footer-icon :deep(svg) {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
 }
 
 .loading {
@@ -182,14 +182,14 @@ onMounted(() => {
   }
   
   .footer-icon {
-    font-size: 12px;
-    width: 12px;
-    height: 12px;
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
   }
   
   .footer-icon :deep(svg) {
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -199,14 +199,14 @@ onMounted(() => {
   }
   
   .footer-icon {
-    font-size: 11px;
-    width: 11px;
-    height: 11px;
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
   }
   
   .footer-icon :deep(svg) {
-    width: 11px;
-    height: 11px;
+    width: 14px;
+    height: 14px;
   }
 }
 </style>

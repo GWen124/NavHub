@@ -961,13 +961,13 @@ onUnmounted(() => {
 }
 
 .footer-icon {
-  font-size: 14px;
-  width: 14px;
-  height: 14px;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-right: 4px;
+  margin-right: 6px;
 }
 
 .footer-link {
@@ -1062,9 +1062,9 @@ onUnmounted(() => {
   }
   
   .footer-icon {
-    font-size: 12px;
-    width: 12px;
-    height: 12px;
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -1097,9 +1097,9 @@ onUnmounted(() => {
   }
   
   .footer-icon {
-    font-size: 11px;
-    width: 11px;
-    height: 11px;
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
   }
   
   .main-content {
