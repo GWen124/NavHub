@@ -48,6 +48,8 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = null
     localStorage.removeItem('github_access_token')
     localStorage.removeItem('github_user')
+    // 清除 sessionStorage 中的 OAuth state
+    sessionStorage.removeItem('oauth_state')
   }
 
   // 获取用户信息

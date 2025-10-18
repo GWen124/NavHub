@@ -51,7 +51,8 @@ const handleLogin = () => {
     client_id: oauthConfig.clientId,
     redirect_uri: redirectUri,
     scope: 'read:user',
-    state: state
+    state: state,
+    prompt: 'consent'  // 强制每次都重新授权
   })
 
   const authUrl = `https://github.com/login/oauth/authorize?${params.toString()}`
