@@ -8,7 +8,7 @@
     :class="{ 'loading': authStore.isLoading }"
     title="Login"
   >
-    <UserCircle class="footer-icon" />{{ authStore.isLoading ? 'Loading...' : 'Login' }}
+    <UserCog class="footer-icon" />{{ authStore.isLoading ? 'Loading...' : 'Login' }}
   </a>
 
   <!-- 已登录状态 -->
@@ -19,7 +19,7 @@
     class="footer-link logout-link"
     title="Exit"
   >
-    <UserCircle class="footer-icon" />Exit
+    <UserCog class="footer-icon" />Exit
   </a>
 </template>
 
@@ -27,7 +27,7 @@
 import { onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { appConfig } from '@/config/generated'
-import { UserCircle } from '@vicons/fa'
+import { UserCog } from '@vicons/fa'
 
 const authStore = useAuthStore()
 
