@@ -73,6 +73,8 @@ export const useAuthStore = defineStore('auth', () => {
 
     try {
       // 调用 Cloudflare Worker 交换 token
+      console.log('调用 Worker:', `${oauthConfig.workerUrl}/callback`, { code })
+      
       const response = await fetch(`${oauthConfig.workerUrl}/callback`, {
         method: 'POST',
         headers: {
@@ -81,8 +83,12 @@ export const useAuthStore = defineStore('auth', () => {
         body: JSON.stringify({ code })
       })
 
+      console.log('Worker 响应状态:', response.status, response.statusText)
+
       if (!response.ok) {
-        throw new Error('获取访问令牌失败')
+        const errorText = await response.text()
+        console.error('Worker 错误响应:', errorText)
+        throw new Error(`获取访问令牌失败: ${response.status}`)
       }
 
       const data = await response.json()
