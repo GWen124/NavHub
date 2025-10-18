@@ -51,8 +51,7 @@ const handleLogin = () => {
     client_id: oauthConfig.clientId,
     redirect_uri: redirectUri,
     scope: 'read:user',
-    state: state,
-    prompt: 'consent'  // 强制每次都重新授权
+    state: state
   })
 
   const authUrl = `https://github.com/login/oauth/authorize?${params.toString()}`
@@ -63,8 +62,12 @@ const handleLogin = () => {
 
 // 退出登录
 const handleLogout = () => {
-  authStore.logout()
-  console.log('已退出登录')
+  // 弹出确认框
+  if (confirm('确定要退出登录吗？')) {
+    authStore.logout()
+    console.log('已退出登录')
+    alert('已退出登录')
+  }
 }
 
 // 处理 OAuth 回调
