@@ -66,7 +66,6 @@ const handleLogout = () => {
   if (confirm('确定要退出登录吗？')) {
     authStore.logout()
     console.log('已退出登录')
-    alert('已退出登录')
   }
 }
 
