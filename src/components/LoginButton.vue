@@ -107,6 +107,28 @@ const handleOAuthCallback = async () => {
         window.history.replaceState({}, document.title, window.location.pathname)
       } else {
         console.error('登录失败，查看 authStore.error:', authStore.error)
+        
+        // 检查是否是权限错误
+        if (authStore.error && authStore.error.startsWith('UNAUTHORIZED:')) {
+          const username = authStore.error.split(':')[1]
+          
+          // 显示错误提示
+          alert(`抱歉，用户 @${username} 没有访问权限`)
+          
+          // 清除 URL 参数
+          window.history.replaceState({}, document.title, window.location.pathname)
+          
+          // 自动跳转到 GitHub 登出页面，清除 GitHub 的授权状态
+          console.log('检测到非白名单用户，自动跳转到 GitHub 登出页面')
+          const returnUrl = encodeURIComponent(window.location.href)
+          window.location.href = `https://github.com/logout?return_to=${returnUrl}`
+        } else {
+          // 其他错误，只清除 URL 参数
+          window.history.replaceState({}, document.title, window.location.pathname)
+          if (authStore.error) {
+            alert(authStore.error)
+          }
+        }
       }
     } else {
       console.error('OAuth 配置不完整或未启用')

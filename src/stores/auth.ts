@@ -107,7 +107,11 @@ export const useAuthStore = defineStore('auth', () => {
       // 检查用户白名单（如果配置了）
       if (oauthConfig.allowedUsers && oauthConfig.allowedUsers.length > 0) {
         if (!oauthConfig.allowedUsers.includes(userData.login)) {
-          throw new Error('您没有访问权限')
+          // 清除本地认证信息
+          clearAuth()
+          // 设置特殊的错误信息，包含用户名
+          error.value = `UNAUTHORIZED:${userData.login}`
+          throw new Error(error.value)
         }
       }
 
@@ -118,6 +122,8 @@ export const useAuthStore = defineStore('auth', () => {
     } catch (e) {
       error.value = e instanceof Error ? e.message : '登录失败'
       console.error('OAuth 回调处理失败:', e)
+      // 确保清除本地认证信息
+      clearAuth()
       return false
     } finally {
       isLoading.value = false
