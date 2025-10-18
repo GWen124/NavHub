@@ -73,15 +73,18 @@ function sortSites(sites: Site[], mode: number): Site[] {
 /**
  * 对分组进行排序
  * @param categories 原始分组数组
- * @returns 排序后的分组数组
+ * @returns 排序后的分组数组（已过滤隐藏的分组）
  */
 function sortCategories(categories: Category[]): Category[] {
   const sorting = appConfig.categorySorting
   const siteSorting = appConfig.siteSorting
   
-  // 如果禁用自动排序，直接返回原始配置
+  // 首先过滤掉隐藏的分组
+  const visibleCategories = categories.filter(category => !category.hidden)
+  
+  // 如果禁用自动排序，直接返回原始配置（已过滤隐藏分组）
   if (!sorting || sorting.autoSort === false) {
-    return categories
+    return visibleCategories
   }
   
   const pinnedNames = sorting.pinnedCategories || []
@@ -92,7 +95,7 @@ function sortCategories(categories: Category[]): Category[] {
   const middle: Category[] = []
   const bottom: Category[] = []
   
-  categories.forEach(category => {
+  visibleCategories.forEach(category => {
     if (pinnedNames.includes(category.name)) {
       pinned.push(category)
     } else if (bottomNames.includes(category.name)) {

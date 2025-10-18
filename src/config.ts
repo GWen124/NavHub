@@ -9,6 +9,7 @@ export interface Site {
 export interface Category {
   name: string
   sites: Site[]
+  hidden?: boolean // 是否隐藏该分组（true: 隐藏, false/undefined: 显示）
 }
 
 export const config: Category[] = [

@@ -193,6 +193,7 @@ export interface Site {
 export interface Category {
   name: string
   sites: Site[]
+  hidden?: boolean
 }
 
 export const config: Category[] = ${JSON.stringify(websiteData, null, 2)}
@@ -240,6 +241,7 @@ export interface Site {
 export interface Category {
   name: string
   sites: Site[]
+  hidden?: boolean
 }
 
 export const config: Category[] = ${JSON.stringify(externalSites, null, 2)}
