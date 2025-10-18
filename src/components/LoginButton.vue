@@ -165,6 +165,11 @@ onMounted(() => {
   vertical-align: middle;
 }
 
+.footer-icon :deep(svg) {
+  width: 14px;
+  height: 14px;
+}
+
 .loading {
   opacity: 0.6;
   cursor: wait;
@@ -181,6 +186,11 @@ onMounted(() => {
     width: 12px;
     height: 12px;
   }
+  
+  .footer-icon :deep(svg) {
+    width: 12px;
+    height: 12px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -190,6 +200,11 @@ onMounted(() => {
   
   .footer-icon {
     font-size: 11px;
+    width: 11px;
+    height: 11px;
+  }
+  
+  .footer-icon :deep(svg) {
     width: 11px;
     height: 11px;
   }
