@@ -1,6 +1,6 @@
 [
   {
-    "name": "示例分组 - 显示",
+    "name": "示例分组 - 公开",
     "sites": [
       {
         "name": "示例网站",
@@ -10,12 +10,23 @@
     ]
   },
   {
-    "name": "示例分组 - 隐藏",
+    "name": "示例分组 - 完全隐藏",
     "hidden": true,
     "sites": [
       {
-        "name": "隐藏的网站",
+        "name": "完全隐藏的网站",
         "url": "https://hidden.example.com",
+        "icon": ""
+      }
+    ]
+  },
+  {
+    "name": "示例分组 - 需要登录",
+    "requireAuth": true,
+    "sites": [
+      {
+        "name": "需要登录的网站",
+        "url": "https://private.example.com",
         "icon": ""
       }
     ]

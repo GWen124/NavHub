@@ -1,6 +1,8 @@
 // 配置导出和排序处理
 import { config as rawConfig, type Category, type Site } from '../config'
 import { appConfig } from './generated'
+import { computed } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 
 // 导出类型
 export type { Site, Category } from '../config'
@@ -71,16 +73,23 @@ function sortSites(sites: Site[], mode: number): Site[] {
 }
 
 /**
- * 对分组进行排序
+ * 对分组进行排序和过滤
  * @param categories 原始分组数组
- * @returns 排序后的分组数组（已过滤隐藏的分组）
+ * @param isAuthenticated 是否已登录
+ * @returns 排序后的分组数组（已过滤隐藏的分组和需要登录的分组）
  */
-function sortCategories(categories: Category[]): Category[] {
+function sortCategories(categories: Category[], isAuthenticated: boolean = false): Category[] {
   const sorting = appConfig.categorySorting
   const siteSorting = appConfig.siteSorting
   
-  // 首先过滤掉隐藏的分组
-  const visibleCategories = categories.filter(category => !category.hidden)
+  // 过滤规则：
+  // 1. 过滤掉 hidden: true 的分组
+  // 2. 如果未登录，过滤掉 requireAuth: true 的分组
+  const visibleCategories = categories.filter(category => {
+    if (category.hidden) return false
+    if (category.requireAuth && !isAuthenticated) return false
+    return true
+  })
   
   // 如果禁用自动排序，直接返回原始配置（已过滤隐藏分组）
   if (!sorting || sorting.autoSort === false) {
@@ -131,5 +140,12 @@ function sortCategories(categories: Category[]): Category[] {
   }))
 }
 
-// 导出排序后的配置
-export const config = sortCategories(rawConfig)
+// 导出响应式的配置（根据登录状态动态过滤）
+export function useConfig() {
+  const authStore = useAuthStore()
+  
+  return computed(() => sortCategories(rawConfig, authStore.isAuthenticated))
+}
+
+// 导出静态配置（用于不需要登录功能的场景）
+export const config = sortCategories(rawConfig, false)

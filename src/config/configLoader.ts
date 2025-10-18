@@ -110,6 +110,14 @@ export interface AutoIconConfig {
   mode?: number
 }
 
+export interface OAuthConfig {
+  enabled?: boolean
+  clientId?: string
+  workerUrl?: string
+  redirectUri?: string
+  scope?: string
+}
+
 export interface AppConfig {
   pageTitle?: string
   pageQuote?: string
@@ -124,6 +132,7 @@ export interface AppConfig {
   categorySorting?: CategorySortingConfig
   siteSorting?: SiteSortingConfig
   autoIcon?: AutoIconConfig
+  oauth?: OAuthConfig
 }
 
 // 默认配置

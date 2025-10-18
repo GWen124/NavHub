@@ -10,6 +10,7 @@ export interface Category {
   name: string
   sites: Site[]
   hidden?: boolean // 是否隐藏该分组（true: 隐藏, false/undefined: 显示）
+  requireAuth?: boolean // 是否需要登录才能查看（true: 需要登录, false/undefined: 公开）
 }
 
 export const config: Category[] = [

@@ -4,6 +4,11 @@
     <Sidebar :categories="filteredCategories" />
     <header class="app-header">
       <div class="header-content">
+        <!-- 登录按钮（右上角） -->
+        <div v-if="appConfigRef.oauth?.enabled" class="login-section">
+          <LoginButton />
+        </div>
+        
         <div class="quote-section" :class="{ 'centered': !appConfigRef.timeDate?.enabled }">
           <h1 v-if="appConfigRef.pageTitleConfig?.hideQuote" class="main-quote">{{ appConfigRef.pageQuote }}</h1>
           <div v-if="appConfigRef.timeDate?.enabled" class="time-section">
@@ -130,14 +135,20 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, onUnmounted } from 'vue'
-import { config, type Category } from '@/config/index'
+import { useConfig, type Category } from '@/config/index'
 import { useThemeStore } from '@/stores/theme'
+import { useAuthStore } from '@/stores/auth'
 import { loadConfig, applyBackgroundConfig, applyPageTitle, applyFaviconConfig, applyColorsConfig, applyFontsConfig, appConfig, formatCopyrightYear } from '@/config/generated'
 import CategorySection from '@/components/CategorySection.vue'
 import Sidebar from '@/components/Sidebar.vue'
+import LoginButton from '@/components/LoginButton.vue'
 import { searchEngines, getSearchEngine, performSearch, type SearchEngine } from '@/utils/searchEngines'
 
 const themeStore = useThemeStore()
+const authStore = useAuthStore()
+
+// 使用动态配置（根据登录状态）
+const dynamicConfig = useConfig()
 
 const searchQuery = ref('')
 const selectedSearchEngine = ref('google')
@@ -208,13 +219,13 @@ const updateTime = () => {
 // 处理搜索
 const handleSearch = () => {
   if (!searchQuery.value.trim()) {
-    filteredCategories.value = config
+    filteredCategories.value = dynamicConfig.value
     return
   }
 
   const query = searchQuery.value.toLowerCase()
   
-  const filtered = config.map(category => {
+  const filtered = dynamicConfig.value.map(category => {
     // 检查分组名称是否匹配
     const categoryMatches = category.name.toLowerCase().includes(query)
     
@@ -252,7 +263,7 @@ const handleSearchSubmit = () => {
 // 清除搜索
 const clearSearch = () => {
   searchQuery.value = ''
-  filteredCategories.value = config
+  filteredCategories.value = dynamicConfig.value
 }
 
 // 搜索引擎选择器相关函数
@@ -415,7 +426,10 @@ onMounted(async () => {
     }
   }, 100)
   
-  filteredCategories.value = config
+  // 初始化认证store
+  authStore.initAuth()
+  
+  filteredCategories.value = dynamicConfig.value
   updateTime()
   timeInterval.value = setInterval(updateTime, 1000)
   
@@ -478,6 +492,14 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  position: relative;
+}
+
+.login-section {
+  position: absolute;
+  top: -60px;
+  right: 24px;
+  z-index: 100;
 }
 
 .quote-section {

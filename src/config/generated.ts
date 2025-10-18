@@ -111,6 +111,13 @@ export const appConfig = reactive<AppConfig>({
   },
   "externalProjectConfig": {
     "url": ""
+  },
+  "oauth": {
+    "enabled": false,
+    "clientId": "",
+    "workerUrl": "",
+    "redirectUri": "",
+    "scope": "read:user"
   }
 },
   footer: {

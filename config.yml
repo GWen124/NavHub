@@ -184,4 +184,26 @@ externalProjectConfig:
   # 示例：https://example.com/project-config.yml
   # 示例：https://gist.githubusercontent.com/username/xxx/raw/project-config.yml
   url: ""
+
+# OAuth 登录配置
+oauth:
+  # 是否启用 OAuth 登录功能
+  # true: 启用登录功能，显示登录按钮
+  # false: 禁用登录功能，不显示登录按钮
+  enabled: false
+  # GitHub OAuth App Client ID
+  # 在 https://github.com/settings/developers 创建 OAuth App 获取
+  clientId: ""
+  # Cloudflare Worker URL
+  # 用于处理 OAuth token 交换的后端服务
+  # 示例：https://navhub-oauth.your-username.workers.dev
+  workerUrl: ""
+  # OAuth 回调地址
+  # 必须与 GitHub OAuth App 设置中的 callback URL 一致
+  # 通常是你的网站首页
+  redirectUri: ""
+  # OAuth 权限范围
+  # 默认只请求读取用户基本信息的权限
+  # 可选值: read:user, user:email 等
+  scope: "read:user"
   
