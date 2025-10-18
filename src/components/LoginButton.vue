@@ -72,22 +72,40 @@ const handleOAuthCallback = async () => {
   const state = urlParams.get('state')
   const savedState = sessionStorage.getItem('oauth_state')
 
+  console.log('OAuth 回调检测:', { code: !!code, state, savedState })
+
   if (code && state && state === savedState) {
+    console.log('开始处理 OAuth 回调...')
+    
     // 清除 state
     sessionStorage.removeItem('oauth_state')
 
     // 处理回调
     const oauthConfig = appConfig.oauth
+    console.log('OAuth 配置:', {
+      enabled: oauthConfig?.enabled,
+      hasClientId: !!oauthConfig?.clientId,
+      hasWorkerUrl: !!oauthConfig?.workerUrl,
+      workerUrl: oauthConfig?.workerUrl
+    })
+    
     if (oauthConfig?.enabled && oauthConfig.workerUrl) {
       const success = await authStore.handleCallback(code, {
         workerUrl: oauthConfig.workerUrl,
         allowedUsers: oauthConfig.allowedUsers
       })
 
+      console.log('OAuth 回调处理结果:', success)
+
       if (success) {
+        console.log('登录成功！清除 URL 参数')
         // 清除 URL 中的参数
         window.history.replaceState({}, document.title, window.location.pathname)
+      } else {
+        console.error('登录失败，查看 authStore.error:', authStore.error)
       }
+    } else {
+      console.error('OAuth 配置不完整或未启用')
     }
   }
 }
